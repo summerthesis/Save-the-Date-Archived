@@ -1,0 +1,142 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RockySnow
+  m_Shader: {fileID: 4800000, guid: 8d8ee0d30b7267844bbf649c46726dcd, type: 3}
+  m_ShaderKeywords: _DISPLACEBASE_ON _DISPLACELAYER_ON _DISPLACEMOSS_ON _DISPLACE_ON
+    _EMISSION _NORMALMAP _WORLDONLOCALOFF_ON
+  m_LightmapFlags: 1
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 2800000, guid: 888d1db2cb8244a498d71066189629a6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 47f09a92d0fdc534281863795fc5cbd5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Albedo_Sample:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: ebb165d6cb3900245a8f075337b03efc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 3, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _Height:
+        m_Texture: {fileID: 2800000, guid: a9d8a50b63b31d14484c23b8b1c1dc58, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Layer:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 47f09a92d0fdc534281863795fc5cbd5, type: 3}
+        m_Scale: {x: 3, y: 2}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Moss:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 10, y: 10}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: ebb165d6cb3900245a8f075337b03efc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal_Sample:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 2800000, guid: 888d1db2cb8244a498d71066189629a6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AOScale: 1
+    - _AOTimeScale: 0
+    - _AlbedoTimeScale: 0
+    - _BumpScale: 1
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _Displace: 1
+    - _DisplaceBase: 1
+    - _DisplaceLayer: 1
+    - _DisplaceMoss: 1
+    - _Displacement: 0.025
+    - _DistanceTesselation: 2.28
+    - _DstBlend: 0
+    - _Gloss: 0.3
+    - _GlossMapScale: 1
+    - _Glossiness: 0.423
+    - _GlossyReflections: 1
+    - _HeightTimeScale: 0
+    - _LayerGloss: 0
+    - _LayerMetallic: 0.36
+    - _Metallic: 0.13
+    - _Mode: 0
+    - _MossAmount: 1
+    - _MossDisplacement: 0.02
+    - _MossGloss: 0.15
+    - _MossMetallic: 1
+    - _MossRounding: 0.18
+    - _NormalTimeScale: 0
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Power: 5.22
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 1
+    - _SrcBlend: 1
+    - _TessFade: 10
+    - _TessellationValue: 0.43
+    - _UVSec: 0
+    - _WorldonLocaloff: 1
+    - _ZWrite: 1
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _LayerAmountCreviceDisp: {r: 0.71, g: 0.61, b: 0.03, a: 0}
+    - _LayerDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _LayerTint: {r: 1, g: 1, b: 1, a: 1}
+    - _MossAmountCreviceDisp: {r: 0.85, g: 0.79, b: 0.02, a: 0}
+    - _MossDirection: {r: 0, g: 1, b: 0, a: 0}
+    - _MossTint: {r: 1, g: 1, b: 1, a: 1}
+    - _Tess_min_max: {r: 2.99, g: 0, b: 0, a: 0}
+    - _Tint: {r: 1, g: 1, b: 1, a: 1}
+    - _UVs: {r: 5, g: 5, b: 0, a: 0}
