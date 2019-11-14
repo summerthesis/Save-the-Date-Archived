@@ -14,6 +14,7 @@ public class ChargeTracker : MonoBehaviour
     public bool CanDischarge { get { return m_charges > 0; } }
 
     public bool Recharge(int charges = 1) {
+
         if (m_charges == m_maxCharges) return false;
         
         //extra charges will be spent

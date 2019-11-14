@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interactable : MonoBehaviour
+public class Chargeable : MonoBehaviour
 {
     private Material m_mat;
 
@@ -10,8 +10,8 @@ public class Interactable : MonoBehaviour
     [SerializeField] private bool m_isCharged;
     public bool Charged { get { return m_isCharged; } }
 
-    void Awake()
-    {
+    void Awake() {
+
         m_mat = this.gameObject.GetComponent<MeshRenderer>().material;
     }
 
@@ -22,24 +22,23 @@ public class Interactable : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+
         //update appearance based on charge
         //m_mat.color = m_isCharged ? Color.green : Color.gray;
         //_EmissionColor is the glow. May be best used in combination with halo
         m_mat.SetColor("_EmissionColor", m_isCharged ? m_emissionColour : Color.black);
     }
 
-    public void Charge()
-    {
+    public void Charge() {
+
         m_isCharged = true;
         m_mat.SetColor("_EmissionColor", m_emissionColour);
     }
 
-    public void ReturnCharge()
-    {
+    public void ReturnCharge() {
+
         m_mat.SetColor("_EmissionColor", Color.black);
         m_isCharged = false;
     }
-
 }

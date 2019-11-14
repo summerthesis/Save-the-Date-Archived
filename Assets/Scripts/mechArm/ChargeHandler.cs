@@ -9,39 +9,63 @@ public class ChargeHandler : MonoBehaviour
     private TargetTracker m_tTracker;
     private ChargeTracker m_chTracker;
 
+    private ThunderCaster m_thunder;
+    private Transform m_targetTransform;
+    public Transform TargetTransform { get { return m_targetTransform; } }
+
     private Light tempLight;
 
     void Awake() {
+
+        m_targetTransform = null;
         tempLight = this.gameObject.GetComponent<Light>();
         m_tTracker = this.gameObject.GetComponent<TargetTracker>();
         m_chTracker = this.gameObject.GetComponent<ChargeTracker>();
     }
 
+    void Start() {
+
+        m_thunder = this.gameObject.GetComponentInChildren<ThunderCaster>();
+    }
+
     void Update() {
+        //TODO: Improve particle system playing
+        // Check ThunderCaster as well...
+        if (!m_thunder.gameObject.activeInHierarchy) m_thunder.gameObject.SetActive(true);
+
         tempLight.enabled = m_tTracker.TargetInRange;
 
         if (m_tTracker.TargetInRange) {
+
+            m_targetTransform = m_tTracker.Charger.gameObject.transform;
+            if (m_thunder) m_thunder.SetTarget(m_targetTransform);
+
             if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2")) {
                 ExchangeCharges();
+                if (m_thunder) m_thunder.CastThunder();
             }
         }
-        
+        else {
+
+            m_targetTransform = null;
+            if (m_thunder) m_thunder.SetTarget(m_targetTransform);
+        }
     }
 
     void ExchangeCharges() {
 
-        if (m_tTracker.Interactor.Charged && m_chTracker.CanRecharge) {
-            m_tTracker.Interactor.ReturnCharge();
+        if (m_tTracker.Charger.Charged && m_chTracker.CanRecharge) {
+            m_tTracker.Charger.ReturnCharge();
             m_chTracker.Recharge();
         }
-        else if (m_tTracker.Interactor.Charged && !m_chTracker.CanRecharge) {
+        else if (m_tTracker.Charger.Charged && !m_chTracker.CanRecharge) {
             //ping error: both full
         }
-        else if (!m_tTracker.Interactor.Charged && m_chTracker.CanDischarge) {
-            m_tTracker.Interactor.Charge();
+        else if (!m_tTracker.Charger.Charged && m_chTracker.CanDischarge) {
+            m_tTracker.Charger.Charge();
             m_chTracker.Discharge();
         }
-        else if(!m_tTracker.Interactor.Charged && !m_chTracker.CanDischarge){
+        else if(!m_tTracker.Charger.Charged && !m_chTracker.CanDischarge){
             //ping error: both empty
         }
     }

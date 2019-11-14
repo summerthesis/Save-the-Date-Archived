@@ -11,8 +11,8 @@ public class TargetTracker : MonoBehaviour //May be simplified later
     private bool m_targetInRange;
     public bool TargetInRange { get { return m_targetInRange; } }
 
-    private Interactable m_interactable;
-    public Interactable Interactor { get { return m_interactable; } }
+    private Chargeable m_chargeable;
+    public Chargeable Charger { get { return m_chargeable ; } }
 
     void Awake()
     {
@@ -24,10 +24,9 @@ public class TargetTracker : MonoBehaviour //May be simplified later
     //relatively naive implementation. May require refinement later
     void OnTriggerEnter(Collider other)
     {
+        m_chargeable = other.GetComponent<Chargeable>();
 
-        m_interactable = other.GetComponent<Interactable>();
-
-        if (m_interactable)
+        if (m_chargeable)
         {
             m_targetInRange = true;
         }
@@ -36,12 +35,12 @@ public class TargetTracker : MonoBehaviour //May be simplified later
     void OnTriggerExit(Collider other)
     {
 
-        m_interactable = other.GetComponent<Interactable>();
+        m_chargeable = other.GetComponent<Chargeable>();
 
-        if (m_interactable)
+        if (m_chargeable)
         {
             m_targetInRange = false;
-            m_interactable = null;
+            m_chargeable = null;
         }
     }
 }

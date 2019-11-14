@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5936776936985302653}
   - component: {fileID: 5936776936985302652}
   - component: {fileID: 5936776936985302649}
-  - component: {fileID: 1031501280454528931}
+  - component: {fileID: 5110890567669571317}
   m_Layer: 8
   m_Name: expendable_Chargeable
   m_TagString: Untagged
@@ -109,7 +109,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1031501280454528931
+--- !u!114 &5110890567669571317
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,8 +118,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5936776936985302595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e315576a7c2f644d82e342c1a337000, type: 3}
+  m_Script: {fileID: 11500000, guid: 68ea4b92727919444ba75f78503c4104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_emissionColour: {r: 0, g: 0.49803922, b: 0.24705882, a: 1}
+  m_emissionColour: {r: 0, g: 0.7735849, b: 0.18572807, a: 1}
   m_isCharged: 0
