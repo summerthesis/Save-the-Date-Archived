@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class expendable_Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
     private Material m_mat;
 
@@ -10,14 +10,15 @@ public class expendable_Interactable : MonoBehaviour
     [SerializeField] private bool m_isCharged;
     public bool Charged { get { return m_isCharged; } }
 
-    void Awake() {
+    void Awake()
+    {
         m_mat = this.gameObject.GetComponent<MeshRenderer>().material;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -29,11 +30,16 @@ public class expendable_Interactable : MonoBehaviour
         m_mat.SetColor("_EmissionColor", m_isCharged ? m_emissionColour : Color.black);
     }
 
-    public void Charge() {
+    public void Charge()
+    {
         m_isCharged = true;
+        m_mat.SetColor("_EmissionColor", m_emissionColour);
     }
 
-    public void ReturnCharge() {
+    public void ReturnCharge()
+    {
+        m_mat.SetColor("_EmissionColor", Color.black);
         m_isCharged = false;
     }
+
 }

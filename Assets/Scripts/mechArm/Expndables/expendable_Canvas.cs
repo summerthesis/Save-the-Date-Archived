@@ -7,7 +7,7 @@ public class expendable_Canvas : MonoBehaviour
 {
     private Canvas m_canvas;
     private Text m_text;
-    private mechArmInput m_mech;
+    private ChargeTracker m_mech;
 
     void Awake() {
 
@@ -18,16 +18,14 @@ public class expendable_Canvas : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_mech = GameObject.FindObjectOfType<mechArmInput>();
+        m_mech = GameObject.FindObjectOfType<ChargeTracker>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!m_mech) m_mech = GameObject.FindObjectOfType<mechArmInput>();
+        if (!m_mech) m_mech = GameObject.FindObjectOfType<ChargeTracker>();
 
         m_text.text = m_mech.Charges + "/" + m_mech.MaxCharges;
     }
-
-
 }

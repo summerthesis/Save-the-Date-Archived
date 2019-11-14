@@ -10,12 +10,6 @@ public class mechArmInput : MonoBehaviour
     [SerializeField] private float m_chargeRadius;
     public float ChargeRadius { get { return m_chargeRadius; } }
 
-    [SerializeField] private int m_maxCharges;
-    public int MaxCharges { get { return m_maxCharges; } }
-
-    [SerializeField] private int m_charges; //FOR VISUALIZATION ONLY
-    public int Charges { get { return m_charges; } }
-
     private bool m_isNearChargeable;
 
     //Thunder variables
@@ -66,23 +60,6 @@ public class mechArmInput : MonoBehaviour
 
     //may need to be reworked into boolean
     
-    void Discharge() {
-        //should consider printing message
-        //OR PLAYING A SOUND!!!
-        if (m_charges == 0) return;
-        //interacts with chargeable
-        --m_charges;
-    }
-    public bool Recharge(int charges = 1)
-    {
-
-        if (m_charges == m_maxCharges) return false;
-        //if more than one charge, excess will be lost
-        m_charges += charges;
-        if (m_charges > m_maxCharges) m_charges = m_maxCharges;
-        return true;
-    }
-
     void OnTriggerEnter(Collider other) {
 
     }

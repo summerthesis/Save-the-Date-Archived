@@ -30,7 +30,7 @@ public class expendable_Pickup : MonoBehaviour
 
     void OnTriggerEnter(Collider other) {
 
-        mechArmInput temp = other.gameObject.GetComponent<mechArmInput>();
+        ChargeTracker temp = other.gameObject.GetComponent<ChargeTracker>();
 
         //if the player is fully charged, the pickup will refuse to charge it
         if (temp && temp.Recharge(m_chargeCapacity)) {
