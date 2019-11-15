@@ -30,9 +30,7 @@ public class ChargeHandler : MonoBehaviour
 
     void Update() {
         //TODO: Improve particle system playing
-        // Check ThunderCaster as well...
-        if (!m_thunder.gameObject.activeInHierarchy) m_thunder.gameObject.SetActive(true);
-
+        
         tempLight.enabled = m_tTracker.TargetInRange;
 
         if (m_tTracker.TargetInRange) {
@@ -41,8 +39,8 @@ public class ChargeHandler : MonoBehaviour
             if (m_thunder) m_thunder.SetTarget(m_targetTransform);
 
             if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2")) {
+
                 ExchangeCharges();
-                if (m_thunder) m_thunder.CastThunder();
             }
         }
         else {
@@ -55,6 +53,7 @@ public class ChargeHandler : MonoBehaviour
     void ExchangeCharges() {
 
         if (m_tTracker.Charger.Charged && m_chTracker.CanRecharge) {
+            if (m_thunder) m_thunder.CastThunder();
             m_tTracker.Charger.ReturnCharge();
             m_chTracker.Recharge();
         }
@@ -62,6 +61,7 @@ public class ChargeHandler : MonoBehaviour
             //ping error: both full
         }
         else if (!m_tTracker.Charger.Charged && m_chTracker.CanDischarge) {
+            if (m_thunder) m_thunder.CastThunder();
             m_tTracker.Charger.Charge();
             m_chTracker.Discharge();
         }
