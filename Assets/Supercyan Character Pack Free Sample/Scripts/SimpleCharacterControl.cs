@@ -135,15 +135,22 @@ public class SimpleCharacterControl : MonoBehaviour {
             v *= m_walkScale;
         }
 
-
         m_currentV = Mathf.Lerp(m_currentV, v, Time.deltaTime * m_interpolation);
         m_currentH = Mathf.Lerp(m_currentH, h, Time.deltaTime * m_interpolation);
 
         transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
         transform.position += transform.right * m_currentH * m_moveSpeed * Time.deltaTime;
-        if (Input.GetMouseButton(1)) {
-            transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * m_turnSpeed, 0));
-        }
+
+        ////
+        //original character rotation code
+        //if (Input.GetMouseButton(1)) {
+        //    transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * m_turnSpeed, 0));
+        //}
+        ////
+        //new character rotation code
+        Vector3 dir = Camera.main.transform.forward;
+        dir.y = 0;
+        transform.rotation = Quaternion.LookRotation(dir);
 
 
         m_animator.SetFloat("MoveSpeed", (m_currentV+ Mathf.Abs(m_currentH)));
