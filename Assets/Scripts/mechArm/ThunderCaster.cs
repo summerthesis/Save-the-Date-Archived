@@ -1,42 +1,79 @@
-﻿using System.Collections;
+﻿/*********************************************************************
+ * HErC (Hercules Dias Campos)
+ * Save The Date
+ *
+ * Thunder Caster
+ * Created: November 14, 2019
+ * Last Modified: November 18, 2019
+ *  
+ * Inherits from MonoBehaviour
+ * 
+ * - Handles functionality pertaining the particle system
+ * 
+ * - Has a public function to handle setting of its target object's transform
+ *      This was done to decouple functionality, and have classes be mediated
+ *      exclusively by the Charge Handler class, without knowing the existence
+ *      of other classes that may be present in the Mechanical Arm's GameObject
+ *      
+ * - The basic functionality of this class is to orient the emitter 
+ *      and fire it when appropriate
+ * 
+ ********************************************************************/
+ 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ThunderCaster : MonoBehaviour
 {
-    //Class meant to keep track of targets and fire the particle system accordingly
+    private ParticleSystem particleSystem; //particle system
+    [SerializeField] private Transform targetTransform; //for visualization purposes
 
-    private ParticleSystem m_pSystem;
-    [SerializeField] private Transform m_targetTransform;
-
-    void Awake() {
-
-        m_pSystem = this.gameObject.GetComponent<ParticleSystem>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// Constructor functionality. Gets the Particle System component from the GameObject,
+    /// and nullifies the target's transform
+    /// </summary>
+    void Awake()
     {
-        
+        particleSystem = this.gameObject.GetComponent<ParticleSystem>();
+        targetTransform = null;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Basically, looks at the target if there is one
+    /// </summary>
     void Update()
     {
-        if (m_targetTransform) this.gameObject.transform.LookAt(m_targetTransform);
+        if (targetTransform)
+        {
+            this.gameObject.transform.LookAt(targetTransform);
+        }
     }
 
-    public void SetTarget(Transform target) {
-
-        m_targetTransform = target;
+    /// <summary>
+    /// Accessible from the outside, this function
+    /// was designed to assign a target to this GameObject
+    /// </summary>
+    /// <param name="target"></param>
+    public void SetTarget(Transform target)
+    {
+        targetTransform = target;
     }
 
-    public void CastThunder() {
-
-        if (!m_pSystem.isPlaying) m_pSystem.Play();
+    /// <summary>
+    /// Fires the particle system if it's not already playing
+    /// </summary>
+    public void CastThunder()
+    {
+        if (!particleSystem.isPlaying) particleSystem.Play();
     }
 
-    public void StopCasting() {
+    /// <summary>
+    /// Function designed to stop the particle system, 
+    /// should it be necessary to do so
+    /// </summary>
+    public void StopCasting()
+    {
         //Stop (if needed)
     }
 }

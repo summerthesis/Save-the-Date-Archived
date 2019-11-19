@@ -121,5 +121,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ea4b92727919444ba75f78503c4104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_emissionColour: {r: 0, g: 0.7735849, b: 0.18572807, a: 1}
-  m_isCharged: 0
+  emissionColour: {r: 0, g: 0.49803922, b: 0.2509804, a: 1}
+  isCharged: 0

@@ -1,4 +1,29 @@
-﻿using System.Collections;
+﻿/*********************************************************************
+ * HErC (Hercules Dias Campos)
+ * Save The Date
+ *
+ * Charge Handler
+ * Created: November 14, 2019
+ * Last Modified: November 18, 2019
+ * 
+ * Inherits from MonoBehaviour
+ * 
+ * - Keeps track of the context in which charges are exchanged
+ *   between the mechanical arm and chargeable objects.
+ *   
+ * - Requires that the containing GameObject have
+ *   both a Target Tracker and a ChargeTracker attached to it
+ *   
+ * - Also works assuming there is a particle system emitter
+ *   attached as a child GameObject. Said child needs to have a
+ *   "Thunder Caster" script attached.
+ *   
+ * - Passes information from the Target Tracker component to the 
+ *   GameObject responsible for the mechanic arm's particle system
+ * 
+ ********************************************************************/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,67 +31,131 @@ using UnityEngine;
 [RequireComponent(typeof(TargetTracker))]
 public class ChargeHandler : MonoBehaviour
 {
-    private TargetTracker m_tTracker;
-    private ChargeTracker m_chTracker;
+    
+    private ChargeTracker chargeTracker; //charge tracker component
 
-    private ThunderCaster m_thunder;
-    private Transform m_targetTransform;
-    public Transform TargetTransform { get { return m_targetTransform; } }
+    private TargetTracker targetTracker; //target tracker component
+    private Transform targetTransform; //target's transform, should there be one
+    public Transform TargetTransform { get { return targetTransform; } }
 
-    private Light tempLight;
+    private ThunderCaster thunderCaster; //(child's) thunder caster component
 
-    void Awake() {
+    private Light tempLight; //Temporary light: will be refactored
 
-        m_targetTransform = null;
+    /// <summary>
+    /// Script init functions. Gets references to the components and targets
+    /// </summary>
+    void Awake()
+    {
+        targetTransform = null;
+        targetTracker = this.gameObject.GetComponent<TargetTracker>();
+        chargeTracker = this.gameObject.GetComponent<ChargeTracker>();
+
         tempLight = this.gameObject.GetComponent<Light>();
-        m_tTracker = this.gameObject.GetComponent<TargetTracker>();
-        m_chTracker = this.gameObject.GetComponent<ChargeTracker>();
     }
 
-    void Start() {
-
-        m_thunder = this.gameObject.GetComponentInChildren<ThunderCaster>();
+    /// <summary>
+    /// Gets the Thunder Caster component from the child
+    /// </summary>
+    void Start()
+    {
+        thunderCaster = this.gameObject.GetComponentInChildren<ThunderCaster>();
     }
 
-    void Update() {
-        //TODO: Improve particle system playing
-        
-        tempLight.enabled = m_tTracker.TargetInRange;
+    /// <summary>
+    /// Performs two basic operations:
+    /// 1. Checks for a target in range (from Target Tracker)
+    /// 2. There being a target, updates the Thunder Caster's target information
+    ///     If the player presses a button with the target in range, 
+    ///     it exchanges the charges
+    /// 3. If there's no target in range, it nullifies the corresponding transforms
+    /// </summary>
+    void Update()
+    {
+        //This line of code just turns light on/off. Will be removed later
+        tempLight.enabled = targetTracker.TargetInRange;
 
-        if (m_tTracker.TargetInRange) {
+        if (targetTracker.TargetInRange)
+        {
+            UpdateTarget();
 
-            m_targetTransform = m_tTracker.Charger.gameObject.transform;
-            if (m_thunder) m_thunder.SetTarget(m_targetTransform);
-
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2")) {
-
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2"))
+            {
                 ExchangeCharges();
             }
         }
-        else {
-
-            m_targetTransform = null;
-            if (m_thunder) m_thunder.SetTarget(m_targetTransform);
+        else
+        {
+            NullifyTarget();
         }
     }
 
+    void UpdateTarget()
+    {
+        targetTransform = targetTracker.Charger.transform;
+        thunderCaster.SetTarget(targetTransform);
+    }
+
+    void NullifyTarget()
+    {
+        targetTransform = null;
+        thunderCaster.SetTarget(targetTransform);
+    }
+
+    /// <summary>
+    /// Context for the charge exchange operation:
+    /// - Checks whether for charges on both the player and the target
+    /// - Performs comparisons to see whether the target can be charged,
+    ///     and whether the player can charge the carget or absorb charges
+    /// - Both conditions being fulfilled, it performs the charge exchange
+    ///     by calling the corresponding functions in the related components/classes
+    /// - If it is not possible to fulfill the conditions, it does nothing (as of now)
+    /// 
+    /// - The comparison order is as follows:
+    ///     Chargeable is charged and player can absorb charges        -> absorb
+    ///     Chargeable is charged and player cannot absorb charges     -> do nothing
+    ///     Chargeable is not charged and player can absorb charges    -> charge
+    ///     Chargeable is not charged and player cannot absorb charges -> do nothing
+    /// </summary>
     void ExchangeCharges() {
 
-        if (m_tTracker.Charger.Charged && m_chTracker.CanRecharge) {
-            if (m_thunder) m_thunder.CastThunder();
-            m_tTracker.Charger.ReturnCharge();
-            m_chTracker.Recharge();
+        if (targetTracker.Charger.Charged && chargeTracker.CanRecharge) {
+            Absorb();
         }
-        else if (m_tTracker.Charger.Charged && !m_chTracker.CanRecharge) {
+        else if (targetTracker.Charger.Charged && !chargeTracker.CanRecharge) {
             //ping error: both full
         }
-        else if (!m_tTracker.Charger.Charged && m_chTracker.CanDischarge) {
-            if (m_thunder) m_thunder.CastThunder();
-            m_tTracker.Charger.Charge();
-            m_chTracker.Discharge();
+        else if (!targetTracker.Charger.Charged && chargeTracker.CanDischarge) {
+            Charge();
         }
-        else if(!m_tTracker.Charger.Charged && !m_chTracker.CanDischarge){
+        else if(!targetTracker.Charger.Charged && !chargeTracker.CanDischarge){
             //ping error: both empty
         }
+    }
+
+    /// <summary>
+    /// Calls the three components in the following order:
+    /// 1. Fires thunder particle system in child GameObject
+    /// 2. Calls the ReturnCharge() function in the chargeable object
+    /// 3. Handles Recharge() result in the mechanical arm charge tracker
+    /// </summary>
+    void Absorb()
+    {
+        thunderCaster.CastThunder();
+        targetTracker.Charger.ReturnCharge();
+        chargeTracker.Recharge();
+    }
+
+    /// <summary>
+    /// Calls the three components in the following order:
+    /// 1. Fires thunder particle system in child GameObject
+    /// 2. Handles the Discharge() result in the mechanical arm charge tracker
+    /// 3. Calls the Charge() function in the chargeable object
+    /// </summary>
+    void Charge()
+    {
+        thunderCaster.CastThunder();
+        chargeTracker.Discharge();
+        targetTracker.Charger.Charge();
     }
 }
