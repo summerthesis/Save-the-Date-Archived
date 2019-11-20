@@ -3,10 +3,14 @@ using UnityEngine;
 
 public class CameraAxis : MonoBehaviour
 {
-    [SerializeField] Transform m_playerAxis;
-    [SerializeField] Transform m_aimingAxis;
+    [SerializeField] Transform playerAxis;
+    [SerializeField] Transform aimingAxis;
+
     [SerializeField] float m_followingSpeed;
     bool m_isAiming = false;
+
+    public void SetIsAiming(bool aiming) { m_isAiming = aiming;}
+    public bool GetIsAiming() { return m_isAiming; }
 
     void Update()
     {
@@ -15,11 +19,11 @@ public class CameraAxis : MonoBehaviour
 
         if(!m_isAiming)
         {
-            transform.position = Vector3.Lerp(transform.position, m_playerAxis.position, m_followingSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, playerAxis.position, m_followingSpeed * Time.deltaTime);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, m_aimingAxis.position, m_followingSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, aimingAxis.position, m_followingSpeed * Time.deltaTime);
         }
     }
 }

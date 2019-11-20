@@ -26,16 +26,18 @@ public class CameraMovement : MonoBehaviour
 
     Vector3 m_eulerAngle;
 
-    bool m_isAiming = false;
+   // bool m_isAiming = false;
 
     private void Update()
     {
+
+        bool isAiming = GetComponent<CameraAxis>().GetIsAiming();
         if (Input.GetKeyDown(KeyCode.Z) && !m_isChangingState)
         {
             m_isChangingState = true;
-            m_isAiming = !m_isAiming;
+            isAiming = !isAiming;
 
-            if (m_isAiming)
+            if (isAiming)
             {
                 m_saveEulerAngle = m_eulerAngle;
                 m_saveCameraTrans = Camera.main.transform;
@@ -46,18 +48,18 @@ public class CameraMovement : MonoBehaviour
             }
         }
 
-        if(m_isChangingState && m_isAiming)
+        if(m_isChangingState && isAiming)
         {
             ZoomInForAiming();
         }
-        else if(m_isChangingState &&!m_isAiming)
+        else if(m_isChangingState &&!isAiming)
         {
             ZoomOutToRegular();
         }
         
         if(!m_isChangingState)
         {
-            if(!m_isAiming)
+            if(!isAiming)
                 ZoomInAndOut();
             CameraRotate();
         }

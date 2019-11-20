@@ -55463,8 +55463,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53236f40ca945f4ab87745e91685bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_playerAxis: {fileID: 2026214990}
-  m_aimingAxis: {fileID: 1971792179}
+  playerAxis: {fileID: 2026214990}
+  aimingAxis: {fileID: 1971792179}
   m_followingSpeed: 15
 --- !u!4 &1388168038
 Transform:
