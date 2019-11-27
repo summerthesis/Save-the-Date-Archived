@@ -32,6 +32,8 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] bool m_loop  = true;
 
     [SerializeField] bool m_isMoving = true; //if false, platform won't move
+    bool GetIsMoving() { return m_isMoving; }
+    void SetIsMoving(bool isMoving) { m_isMoving = isMoving; }
 
     //
 
@@ -76,7 +78,7 @@ public class PlatformMovement : MonoBehaviour
         m_isMoving = true;
     }
 
-    private void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         collision.transform.parent = transform;
     }
