@@ -4,7 +4,7 @@
  *
  * Charge Handler
  * Created: November 14, 2019
- * Last Modified: November 18, 2019
+ * Last Modified: November 28, 2019
  * 
  * Inherits from MonoBehaviour
  * 
@@ -20,6 +20,11 @@
  *   
  * - Passes information from the Target Tracker component to the 
  *   GameObject responsible for the mechanic arm's particle system
+ *   
+ *   //CHANGES IN NOV 28:
+ * - Included pass-through functionality for the tracking management
+ *      This is what the canvas uses to display charges and aiming
+ * - Removed dependence on Target Tracker, due to target detection changes
  * 
  ********************************************************************/
 
@@ -28,19 +33,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ChargeTracker))]
-[RequireComponent(typeof(TargetTracker))]
 public class ChargeHandler : MonoBehaviour
 {
-    
-    private ChargeTracker chargeTracker; //charge tracker component
+    //Charge Tracking variables
+    private ChargeTracker chargeTracker;
+    public int MaxCharges { get { return chargeTracker.MaxCharges; } }
+    public int Charges { get { return chargeTracker.Charges; } }
 
-    private TargetTracker targetTracker; //target tracker component
-    private Transform targetTransform; //target's transform, should there be one
-    public Transform TargetTransform { get { return targetTransform; } }
+    //Camera component for target detection
+    [SerializeField] private Camera camera;
+    private CameraAxis cameraAxis; //new target tracking functionality
+    public bool Aiming { get { return cameraAxis.GetIsAiming(); } }
+    private Transform targetTransform;
+    public Transform TargetTransform { get { return cameraAxis.GetTarget(); } }
 
+    //Particle system manager
     private ThunderCaster thunderCaster; //(child's) thunder caster component
-
-    private Light tempLight; //Temporary light: will be refactored
 
     /// <summary>
     /// Script init functions. Gets references to the components and targets
@@ -48,10 +56,8 @@ public class ChargeHandler : MonoBehaviour
     void Awake()
     {
         targetTransform = null;
-        targetTracker = this.gameObject.GetComponent<TargetTracker>();
+        //targetTracker = this.gameObject.GetComponent<TargetTracker>();
         chargeTracker = this.gameObject.GetComponent<ChargeTracker>();
-
-        tempLight = this.gameObject.GetComponent<Light>();
     }
 
     /// <summary>
@@ -59,6 +65,8 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
+        //may require some sort of assertion
+        cameraAxis = camera.GetComponentInParent<CameraAxis>();
         thunderCaster = this.gameObject.GetComponentInChildren<ThunderCaster>();
     }
 
@@ -72,10 +80,8 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //This line of code just turns light on/off. Will be removed later
-        tempLight.enabled = targetTracker.TargetInRange;
-
-        if (targetTracker.TargetInRange)
+        targetTransform = cameraAxis.GetTarget();
+        if (targetTransform)
         {
             UpdateTarget();
 
@@ -92,7 +98,6 @@ public class ChargeHandler : MonoBehaviour
 
     void UpdateTarget()
     {
-        targetTransform = targetTracker.Charger.transform;
         thunderCaster.SetTarget(targetTransform);
     }
 
@@ -119,16 +124,16 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void ExchangeCharges() {
 
-        if (targetTracker.Charger.Charged && chargeTracker.CanRecharge) {
+        if (targetTransform.GetComponent<Chargeable>().Charged && chargeTracker.CanRecharge) {
             Absorb();
         }
-        else if (targetTracker.Charger.Charged && !chargeTracker.CanRecharge) {
+        else if (targetTransform.GetComponent<Chargeable>().Charged && !chargeTracker.CanRecharge) {
             //ping error: both full
         }
-        else if (!targetTracker.Charger.Charged && chargeTracker.CanDischarge) {
+        else if (!targetTransform.GetComponent<Chargeable>().Charged && chargeTracker.CanDischarge) {
             Charge();
         }
-        else if(!targetTracker.Charger.Charged && !chargeTracker.CanDischarge){
+        else if(!targetTransform.GetComponent<Chargeable>().Charged && !chargeTracker.CanDischarge){
             //ping error: both empty
         }
     }
@@ -142,7 +147,7 @@ public class ChargeHandler : MonoBehaviour
     void Absorb()
     {
         thunderCaster.CastThunder();
-        targetTracker.Charger.ReturnCharge();
+        targetTransform.GetComponent<Chargeable>().ReturnCharge();
         chargeTracker.Recharge();
     }
 
@@ -156,6 +161,6 @@ public class ChargeHandler : MonoBehaviour
     {
         thunderCaster.CastThunder();
         chargeTracker.Discharge();
-        targetTracker.Charger.Charge();
+        targetTransform.GetComponent<Chargeable>().Charge();
     }
 }

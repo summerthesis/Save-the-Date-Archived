@@ -5,6 +5,10 @@
  * Charge Handler
  * Created: November 14, 2019
  * Last Modified: November 18, 2019
+ * Last Used: November 28, 2019
+ *  
+ * DISCARDED CLASS!
+ *      Reason: Target detection system changed
  *  
  * Inherits from MonoBehaviour
  * 
