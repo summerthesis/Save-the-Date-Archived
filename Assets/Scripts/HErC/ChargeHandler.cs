@@ -89,6 +89,9 @@ public class ChargeHandler : MonoBehaviour
             {
                 ExchangeCharges();
             }
+
+            //works, in a primitive state
+            Levitate(Input.GetKey(KeyCode.Q) || Input.GetButton("Fire3"));
         }
         else
         {
@@ -109,6 +112,8 @@ public class ChargeHandler : MonoBehaviour
 
     /// <summary>
     /// Context for the charge exchange operation:
+    /// - Checks for the validity of a chargeable object, to avoid
+    ///     null exceptions
     /// - Checks whether for charges on both the player and the target
     /// - Performs comparisons to see whether the target can be charged,
     ///     and whether the player can charge the carget or absorb charges
@@ -124,18 +129,27 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void ExchangeCharges() {
 
-        if (targetTransform.GetComponent<Chargeable>().Charged && chargeTracker.CanRecharge) {
-            Absorb();
+        Chargeable temp =targetTransform.GetComponent<Chargeable>();
+        if (temp)
+        {
+            if (temp.Charged && chargeTracker.CanRecharge)
+            {
+                Absorb();
+            }
+            else if (temp.Charged && !chargeTracker.CanRecharge)
+            {
+                //ping error: both full
+            }
+            else if (!temp.Charged && chargeTracker.CanDischarge)
+            {
+                Charge();
+            }
+            else if (!temp.Charged && !chargeTracker.CanDischarge)
+            {
+                //ping error: both empty
+            }
         }
-        else if (targetTransform.GetComponent<Chargeable>().Charged && !chargeTracker.CanRecharge) {
-            //ping error: both full
-        }
-        else if (!targetTransform.GetComponent<Chargeable>().Charged && chargeTracker.CanDischarge) {
-            Charge();
-        }
-        else if(!targetTransform.GetComponent<Chargeable>().Charged && !chargeTracker.CanDischarge){
-            //ping error: both empty
-        }
+        
     }
 
     /// <summary>
@@ -162,5 +176,27 @@ public class ChargeHandler : MonoBehaviour
         thunderCaster.CastThunder();
         chargeTracker.Discharge();
         targetTransform.GetComponent<Chargeable>().Charge();
+    }
+
+    /// <summary>
+    /// Levitate function. Will have to be refactored
+    /// The current implementation allows for weird stuff to happen...
+    /// </summary>
+    /// <param name="state"></param>
+    void Levitate(bool state)
+    {
+        Moveable tempMov = targetTransform.GetComponent<Moveable>();
+        if (tempMov)
+        {
+            tempMov.SetAfloat(state);
+            if (state)
+            {
+                tempMov.transform.SetParent(this.gameObject.transform);
+            }
+            else
+            {
+                tempMov.transform.SetParent(null);
+            }
+        }
     }
 }

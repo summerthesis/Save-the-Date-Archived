@@ -27,11 +27,12 @@ public class expendable_Canvas : MonoBehaviour
     private Canvas m_canvas;
     private Text m_text;
     private ChargeHandler m_mech;
-    [SerializeField] Color[] aimColors; /* 4 colors: (IMPLEMENT FOURTH!!!
+    [SerializeField] Color[] aimColors; /* 5 colors:
                                          *   transparent (for inactive)
                                          *   gray        (no chargeable target)
                                          *   green       (chargeable target in sight, can exchange)
                                          *   red         (chargeable target in sight, cannot exchange)
+                                         *   purple      (gravity-moveable target in sight)
                                          */
 
     //Stuff going on for camera and crosshairs
@@ -59,8 +60,17 @@ public class expendable_Canvas : MonoBehaviour
         if (m_mech.Aiming)
         {
             if (m_mech.TargetTransform == null) m_crossHairs.color = aimColors[1];
-            else m_crossHairs.color = aimColors[2];
-            
+            else {
+                //FUNCTIONALITY THAT ACCOUNTS FOR DIFFERENT TYPES OF TARGETS
+                if (m_mech.TargetTransform.GetComponent<Chargeable>() != null)
+                {
+                    m_crossHairs.color = aimColors[2];
+                }
+                if (m_mech.TargetTransform.GetComponent<Moveable>() != null)
+                {
+                    m_crossHairs.color = aimColors[4];
+                }
+            }
         }
         else
         {

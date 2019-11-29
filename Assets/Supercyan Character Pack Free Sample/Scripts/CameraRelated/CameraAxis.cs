@@ -1,4 +1,4 @@
-﻿//MODIFIED NOVEMBER 28 BY HERCULES
+﻿//MODIFIED NOVEMBER 28, 29 BY HErC (Hercules Dias Campos)
 //MODIFICATIONS ARE MARKED
 using System.Collections;
 using UnityEngine;
@@ -52,11 +52,12 @@ public class CameraAxis : MonoBehaviour
     /// <returns></returns>
     public Transform GetTarget() {
 
-        //ThunderPhysics' layer is layer 8
-        int thunderLayer = 1<<8;
+        //ThunderPhysics' layer is 8
+        //GravityPhysics' layer is 9
+        int layers = ((1<<8) + (1<<9));
         RaycastHit tempTarget;
         if(Physics.Raycast(cameraTransform.position, cameraTransform.transform.forward, 
-                           out tempTarget, raycastDistance, thunderLayer, QueryTriggerInteraction.Ignore))
+                           out tempTarget, raycastDistance, layers, QueryTriggerInteraction.Ignore))
         {    
             return tempTarget.transform;
         }
