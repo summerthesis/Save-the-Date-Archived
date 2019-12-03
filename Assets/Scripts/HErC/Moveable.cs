@@ -12,7 +12,7 @@
  * 
  * - MOVES USING RIGIDBODY'S POSITION!!!
  * 
- * - As of now, it will have a purple component to indicate whether it's active or not
+ * - As of now, UI will have a purple component to indicate whether it's active or not
  * 
  ********************************************************************/
 

@@ -189,6 +189,9 @@ public class ChargeHandler : MonoBehaviour
         if (tempMov)
         {
             tempMov.SetAfloat(state);
+            
+            //Camera movement still works with mouse, not with trackpad
+            /*
             if (state)
             {
                 tempMov.transform.SetParent(this.gameObject.transform);
@@ -197,6 +200,7 @@ public class ChargeHandler : MonoBehaviour
             {
                 tempMov.transform.SetParent(null);
             }
+            */
         }
     }
 }
