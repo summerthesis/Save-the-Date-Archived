@@ -28,6 +28,8 @@ public class Moveable : MonoBehaviour
     private bool isAfloat;
     public bool Afloat { get { return isAfloat; } }
 
+    [SerializeField] private Transform innerTarget; //temporarily serialized for visualization purposes
+
     //temporary variable for floatiness
     private bool addDist;
 
@@ -58,8 +60,18 @@ public class Moveable : MonoBehaviour
     /// for now, a naive implementation
     /// </summary>
     /// <param name="afloat"></param>
-    public void SetAfloat(bool afloat) {
-        isAfloat = afloat;
-        MyRigidbody.useGravity = !isAfloat;
+    public void SetAfloat(Transform target) {
+
+        innerTarget = target;
+        if (target)
+        {
+            isAfloat = true;
+        }
+        else
+        {
+            isAfloat = false;
+        }
+
+        MyRigidbody.useGravity = (innerTarget == null);
     }
 }

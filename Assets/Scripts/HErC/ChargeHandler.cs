@@ -11,20 +11,24 @@
  * - Keeps track of the context in which charges are exchanged
  *   between the mechanical arm and chargeable objects.
  *   
- * - Requires that the containing GameObject have
- *   both a Target Tracker and a ChargeTracker attached to it
+ * - Requires access to the Camera Axis script, to extract aiming info
  *   
  * - Also works assuming there is a particle system emitter
  *   attached as a child GameObject. Said child needs to have a
  *   "Thunder Caster" script attached.
  *   
- * - Passes information from the Target Tracker component to the 
+ * - Passes information from the Camera's raycast to the
  *   GameObject responsible for the mechanic arm's particle system
  *   
  *   //CHANGES IN NOV 28:
  * - Included pass-through functionality for the tracking management
  *      This is what the canvas uses to display charges and aiming
+ *      
  * - Removed dependence on Target Tracker, due to target detection changes
+ * 
+ *   //CHANGES IN DEC 05:
+ * - Removed Gravity Gun functionality from this script, moved it to the
+ *      GravityControl class
  * 
  ********************************************************************/
 
@@ -81,32 +85,20 @@ public class ChargeHandler : MonoBehaviour
     void Update()
     {
         targetTransform = cameraAxis.GetTarget();
+
+        UpdateTarget();
+
         if (targetTransform)
         {
-            UpdateTarget();
-
             if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2"))
             {
                 ExchangeCharges();
             }
-
-            //works, in a primitive state
-            Levitate(Input.GetKey(KeyCode.Q) || Input.GetButton("Fire3"));
-        }
-        else
-        {
-            NullifyTarget();
         }
     }
 
     void UpdateTarget()
     {
-        thunderCaster.SetTarget(targetTransform);
-    }
-
-    void NullifyTarget()
-    {
-        targetTransform = null;
         thunderCaster.SetTarget(targetTransform);
     }
 
@@ -176,31 +168,5 @@ public class ChargeHandler : MonoBehaviour
         thunderCaster.CastThunder();
         chargeTracker.Discharge();
         targetTransform.GetComponent<Chargeable>().Charge();
-    }
-
-    /// <summary>
-    /// Levitate function. Will have to be refactored
-    /// The current implementation allows for weird stuff to happen...
-    /// </summary>
-    /// <param name="state"></param>
-    void Levitate(bool state)
-    {
-        Moveable tempMov = targetTransform.GetComponent<Moveable>();
-        if (tempMov)
-        {
-            tempMov.SetAfloat(state);
-            
-            //Camera movement still works with mouse, not with trackpad
-            /*
-            if (state)
-            {
-                tempMov.transform.SetParent(this.gameObject.transform);
-            }
-            else
-            {
-                tempMov.transform.SetParent(null);
-            }
-            */
-        }
     }
 }

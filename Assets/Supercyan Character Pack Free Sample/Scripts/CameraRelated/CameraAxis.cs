@@ -13,6 +13,7 @@ public class CameraAxis : MonoBehaviour
 
     //HErC'S ADDITIONS TO VARIABLES:
     [SerializeField] private float raycastDistance;
+    public float RaycastDistance { get { return raycastDistance; } }
     private Transform cameraTransform;
     //END OF HErC'S ADDITIONS
 
