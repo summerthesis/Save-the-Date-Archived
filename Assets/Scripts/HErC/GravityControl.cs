@@ -4,7 +4,7 @@
  *
  * Gravity Control
  * Created: December 05, 2019
- * Last Modified: December 05, 2019
+ * Last Modified: December 09, 2019
  * 
  * Inherits from MonoBehaviour
  * 
@@ -12,6 +12,9 @@
  *      
  * - Passes information from the Camera's raycast to the 
  *   GameObject responsible for the mechanic arm's particle system
+ *   
+ * - Dec. 09 changes:
+ *   Implemented mechanism to deactivate floating when target is out of sight
  *   
  * - UNDER IMPLEMENTATION:
  *      Functionality to lock Moveable object in the players' reticle
@@ -28,10 +31,12 @@ public class GravityControl : MonoBehaviour
     [SerializeField] private Camera camera;
     private CameraAxis cameraAxis; //new target tracking functionality
     public bool Aiming { get { return cameraAxis.GetIsAiming(); } }
+    private Transform targetCheck;
     private Transform targetTransform;
     public Transform TargetTransform { get { return cameraAxis.GetTarget(); } }
 
     private Transform innerTarget;
+
     [SerializeField] Vector3 innerTargetPos;
     [SerializeField] Quaternion innerTargetRotation;
     
@@ -40,6 +45,7 @@ public class GravityControl : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        targetCheck = null;
         targetTransform = null;
         innerTarget = null;
     }
@@ -65,10 +71,23 @@ public class GravityControl : MonoBehaviour
         innerTargetRotation = innerTarget.rotation;
 
         targetTransform = cameraAxis.GetTarget();
-
+        
         if (targetTransform)
         {
+            targetCheck = targetTransform;
             Levitate(Input.GetKey(KeyCode.Q) || Input.GetButton("Fire3"));
+        }
+        else
+        {
+            if (targetCheck)
+            {
+                Moveable tempMove = targetCheck.GetComponent<Moveable>();
+                if (tempMove)
+                {
+                    tempMove.SetAfloat(null);
+                }
+                targetCheck = null;
+            }
         }
     }
 
