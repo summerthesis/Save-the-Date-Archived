@@ -2673,6 +2673,11 @@ PrefabInstance:
       propertyPath: raycastDistance
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4619464055215655219, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: raycastFactor
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
       propertyPath: m_aimingAxis

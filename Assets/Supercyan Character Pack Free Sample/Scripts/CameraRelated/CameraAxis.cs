@@ -12,7 +12,9 @@ public class CameraAxis : MonoBehaviour
     bool m_isAiming = false;
 
     //HErC'S ADDITIONS TO VARIABLES:
+    [SerializeField] private GameObject gravityTarget;
     [SerializeField] private float raycastDistance;
+    [SerializeField] private float raycastFactor;
     public float RaycastDistance { get { return raycastDistance; } }
     private Transform cameraTransform;
     //END OF HErC'S ADDITIONS
@@ -45,7 +47,7 @@ public class CameraAxis : MonoBehaviour
         }
     }
 
-    //HErC'S ADDITION
+    //HErC'S ADDITIONS
     /// <summary>
     /// function designed to fire raycast and return a transform if there's a target, null otherwise
     /// This is set to the "ThunderPhysics" layer
@@ -64,5 +66,22 @@ public class CameraAxis : MonoBehaviour
         }
         return null;
     }
-    //END OF HErC'S ADDITION
+
+    /// <summary>
+    /// This function is supposed to return a placeholder transform for the gravity control scheme
+    /// </summary>
+    /// <returns></returns>
+    public Transform GravityTarget() {
+
+        if (m_isAiming) {
+
+            gravityTarget.transform.position = 
+                this.gameObject.transform.position + 
+                (this.gameObject.transform.forward * raycastDistance * raycastFactor);
+            gravityTarget.transform.rotation = this.gameObject.transform.rotation;
+        }
+
+        return gravityTarget.transform;
+    }
+    //END OF HErC'S ADDITIONS
 }

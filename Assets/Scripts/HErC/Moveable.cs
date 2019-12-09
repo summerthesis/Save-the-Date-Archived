@@ -65,6 +65,8 @@ public class Moveable : MonoBehaviour
         innerTarget = target;
         if (target)
         {
+            MyRigidbody.position = target.position;
+            MyRigidbody.rotation = target.rotation;
             isAfloat = true;
         }
         else

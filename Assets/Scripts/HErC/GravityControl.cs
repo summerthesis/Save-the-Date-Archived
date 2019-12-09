@@ -65,11 +65,13 @@ public class GravityControl : MonoBehaviour
     /// </summary>
     void Update()
     {
-        innerTarget = this.gameObject.GetComponent<Transform>();
+        innerTarget = cameraAxis.GravityTarget();
 
-        innerTargetPos = innerTarget.position;
-        innerTargetRotation = innerTarget.rotation;
-
+        if (innerTarget) {
+            innerTargetPos = innerTarget.position;
+            innerTargetRotation = innerTarget.rotation;
+        }
+        
         targetTransform = cameraAxis.GetTarget();
         
         if (targetTransform)
@@ -103,7 +105,7 @@ public class GravityControl : MonoBehaviour
         {
             if (state)
             {
-                tempMov.SetAfloat(targetTransform);
+                tempMov.SetAfloat(innerTarget);
             }
             else
             {
