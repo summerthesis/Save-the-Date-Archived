@@ -62279,9 +62279,10 @@ MonoBehaviour:
   - {fileID: 335700332}
   - {fileID: 566932786}
   m_speed: 5
-  m_stopTime: 2
+  m_stopTime: 0
   m_loop: 1
   m_isMoving: 1
+  m_starDelayTime: 3
 --- !u!65 &1669309501
 BoxCollider:
   m_ObjectHideFlags: 0
