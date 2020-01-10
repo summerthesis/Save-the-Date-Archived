@@ -4,22 +4,31 @@
  *
  * Charge Handler
  * Created: November 14, 2019
- * Last Modified: November 18, 2019
+ * Last Modified: November 28, 2019
  * 
  * Inherits from MonoBehaviour
  * 
  * - Keeps track of the context in which charges are exchanged
  *   between the mechanical arm and chargeable objects.
  *   
- * - Requires that the containing GameObject have
- *   both a Target Tracker and a ChargeTracker attached to it
+ * - Requires access to the Camera Axis script, to extract aiming info
  *   
  * - Also works assuming there is a particle system emitter
  *   attached as a child GameObject. Said child needs to have a
  *   "Thunder Caster" script attached.
  *   
- * - Passes information from the Target Tracker component to the 
+ * - Passes information from the Camera's raycast to the
  *   GameObject responsible for the mechanic arm's particle system
+ *   
+ *   //CHANGES IN NOV 28:
+ * - Included pass-through functionality for the tracking management
+ *      This is what the canvas uses to display charges and aiming
+ *      
+ * - Removed dependence on Target Tracker, due to target detection changes
+ * 
+ *   //CHANGES IN DEC 05:
+ * - Removed Gravity Gun functionality from this script, moved it to the
+ *      GravityControl class
  * 
  ********************************************************************/
 
@@ -28,19 +37,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(ChargeTracker))]
-[RequireComponent(typeof(TargetTracker))]
 public class ChargeHandler : MonoBehaviour
 {
-    
-    private ChargeTracker chargeTracker; //charge tracker component
+    //Charge Tracking variables
+    private ChargeTracker chargeTracker;
+    public int MaxCharges { get { return chargeTracker.MaxCharges; } }
+    public int Charges { get { return chargeTracker.Charges; } }
 
-    private TargetTracker targetTracker; //target tracker component
-    private Transform targetTransform; //target's transform, should there be one
-    public Transform TargetTransform { get { return targetTransform; } }
+    //Camera component for target detection
+    [SerializeField] private Camera camera;
+    private CameraAxis cameraAxis; //new target tracking functionality
+    public bool Aiming { get { return cameraAxis.GetIsAiming(); } }
+    private Transform targetTransform;
+    public Transform TargetTransform { get { return cameraAxis.GetTarget(); } }
 
+    //Particle system manager
     private ThunderCaster thunderCaster; //(child's) thunder caster component
-
-    private Light tempLight; //Temporary light: will be refactored
 
     /// <summary>
     /// Script init functions. Gets references to the components and targets
@@ -48,10 +60,8 @@ public class ChargeHandler : MonoBehaviour
     void Awake()
     {
         targetTransform = null;
-        targetTracker = this.gameObject.GetComponent<TargetTracker>();
+        //targetTracker = this.gameObject.GetComponent<TargetTracker>();
         chargeTracker = this.gameObject.GetComponent<ChargeTracker>();
-
-        tempLight = this.gameObject.GetComponent<Light>();
     }
 
     /// <summary>
@@ -59,6 +69,8 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
+        //may require some sort of assertion
+        cameraAxis = camera.GetComponentInParent<CameraAxis>();
         thunderCaster = this.gameObject.GetComponentInChildren<ThunderCaster>();
     }
 
@@ -72,38 +84,28 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //This line of code just turns light on/off. Will be removed later
-        tempLight.enabled = targetTracker.TargetInRange;
+        targetTransform = cameraAxis.GetTarget();
 
-        if (targetTracker.TargetInRange)
+        UpdateTarget();
+
+        if (targetTransform)
         {
-            UpdateTarget();
-
             if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2"))
             {
                 ExchangeCharges();
             }
         }
-        else
-        {
-            NullifyTarget();
-        }
     }
 
     void UpdateTarget()
     {
-        targetTransform = targetTracker.Charger.transform;
-        thunderCaster.SetTarget(targetTransform);
-    }
-
-    void NullifyTarget()
-    {
-        targetTransform = null;
         thunderCaster.SetTarget(targetTransform);
     }
 
     /// <summary>
     /// Context for the charge exchange operation:
+    /// - Checks for the validity of a chargeable object, to avoid
+    ///     null exceptions
     /// - Checks whether for charges on both the player and the target
     /// - Performs comparisons to see whether the target can be charged,
     ///     and whether the player can charge the carget or absorb charges
@@ -119,18 +121,27 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void ExchangeCharges() {
 
-        if (targetTracker.Charger.Charged && chargeTracker.CanRecharge) {
-            Absorb();
+        Chargeable temp =targetTransform.GetComponent<Chargeable>();
+        if (temp)
+        {
+            if (temp.Charged && chargeTracker.CanRecharge)
+            {
+                Absorb();
+            }
+            else if (temp.Charged && !chargeTracker.CanRecharge)
+            {
+                //ping error: both full
+            }
+            else if (!temp.Charged && chargeTracker.CanDischarge)
+            {
+                Charge();
+            }
+            else if (!temp.Charged && !chargeTracker.CanDischarge)
+            {
+                //ping error: both empty
+            }
         }
-        else if (targetTracker.Charger.Charged && !chargeTracker.CanRecharge) {
-            //ping error: both full
-        }
-        else if (!targetTracker.Charger.Charged && chargeTracker.CanDischarge) {
-            Charge();
-        }
-        else if(!targetTracker.Charger.Charged && !chargeTracker.CanDischarge){
-            //ping error: both empty
-        }
+        
     }
 
     /// <summary>
@@ -142,7 +153,7 @@ public class ChargeHandler : MonoBehaviour
     void Absorb()
     {
         thunderCaster.CastThunder();
-        targetTracker.Charger.ReturnCharge();
+        targetTransform.GetComponent<Chargeable>().ReturnCharge();
         chargeTracker.Recharge();
     }
 
@@ -156,6 +167,6 @@ public class ChargeHandler : MonoBehaviour
     {
         thunderCaster.CastThunder();
         chargeTracker.Discharge();
-        targetTracker.Charger.Charge();
+        targetTransform.GetComponent<Chargeable>().Charge();
     }
 }
