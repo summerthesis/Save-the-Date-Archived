@@ -1,4 +1,17 @@
-﻿using System.Collections;
+﻿/*********************************************************
+* Hyukin Kwon
+* Save The Date
+* 
+* CameraAxis
+* Last Modified: 27 November 2019
+* 
+* Inherits from Monobehaviour
+*
+*
+* - Keep the playerAxis (postion)
+* - Keep the aimingAxis (Player's shoulder position)
+* *******************************************************/
+using System.Collections;
 using UnityEngine;
 
 public class CameraAxis : MonoBehaviour
