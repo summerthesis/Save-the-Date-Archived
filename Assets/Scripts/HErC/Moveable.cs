@@ -67,10 +67,17 @@ public class Moveable : MonoBehaviour
         {
             MyRigidbody.position = target.position;
             MyRigidbody.rotation = target.rotation;
+
+            if (this.gameObject.transform.parent != target)
+            {    
+                this.gameObject.transform.SetParent(target);
+            }
+            
             isAfloat = true;
         }
         else
         {
+            this.gameObject.transform.SetParent(null);
             isAfloat = false;
         }
 

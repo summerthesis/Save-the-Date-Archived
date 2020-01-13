@@ -77,7 +77,7 @@ public class CameraAxis : MonoBehaviour
 
             gravityTarget.transform.position = 
                 this.gameObject.transform.position + 
-                (this.gameObject.transform.forward * raycastDistance * raycastFactor);
+                (this.gameObject.transform.forward * (raycastDistance * raycastFactor));
             gravityTarget.transform.rotation = this.gameObject.transform.rotation;
         }
 
