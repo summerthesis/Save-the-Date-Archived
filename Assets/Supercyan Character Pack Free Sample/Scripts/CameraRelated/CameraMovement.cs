@@ -1,4 +1,17 @@
-﻿using System.Collections;
+﻿/*********************************************************
+* Hyukin Kwon
+* Save The Date
+* 
+* CameraMovement
+* Last Modified: 27 November 2019
+* 
+* Inherits from Monobehaviour
+*
+*
+* - Do basic camera movement here
+* *******************************************************/
+
+using System.Collections;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
