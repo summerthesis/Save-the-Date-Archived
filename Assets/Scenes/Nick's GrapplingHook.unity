@@ -530,8 +530,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ac5c101dfdb424291a2f9a94180ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hookRadius: 8
-  forceAmount: 130
+  hookRadius: 12
+  forceAmount: 120
+  gravityDuringPull: 1
 --- !u!135 &610261288
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1315,6 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97d64537bbdf53445ac5b6d34bcdc59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aimColors: []
 --- !u!1 &1805339576
 GameObject:
   m_ObjectHideFlags: 0
