@@ -1,4 +1,16 @@
-﻿using UnityEngine;
+﻿/*********************************************************
+* Unknown Devloper - Modified by Hyukin Kwon
+* Save The Date
+* 
+* PlatformMovement
+* Created: ??
+* Last Modified: 17 Jan 2020
+* 
+* Inherits from Monobehaviour
+*
+*
+* *******************************************************/
+using UnityEngine;
 using System.Collections.Generic;
 
 public class SimpleCharacterControl : MonoBehaviour {
@@ -36,6 +48,10 @@ public class SimpleCharacterControl : MonoBehaviour {
     private List<Collider> m_collisions = new List<Collider>();
 
     private Vector3 direction;
+
+    // Vairables add by Hyukin Kwon
+    [SerializeField] private float m_BottomRayDistance;
+
     private void Start()
     {
         direction = transform.forward;
@@ -97,7 +113,7 @@ public class SimpleCharacterControl : MonoBehaviour {
 	void Update () {
         m_animator.SetBool("Grounded", m_isGrounded);
 
-        switch(m_controlMode)
+        switch (m_controlMode)
         {
             case ControlMode.Direct:
                 DirectUpdate();
@@ -115,7 +131,6 @@ public class SimpleCharacterControl : MonoBehaviour {
                 Debug.LogError("Unsupported state");
                 break;
         }
-        
 
         m_wasGrounded = m_isGrounded;
     }
@@ -141,13 +156,6 @@ public class SimpleCharacterControl : MonoBehaviour {
         transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
         transform.position += transform.right * m_currentH * m_moveSpeed * Time.deltaTime;
 
-        ////
-        //original character rotation code
-        //if (Input.GetMouseButton(1)) {
-        //    transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * m_turnSpeed, 0));
-        //}
-        ////
-        //new character rotation code
         Vector3 dir = Camera.main.transform.forward;
         dir.y = 0;
         transform.rotation = Quaternion.LookRotation(dir);
@@ -220,4 +228,5 @@ public class SimpleCharacterControl : MonoBehaviour {
             m_animator.SetTrigger("Jump");
         }
     }
+
 }
