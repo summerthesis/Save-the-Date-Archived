@@ -3,7 +3,8 @@
 * Save The Date
 * 
 * CameraAxis
-* Last Modified: 29 November 2019 by Hercules
+* Modified: 29 November 2019 by Hercules
+* Last Modified: 17 Jan 2020 by Hyukin Kwon
 * 
 * Inherits from Monobehaviour
 *
@@ -21,7 +22,7 @@ public class CameraAxis : MonoBehaviour
     [SerializeField] Transform aimingAxis;
 
     [SerializeField] float m_followingSpeed;
-    bool m_isAiming = false;
+    [SerializeField] bool m_isAiming = false;
 
     //HErC'S ADDITIONS TO VARIABLES:
     [SerializeField] private GameObject gravityTarget;
@@ -43,6 +44,7 @@ public class CameraAxis : MonoBehaviour
 
     void Update()
     {
+
 
         if (Input.GetKeyDown(KeyCode.Z))
             m_isAiming = !m_isAiming;

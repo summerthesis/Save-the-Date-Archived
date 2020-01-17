@@ -13469,7 +13469,7 @@ MonoBehaviour:
   m_stopTime: 1
   m_loop: 1
   m_isMoving: 1
-  m_starDelayTime: 6
+  m_starDelayTime: 7
 --- !u!65 &385759110
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14739,7 +14739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454679095}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.43, y: 0, z: 9.79}
+  m_LocalPosition: {x: -13.27, y: -0.4000001, z: 9.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 724968302}
@@ -22315,7 +22315,11 @@ PrefabInstance:
     - target: {fileID: 114018963531894940, guid: 0e74cf81e6fd82546b4797f71ceffb81,
         type: 3}
       propertyPath: m_BottomRayDistance
-      value: 0.1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 815842403, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e74cf81e6fd82546b4797f71ceffb81, type: 3}
@@ -59904,7 +59908,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1569546902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.43, y: 0, z: 0}
+  m_LocalPosition: {x: -13.27, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 724968302}
@@ -81885,19 +81889,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4619464055215655219, guid: 68ccaae62ef7d9144985f8acae325a98,
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
       propertyPath: playerAxis
       value: 
       objectReference: {fileID: 2026214990}
-    - target: {fileID: 4619464055215655219, guid: 68ccaae62ef7d9144985f8acae325a98,
-        type: 3}
-      propertyPath: aimingAxis
-      value: 
-      objectReference: {fileID: 1971792179}
     - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
-      propertyPath: m_aimingAxis
+      propertyPath: aimingAxis
       value: 
       objectReference: {fileID: 1971792179}
     m_RemovedComponents: []

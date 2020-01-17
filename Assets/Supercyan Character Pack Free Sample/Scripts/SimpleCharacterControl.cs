@@ -8,7 +8,8 @@
 * 
 * Inherits from Monobehaviour
 *
-*
+* -Player can't move when is_aiming is true
+* 
 * *******************************************************/
 using UnityEngine;
 using System.Collections.Generic;
@@ -48,9 +49,6 @@ public class SimpleCharacterControl : MonoBehaviour {
     private List<Collider> m_collisions = new List<Collider>();
 
     private Vector3 direction;
-
-    // Vairables add by Hyukin Kwon
-    [SerializeField] private float m_BottomRayDistance;
 
     private void Start()
     {
@@ -111,6 +109,7 @@ public class SimpleCharacterControl : MonoBehaviour {
     }
 
 	void Update () {
+
         m_animator.SetBool("Grounded", m_isGrounded);
 
         switch (m_controlMode)
@@ -137,6 +136,9 @@ public class SimpleCharacterControl : MonoBehaviour {
 
     private void TankUpdate()
     {
+        if (CameraMovement.GetInstance().GetIsAiming()) //Hyukin
+            return;
+
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");
 
