@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class gameEndScript : MonoBehaviour
 {
-    private bool isEnd = false;
+    [SerializeField] private bool isEnd = false;
     private GameObject mainCamera;
     public GameObject[] endBlocks;
     private DateBlockControl[] isSnap;
