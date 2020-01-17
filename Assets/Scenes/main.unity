@@ -81999,6 +81999,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 4619464054480856871, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619464054480856871, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4619464055215655216, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -82069,15 +82079,25 @@ PrefabInstance:
       propertyPath: mainCam
       value: 
       objectReference: {fileID: 2092278909}
-    - target: {fileID: 4619464054480856871, guid: 68ccaae62ef7d9144985f8acae325a98,
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
-      propertyPath: m_TagString
-      value: MainCamera
+      propertyPath: m_sideMovingSpeed
+      value: 1.5
       objectReference: {fileID: 0}
-    - target: {fileID: 4619464054480856871, guid: 68ccaae62ef7d9144985f8acae325a98,
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
-      propertyPath: m_IsActive
+      propertyPath: m_sideMovingRange
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: m_leftMovingRange
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: m_rightMovingRange
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4619464054480856869, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}

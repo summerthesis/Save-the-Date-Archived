@@ -51,6 +51,11 @@ public class CameraMovement : MonoBehaviour
 
     [SerializeField] float m_followingSpeed;
     [SerializeField] bool m_isAiming = false;
+    [SerializeField] float m_sideMovingSpeed;
+    [SerializeField] float m_leftMovingRange;
+    [SerializeField] float m_rightMovingRange;
+    Vector3 leftSideMovingLimit;
+    Vector3 rightSideMovingLimit;
 
     //HErC'S ADDITIONS TO VARIABLES:
     [SerializeField] private GameObject gravityTarget;
@@ -87,6 +92,8 @@ public class CameraMovement : MonoBehaviour
     private void Start()
     {
         cameraTransform = this.gameObject.GetComponentInChildren<Transform>();
+        leftSideMovingLimit = Vector3.zero;
+        rightSideMovingLimit = Vector3.zero;
     }
 
     private void Update()
@@ -143,7 +150,16 @@ public class CameraMovement : MonoBehaviour
             }
             else
             {
-               
+                Vector3 temp = new Vector3(transform.position.x, 0, transform.position.z);
+                if (Input.GetKey(KeyCode.A) && Vector3.Distance(leftSideMovingLimit, temp) > 0.25f)
+                {
+                    transform.Translate(Vector3.left * Time.deltaTime * m_sideMovingSpeed, Space.Self); //LEFT
+                }
+                if (Input.GetKey(KeyCode.D) && Vector3.Distance(rightSideMovingLimit, temp) > 0.25f)
+                {
+                    transform.Translate(Vector3.right * Time.deltaTime * m_sideMovingSpeed, Space.Self); //RIGHT
+                }
+
             }
         }
     }
@@ -194,7 +210,18 @@ public class CameraMovement : MonoBehaviour
         Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, aimingAxis.position, Time.deltaTime * m_aimingZoomSpeed);
         transform.rotation = Quaternion.Lerp(transform.rotation, aimingAxis.rotation, Time.deltaTime * m_aimingZoomRotSpeed);
         if (Vector3.Distance(Camera.main.transform.position, aimingAxis.position) < 0.05f)
+        {
+            //Set Side moving range limit;
+            leftSideMovingLimit = transform.position;
+            rightSideMovingLimit = transform.position;
+            Vector3 temp = Vector3.Cross(transform.forward, Vector3.up).normalized;
+            leftSideMovingLimit += new Vector3(temp.x * m_leftMovingRange, temp.y, temp.z * m_leftMovingRange);
+            rightSideMovingLimit -= new Vector3(temp.x * m_rightMovingRange, temp.y, temp.z * m_rightMovingRange);
+            leftSideMovingLimit.y = 0;
+            rightSideMovingLimit.y = 0;
+
             m_isChangingState = false;
+        }
     }
 
     void ZoomOutToRegular()

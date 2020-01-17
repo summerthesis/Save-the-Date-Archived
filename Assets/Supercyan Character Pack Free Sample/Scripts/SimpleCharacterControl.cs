@@ -110,6 +110,9 @@ public class SimpleCharacterControl : MonoBehaviour {
 
 	void Update () {
 
+        if (CameraMovement.GetInstance().GetIsAiming()) //Hyukin
+            return;
+
         m_animator.SetBool("Grounded", m_isGrounded);
 
         switch (m_controlMode)
@@ -136,8 +139,6 @@ public class SimpleCharacterControl : MonoBehaviour {
 
     private void TankUpdate()
     {
-        if (CameraMovement.GetInstance().GetIsAiming()) //Hyukin
-            return;
 
         float v = Input.GetAxis("Vertical");
         float h = Input.GetAxis("Horizontal");

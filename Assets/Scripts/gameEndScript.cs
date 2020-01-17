@@ -35,23 +35,23 @@ public class gameEndScript : MonoBehaviour
     {
         if (!isEnd)//This will run until isEnd = true, and then never run again.
         {
-            bool allSnap = true;
-            for (int i = 0; i < endBlocks.Length; i += 1)
-            {
-                if (isSnap[i].isSnap == false)
-                {
-                    allSnap = false;
-                }
-            }
-            if (allSnap == true)
-            {
-                isEnd = true;
-            }
-            if (isEnd)
-            {
-                StartCoroutine(moveCamera());
-                endgameAudio();
-            }
+            //bool allSnap = true;
+            //for (int i = 0; i < endBlocks.Length; i += 1)
+            //{
+            //    if (isSnap[i].isSnap == false)
+            //    {
+            //        allSnap = false;
+            //    }
+            //}
+            //if (allSnap == true)
+            //{
+            //    isEnd = true;
+            //}
+            //if (isEnd)
+            //{
+            //    StartCoroutine(moveCamera());
+            //    endgameAudio();
+            //}
         }
     }
 
