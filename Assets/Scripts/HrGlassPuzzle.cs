@@ -8,40 +8,42 @@ using UnityEngine;
 //controls are locked during animation.
 public class HrGlassPuzzle : MonoBehaviour
 {
-    public GameObject[] buttons;//buttons from 0-5 
-    public GameObject[] hrGlasses;//corresponding hour glasses
-    
-    public int[] code = { 4,1,0,2 }; //button puzzle order
+
+    public GameObject[] buttons;
+    public GameObject[] hrGlasses;
+    private bool[] isFlipped = { false, false, false, true, false };
+    public int[] code = { 4, 1, 0, 2 }; //button puzzle order
     public int state = 0;//correct button push => ++;
     public int Focus = -1; // which button are we focused on -1 = none
     private int animCount = 0; //control animation duration
 
-    private bool correct = false; // was the correct button pushed?
-    private bool animating = false; // are we currently animating? take away control
-    private bool PuzzleComplete = false; //When all is done, PuzzleComplete = true
-    
-    private KeyCode keyPressed; //for testing will remove later
 
+    private bool correct = false; // was the correct button pushed?
+    public bool animating = false; // are we currently animating? take away control
+    private bool PuzzleComplete = false; //When all is done, PuzzleComplete = true
+
+    public Material myMaterial;
+    public Material myMaterialTesting; // just for testing
     // Start is called before the first frame update
     void Start()
     {
-               
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(PuzzleComplete) 
+        if (PuzzleComplete)
         {
-            return;//animate, or exit, whatevs.
-        }
-        
-        if(!animating)
-        {           //TODO: get which button to focus by other means
-            GetInput(); //for testing
+            return;
         }
 
-        if(animating)
+        if (!animating)
+        {          
+            CheckButtons();
+        }
+
+        if (animating)
         {
             AnimateGlasses();
         }
@@ -50,7 +52,7 @@ public class HrGlassPuzzle : MonoBehaviour
 
     void AnimateGlasses()
     {
-        if(correct)
+        if (correct)
         {
             switch (state)
             {
@@ -68,80 +70,57 @@ public class HrGlassPuzzle : MonoBehaviour
                     break;
                 case 4:
                     hrGlasses[2].transform.Rotate(Vector3.forward);
-                   
+
                     break;
             }
         }
         else
         {
-            hrGlasses[Focus].transform.Rotate(Vector3.back * 2);
+            hrGlasses[Focus].transform.Rotate(Vector3.back);
         }
         //Reduce frames left, if were done, turn off animation, reset
         //focused button - if last state complete puzzle.
         animCount--;
         if (animCount <= 0)
         {
+            for(int i = 0; i < 5; i++)
+            {
+            buttons[i].GetComponent<PushButton>().isPressed = false;
+            buttons[i].GetComponent<PushButton>().isActive = false;
+            }
+            
             animating = false;
             Focus = -1;
             if (state == 4) { PuzzleComplete = true; }
         }
 
     }
-    void GetInput()//For testing will remove later: just stores which key has been pressed.
+    void CheckButtons()
     {
-        if (Input.anyKey)
+        for(int i = 0; i < 5; i++)
         {
-         
-            foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
-            {
-                if (Input.GetKey(vKey))
-                {
-                    keyPressed = vKey;
-                }
-            }
-        }
-        CheckInput();//until I can set which button by locking on.
-    }
+           if(buttons[i].GetComponent<PushButton>().isPressed == true)
+           {
+                Focus = i;
 
-    void CheckInput()//Also for testing. can remove later.
-    {                
-
-        switch (keyPressed)
-        {
-            case KeyCode.Alpha1: //Select Button 0,1,2,3,4 buttons[0,1,2,3,4]
-                Focus = 0;
-                break;
-            case KeyCode.Alpha2:
-                Focus = 1;
-                break;
-            case KeyCode.Alpha3:
-                Focus = 2;
-                break;
-            case KeyCode.Alpha4:
-                Focus = 3;
-                break;
-            case KeyCode.Alpha5:
-                Focus = 4;
-                break;
-            case KeyCode.E://Activate Focussed Button
-              if(Focus != -1)
+                if (Focus != -1)
                 {
-                if(Focus == code[state])
+                    if (Focus == code[state])
                     {
                         correct = true;
                         state++;
                         animating = true;
-                        animCount = 180;
+                        animCount = 90;
                     }
-                else
+                    else
                     {
                         correct = false;
                         animating = true;
-                        animCount = 180;                           
+                        animCount = 90;
                     }
                 }
-                break;
+            }
         }
-
     }
 }
+
