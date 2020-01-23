@@ -110,13 +110,13 @@ public class HrGlassPuzzle : MonoBehaviour
                         correct = true;
                         state++;
                         animating = true;
-                        animCount = 90;
+                        animCount = 180;
                     }
                     else
                     {
                         correct = false;
                         animating = true;
-                        animCount = 90;
+                        animCount = 180;
                     }
                 }
             }
