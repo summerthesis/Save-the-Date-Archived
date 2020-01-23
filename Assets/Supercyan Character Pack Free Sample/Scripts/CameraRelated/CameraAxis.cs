@@ -1,5 +1,17 @@
-﻿//MODIFIED NOVEMBER 28, 29 BY HErC (Hercules Dias Campos)
-//MODIFICATIONS ARE MARKED
+﻿/*********************************************************
+* Hyukin Kwon
+* Save The Date
+* 
+* CameraAxis
+* Last Modified: 29 November 2019 by Hercules
+* 
+* Inherits from Monobehaviour
+*
+*
+* - Keep the playerAxis (postion)
+* - Keep the aimingAxis (Player's shoulder position)
+* *******************************************************/
+
 using System.Collections;
 using UnityEngine;
 
