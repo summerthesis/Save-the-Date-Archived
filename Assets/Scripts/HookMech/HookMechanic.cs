@@ -2,11 +2,10 @@
 Nikola
 
 Created: Nov 28/19
-Last Modified: Nov 28/19
+Last Modified: Jan 23/2020
 
-
-This hook mechanic constantly calculates the distance between the player and the object it's hooking on to
-it will keep applying force, until the distance starts to become greater
+When the player presses the space bar, they will have a force pushing them to just below the "hook object" towards the "hook point"
+when the player collides with the "hook point" they will stop their x/y/z velocity, and fall to the ground below (due to gravity)
 
  
   */
@@ -55,21 +54,30 @@ public class HookMechanic : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         // checks to see if HookPoint is within range
+        if (other.gameObject.name.Contains("HookObject")) 
+        {
+            //set the nearest hook point
+            nearestHookPoint = other;
+            // calculate the distance from the player to the hook point
+            distToHookPoint = Vector3.Distance(other.transform.position, this.transform.position);
+            Debug.Log("Distance: " + distToHookPoint); 
+            Debug.DrawLine(this.transform.position, nearestHookPoint.transform.position, Color.red, 5.0f, true);
+        }
+        Debug.Log("Transform Position:" + other.transform.position);
+
         if (other.gameObject.name.Contains("HookPoint"))
         {
-            nearestHookPoint = other;
-            distToHookPoint = Vector3.Distance(other.transform.position, this.transform.position);
-            Debug.Log(distToHookPoint);
-            //rb.AddForce((other.transform.position - this.transform.position).normalized * forceAmount * Time.smoothDeltaTime); 
+            //stop all other velocity of player, so they fall down right below hook point
+            this.rb.velocity = new Vector3(0, 0, 0);
+            Debug.Log("Hook point hit!!"); 
         }
 
-        
     }
         void OnTriggerExit(Collider other)
     {
         nearestHookPoint = null;
-        shortestDistance = new Vector3(hookRadius, hookRadius, hookRadius);
-        Debug.Log("trigger exit"); 
+        shortestDistance = new Vector3(hookRadius, hookRadius, hookRadius); 
+         Debug.Log("trigger exit"); 
     }
     // Update is called once per frame
     void Update()
@@ -81,10 +89,11 @@ public class HookMechanic : MonoBehaviour
              Debug.DrawLine(this.transform.position, nearestHookPoint.transform.position, Color.red, 5.0f, true); 
             if (shortestDistance.magnitude > temp.magnitude && shortestDistance.magnitude > 1) 
             {
+                /*
                 if (gravityDuringPull == false)
                 {
                     rb.useGravity = false; 
-                }
+                }*/
                 shortestDistance = temp; 
                 rb.AddForce((temp * forceAmount * Time.smoothDeltaTime)); 
             }
@@ -94,22 +103,22 @@ public class HookMechanic : MonoBehaviour
                 isHookEnabled = false;
                 shortestDistance = new Vector3(hookRadius, hookRadius, hookRadius); 
             }
-            //Debug.Log("trying to push!!" + temp);
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.DrawLine(this.transform.position, nearestHookPoint.transform.position, Color.blue, 5.0f, true);
+            
             if (nearestHookPoint != null)
             {
+                Debug.DrawLine(this.transform.position, nearestHookPoint.transform.position, Color.blue, 5.0f, true);
                 isHookEnabled = true; 
             }
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            rb.useGravity = gravityDuringPull; 
-             //nearestHookPoint = null;
-             isHookEnabled = false;
+            //rb.useGravity = true;
+            //nearestHookPoint = null;
+            isHookEnabled = false;
             shortestDistance = new Vector3(hookRadius, hookRadius, hookRadius); 
 
         }
