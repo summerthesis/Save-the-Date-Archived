@@ -30,6 +30,7 @@ public class SlidingTilePuzzle : MonoBehaviour
 
     public float speed;
     float step;
+    int animState = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -89,8 +90,14 @@ public class SlidingTilePuzzle : MonoBehaviour
     {
         for (int i = 0; i < 3; i++)
         {
-            if(Vector3.Distance(moveablePieces[i].transform.position, tiles[i + 3].transform.position) > 0.001f)
-            moveablePieces[i].transform.position = Vector3.MoveTowards(moveablePieces[i].transform.position, tiles[i + 3].transform.position, step/3);
+            if (Vector3.Distance(moveablePieces[i].transform.position, tiles[i + 3].transform.position) > 0.001f)
+            {
+                moveablePieces[i].transform.position = Vector3.MoveTowards(moveablePieces[i].transform.position, tiles[i + 3].transform.position, step / 3);
+            }
+            else
+            {
+            
+            }
         }
     }
     void checkButtons()
