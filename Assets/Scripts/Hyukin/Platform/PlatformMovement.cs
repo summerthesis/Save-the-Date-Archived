@@ -4,7 +4,7 @@
 * 
 * PlatformMovement
 * Created: 27 November 2019
-* Last Modified: 16 December 2019
+* Last Modified: 17 Jan 2020
 * 
 * Inherits from Monobehaviour
 *
@@ -94,6 +94,7 @@ public class PlatformMovement : MonoBehaviour
         yield return new WaitForSeconds(m_stopTime);
         m_isMoving = true;
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {

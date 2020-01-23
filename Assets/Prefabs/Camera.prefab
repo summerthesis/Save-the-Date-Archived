@@ -136,7 +136,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4619464055215655216}
-  - component: {fileID: 4619464055215655219}
   - component: {fileID: 4619464055215655218}
   m_Layer: 0
   m_Name: Camera
@@ -152,7 +151,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4619464055215655221}
-  m_LocalRotation: {x: 0.14780942, y: -0, z: -0, w: 0.9890159}
+  m_LocalRotation: {x: 0.14780942, y: 0, z: 0, w: 0.9890159}
   m_LocalPosition: {x: 0, y: 0.79499996, z: -6.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -160,24 +159,7 @@ Transform:
   - {fileID: 6474474142404791004}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4619464055215655219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4619464055215655221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53236f40ca945f4ab87745e91685bfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerAxis: {fileID: 0}
-  aimingAxis: {fileID: 0}
-  m_followingSpeed: 15
-  gravityTarget: {fileID: 3745586718815407485}
-  raycastDistance: 2.5
+  m_LocalEulerAnglesHint: {x: 17, y: 0, z: 0}
 --- !u!114 &4619464055215655218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b847dcdd4721ff488c225e1b9ef9e5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_aimingAxis: {fileID: 0}
   m_aimingZoomSpeed: 10
   m_aimingZoomRotSpeed: 5
   m_distance: 5
@@ -200,3 +181,10 @@ MonoBehaviour:
   m_maxHeight: 35
   m_minDistance: 1
   m_maxDistance: 8
+  playerAxis: {fileID: 0}
+  aimingAxis: {fileID: 0}
+  m_followingSpeed: 15
+  m_isAiming: 0
+  gravityTarget: {fileID: 3745586718815407485}
+  raycastDistance: 2.5
+  raycastFactor: 0
