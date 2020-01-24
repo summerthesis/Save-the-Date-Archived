@@ -4,14 +4,13 @@
 * 
 * PlatformMovement
 * Created: 27 November 2019
-* Last Modified: 17 Jan 2020
+* Last Modified: 27 November 2019
 * 
 * Inherits from Monobehaviour
 *
 *
 * - Moving Platform through waypoints
 * - Player moves with platform only when colliding
-* - Adding start delay time
 * *******************************************************/
 
 using System.Collections;
@@ -36,10 +35,6 @@ public class PlatformMovement : MonoBehaviour
     bool GetIsMoving() { return m_isMoving; }
     void SetIsMoving(bool isMoving) { m_isMoving = isMoving; }
 
-    //Start Delay related
-    bool m_isStartMoving = false;
-    [SerializeField] float m_starDelayTime;
-
     //
 
     private void FixedUpdate()
@@ -49,11 +44,6 @@ public class PlatformMovement : MonoBehaviour
 
     private void MovePlatform()
     {
-        if(!m_isStartMoving)
-        {
-            StartCoroutine(StartMovingTimer());
-            return;
-        }
         if (!m_isMoving) return;
         
         if(transform.position != waypoints[m_curWaypoint].transform.position)
@@ -81,20 +71,12 @@ public class PlatformMovement : MonoBehaviour
         }
     }
 
- 
-    private IEnumerator StartMovingTimer()
-    {
-        yield return new WaitForSeconds(m_starDelayTime);
-        m_isStartMoving = true;
-    }
-
     private IEnumerator StopMovingForCertainTime()
     {
         m_isMoving = false;
         yield return new WaitForSeconds(m_stopTime);
         m_isMoving = true;
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
