@@ -2598,6 +2598,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: m_aimingAxis
+      value: 
+      objectReference: {fileID: 938990882}
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: playerAxis
+      value: 
+      objectReference: {fileID: 350260151}
+    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
+        type: 3}
+      propertyPath: aimingAxis
+      value: 
+      objectReference: {fileID: 938990882}
     - target: {fileID: 1051465060775984345, guid: 68ccaae62ef7d9144985f8acae325a98,
         type: 3}
       propertyPath: m_Name
@@ -2678,11 +2693,6 @@ PrefabInstance:
       propertyPath: raycastFactor
       value: 0.7
       objectReference: {fileID: 0}
-    - target: {fileID: 4619464055215655218, guid: 68ccaae62ef7d9144985f8acae325a98,
-        type: 3}
-      propertyPath: m_aimingAxis
-      value: 
-      objectReference: {fileID: 938990882}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68ccaae62ef7d9144985f8acae325a98, type: 3}
 --- !u!1001 &5936776934991984284
