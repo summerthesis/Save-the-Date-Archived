@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Chargeable
   - Platform
+  - CameraTarget
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - 
   - ThunderPhysics
   - GravityPhysics
-  - 
-  - 
+  - CameraTarget
+  - Player
   - 
   - 
   - 
