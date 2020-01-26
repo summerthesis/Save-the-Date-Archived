@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        Vector3 speed = Vector3.zero;
         m_fHorizontal = Input.GetAxis("Horizontal");
         m_fVertical = Input.GetAxis("Vertical");
         float dt = Time.fixedDeltaTime;
@@ -48,7 +47,6 @@ public class PlayerMovement : MonoBehaviour
 
         if (m_fVertical > 0.1f || m_fVertical < -0.1f)
         {
-            speed += Vector3.forward * m_fMoveSpeed * dt;
             transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
         }
         if (m_fHorizontal > 0.2f)
