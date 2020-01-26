@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
 
+    //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
     [SerializeField] float m_fSideMoveSpeed;
     [SerializeField] float m_fRotSpeed;
@@ -26,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
     private float m_fVertical;
 
     public float GetMoveSpeed() { return m_fMoveSpeed; }
+    public float GetSideMoveSpeed() { return m_fSideMoveSpeed; }
 
     private void Start()
     {
@@ -58,11 +60,13 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (m_fVertical != 0 && m_fHorizontal > 0.2f)
         {
-
+            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * dt, Space.Self);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * 0.03f * dt);
         }
         else if (m_fVertical != 0 && m_fHorizontal < -0.2f)
         {
-
+            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * dt, Space.Self);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * 0.03f * dt);
         }
     }
 
