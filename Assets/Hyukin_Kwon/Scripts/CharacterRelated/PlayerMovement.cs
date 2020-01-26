@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject CameraBody;
 
     [SerializeField] float m_fMoveSpeed;
+    [SerializeField] float m_fSideMoveSpeed;
     [SerializeField] float m_fRotSpeed;
 
     private float m_fHorizontal;
@@ -38,22 +39,47 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
+        Vector3 speed = Vector3.zero;
         m_fHorizontal = Input.GetAxis("Horizontal");
         m_fVertical = Input.GetAxis("Vertical");
         float dt = Time.fixedDeltaTime;
 
-        if (m_fVertical > 0.1f)
+        PlayerFacingRot();
+
+        if (m_fVertical > 0.1f || m_fVertical < -0.1f)
         {
+            speed += Vector3.forward * m_fMoveSpeed * dt;
             transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
-            transform.rotation = Quaternion.LookRotation(CameraBody.transform.forward * m_fRotSpeed * dt);
         }
-        else if (m_fVertical < -0.1f)
+        if (m_fHorizontal > 0.2f)
         {
-            transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
-            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.forward * m_fRotSpeed * dt);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * dt);
+        }
+        else if (m_fHorizontal < -0.2f)
+        {
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * dt);
         }
     }
 
-
+    private void PlayerFacingRot()
+    {       
+        float dt = Time.fixedDeltaTime;
+        if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
+            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+        else if (m_fHorizontal > 0.2f && m_fVertical < -0.1f)
+            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+        else if (m_fHorizontal < -0.2f && m_fVertical > 0.1f)
+            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+        else if (m_fHorizontal < -0.2f && m_fVertical < -0.1f)
+            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+        else if (m_fHorizontal > 0.2f && m_fVertical == 0)
+            transform.rotation = Quaternion.LookRotation(CameraBody.transform.right * m_fRotSpeed * dt);
+        else if (m_fHorizontal < -0.2f && m_fVertical == 0)
+            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.right * m_fRotSpeed * dt);
+        else if (m_fHorizontal == 0 && m_fVertical > 0.1f)
+            transform.rotation = Quaternion.LookRotation(CameraBody.transform.forward * m_fRotSpeed * dt);
+        else if (m_fHorizontal == 0 && m_fVertical < -0.1f)
+            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.forward * m_fRotSpeed * dt);
+    }
 
 }

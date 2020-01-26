@@ -27,6 +27,9 @@ public class CameraBehaviour : MonoBehaviour
 
     private float m_fHorizontal;
 
+    public float GetDistance() { return m_fDistance; }
+    public float GetMinDistance() { return m_fMinDistance; }
+
     #region Make Singleton
     private static CameraBehaviour instance;
     public static CameraBehaviour GetInstance() { return instance; }
@@ -53,19 +56,30 @@ public class CameraBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Camera.main.transform.position = transform.position;
         Rotate();
         MoveToPlayer();
     }
 
     private void Rotate()
     {
+        transform.rotation = new Quaternion();
+        Camera.main.transform.rotation = new Quaternion();
 
+        Vector3 targetPostition = new Vector3(player.transform.position.x,
+                                        transform.position.y,
+                                        player.transform.position.z);
+        transform.LookAt(targetPostition);
+
+        Camera.main.transform.rotation = transform.rotation;
+
+        Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
+        Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * Time.deltaTime);
     }
 
     private void MoveToPlayer()
     {
-        Vector2 vecDis = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z);
-        float distance = vecDis.magnitude;
+        float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
         float dt = Time.fixedDeltaTime;
 
         if(distance > m_fDistance)

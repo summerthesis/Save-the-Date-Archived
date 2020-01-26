@@ -15,15 +15,22 @@ using UnityEngine;
 public class CamLookAtPlayer : MonoBehaviour
 {
     private GameObject player;
+    private GameObject CameraBody;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        CameraBody = GameObject.Find("CameraBody");
     }
 
     void Update()
     {
-        Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, new Quaternion(q.x, transform.rotation.y, transform.rotation.z, 1), 500 * Time.deltaTime);
+        transform.position = CameraBody.transform.position;
+
+        Vector3 lookPos = player.transform.position - transform.position;
+        lookPos.x = 0;
+
+        Quaternion rotation = Quaternion.LookRotation(lookPos);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 500 * Time.fixedDeltaTime);
     }
 }
