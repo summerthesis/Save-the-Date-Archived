@@ -80,6 +80,7 @@ public class CameraBehaviour : MonoBehaviour
     private void MoveToPlayer()
     {
         float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
+        Debug.Log(distance);
         float dt = Time.fixedDeltaTime;
 
         if(distance > m_fDistance)
@@ -88,11 +89,9 @@ public class CameraBehaviour : MonoBehaviour
                 new Vector3(player.transform.position.x, player.transform.position.y + heightFromPlayer, player.transform.position.z - m_fDistance),
                 playerMovementCs.GetMoveSpeed() * dt);
         }
-        else if(distance < m_fMinDistance)
+        else if(distance < m_fMinDistance && distance > 0)
         {
-            transform.position = Vector3.MoveTowards(transform.position,
-                new Vector3(player.transform.position.x, player.transform.position.y + heightFromPlayer, player.transform.position.z - m_fMinDistance),
-                playerMovementCs.GetMoveSpeed() * dt);
+            transform.Translate(-Vector3.forward * player.GetComponent<PlayerMovement>().GetMoveSpeed() * dt);
         }
     }
 
