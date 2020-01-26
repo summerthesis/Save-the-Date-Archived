@@ -4,7 +4,7 @@
 * 
 * CamLookAtPlayer
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 25 Jan 2020 - Hyukin
+* Last Modified: 26 Jan 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 * *******************************************************/

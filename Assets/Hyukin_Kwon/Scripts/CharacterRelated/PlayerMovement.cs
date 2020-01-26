@@ -4,7 +4,7 @@
 * 
 * PlayerMovement
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 25 Jan 2020 - Hyukin
+* Last Modified: 26 Jan 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 *
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        PlayerFacingRot();
         Move();
     }
 
@@ -43,24 +44,30 @@ public class PlayerMovement : MonoBehaviour
         m_fVertical = Input.GetAxis("Vertical");
         float dt = Time.fixedDeltaTime;
 
-        PlayerFacingRot();
-
-        if (m_fVertical > 0.1f || m_fVertical < -0.1f)
+        if (m_fVertical != 0 && m_fHorizontal == 0)
         {
             transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
         }
-        if (m_fHorizontal > 0.2f)
+        if (m_fHorizontal > 0.2f && m_fVertical == 0)
         {
             transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * dt);
         }
-        else if (m_fHorizontal < -0.2f)
+        else if (m_fHorizontal < -0.2f && m_fVertical == 0)
         {
             transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * dt);
+        }
+        else if (m_fVertical != 0 && m_fHorizontal > 0.2f)
+        {
+
+        }
+        else if (m_fVertical != 0 && m_fHorizontal < -0.2f)
+        {
+
         }
     }
 
     private void PlayerFacingRot()
-    {       
+    {
         float dt = Time.fixedDeltaTime;
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
             transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
