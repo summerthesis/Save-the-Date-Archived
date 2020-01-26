@@ -71,6 +71,7 @@ public class Moveable : MonoBehaviour
             if (this.gameObject.transform.parent != target)
             {    
                 this.gameObject.transform.SetParent(target);
+                MyRigidbody.constraints = RigidbodyConstraints.FreezeAll;
             }
             
             isAfloat = true;
@@ -78,6 +79,7 @@ public class Moveable : MonoBehaviour
         else
         {
             this.gameObject.transform.SetParent(null);
+            MyRigidbody.constraints = RigidbodyConstraints.None;
             isAfloat = false;
         }
 
