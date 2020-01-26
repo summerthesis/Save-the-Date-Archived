@@ -16,33 +16,42 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private GameObject cameraTarget;
+    private GameObject CameraBody;
+
     [SerializeField] float m_fMoveSpeed;
     [SerializeField] float m_fRotSpeed;
 
+    private float m_fHorizontal;
+    private float m_fVertical;
+
+    public float GetMoveSpeed() { return m_fMoveSpeed; }
+
     private void Start()
     {
-        cameraTarget = GameObject.Find("CameraTarget");
-        transform.position = cameraTarget.transform.position;
-    }
-    private void Update()
-    {
-       // MoveTo();
+        CameraBody = GameObject.Find("CameraBody");
     }
 
-    private void MoveTo()
+    private void FixedUpdate()
     {
-        if(CameraBehaviour.GetInstance().isIdle())
+        Move();
+    }
+
+    private void Move()
+    {
+        m_fHorizontal = Input.GetAxis("Horizontal");
+        m_fVertical = Input.GetAxis("Vertical");
+        float dt = Time.fixedDeltaTime;
+
+        if (m_fVertical > 0.1f)
         {
-            Quaternion q1 = new Quaternion(transform.rotation.x, cameraTarget.transform.rotation.y, transform.rotation.z, 1);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, q1, m_fRotSpeed * Time.deltaTime);
-            return;
+            transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
+            transform.rotation = Quaternion.LookRotation(CameraBody.transform.forward * m_fRotSpeed * dt);
         }
-
-        Quaternion q2 = Quaternion.LookRotation(cameraTarget.transform.position - transform.position);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, q2, m_fRotSpeed * Time.deltaTime);
-        //transform.LookAt(cameraTarget.transform);
-        transform.position = Vector3.MoveTowards(transform.position, cameraTarget.transform.position, m_fMoveSpeed * Time.deltaTime);
+        else if (m_fVertical < -0.1f)
+        {
+            transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
+            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.forward * m_fRotSpeed * dt);
+        }
     }
 
 

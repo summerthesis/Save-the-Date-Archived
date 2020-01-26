@@ -17,20 +17,15 @@ using UnityEngine;
 public class CameraBehaviour : MonoBehaviour
 {
     private GameObject player;
-    [SerializeField] float m_fDistance;
-    [SerializeField] float m_fMoveSpeed;
+    private PlayerMovement playerMovementCs;
+    [SerializeField] float m_fDistance; //distance limit when player moving forward
+    [SerializeField] float m_fMinDistance; //distance limit when player moving backward
     [SerializeField] float m_fRotSpeed;
+    [SerializeField] float m_fmoveSpeed;
 
-    private float m_fMaxDisMulti = 2.0f;
-    private float m_fMoveSpeedMulti = 3.0f;
-
+    private float heightFromPlayer = 2.5f;
 
     private float m_fHorizontal;
-    private float m_fVertical;
-
-    public float GetHorizontal() { return m_fHorizontal; }
-    public float GetVertical() { return m_fVertical; }
-    public bool isIdle() { return (m_fHorizontal == 0 && m_fVertical == 0) ? true : false; }
 
     #region Make Singleton
     private static CameraBehaviour instance;
@@ -53,40 +48,39 @@ public class CameraBehaviour : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        playerMovementCs = player.GetComponent<PlayerMovement>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
         Rotate();
-        Move();
+        MoveToPlayer();
     }
 
     private void Rotate()
     {
-        if(m_fHorizontal > 0.1f)
+
+    }
+
+    private void MoveToPlayer()
+    {
+        Vector2 vecDis = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z);
+        float distance = vecDis.magnitude;
+        float dt = Time.fixedDeltaTime;
+
+        if(distance > m_fDistance)
         {
-            Debug.Log("Rot to right");
-            transform.Rotate(Vector3.up * m_fRotSpeed * Time.deltaTime, Space.World);
+            transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(player.transform.position.x, player.transform.position.y + heightFromPlayer, player.transform.position.z - m_fDistance),
+                playerMovementCs.GetMoveSpeed() * dt);
         }
-        else if(m_fHorizontal < -0.1f)
+        else if(distance < m_fMinDistance)
         {
-            Debug.Log("Rot to left");
-            transform.Rotate(Vector3.up * -m_fRotSpeed * Time.deltaTime, Space.World);
+            transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(player.transform.position.x, player.transform.position.y + heightFromPlayer, player.transform.position.z - m_fMinDistance),
+                playerMovementCs.GetMoveSpeed() * dt);
         }
     }
 
-    private void Move()
-    {
-        if (m_fVertical > 0.2f)
-        {
-            transform.Translate(Vector3.forward * m_fMoveSpeed * Time.deltaTime, Space.Self);
-        }
-        else if(m_fVertical < -0.2f)
-        {
-            transform.Translate(-Vector3.forward * m_fMoveSpeed * Time.deltaTime, Space.Self);
-        }
-    }
 
 }
