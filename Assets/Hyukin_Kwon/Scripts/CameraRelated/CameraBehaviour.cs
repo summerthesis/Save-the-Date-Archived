@@ -168,7 +168,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void ZoomInMode()
     {
-        if(Input.GetKey(KeyCode.Joystick1Button0))
+        if(Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Z))
         {
             m_bIsZooming = true;
 

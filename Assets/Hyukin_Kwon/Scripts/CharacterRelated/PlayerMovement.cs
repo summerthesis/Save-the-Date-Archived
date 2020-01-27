@@ -17,20 +17,29 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
+    private PlayerFoot PlayerFoot;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
     [SerializeField] float m_fSideMoveSpeed;
     [SerializeField] float m_fRotSpeed;
 
+    [SerializeField] bool m_bIsGrounded = true;
+    [SerializeField] float m_JumpForce;
+
     private float m_fHorizontal;
-    private float m_fVertical;    
+    private float m_fVertical;
+
+    private Rigidbody rigid;
+
     public float GetMoveSpeed() { return m_fMoveSpeed; }
     public float GetSideMoveSpeed() { return m_fSideMoveSpeed; }
 
     private void Start()
     {
         CameraBody = GameObject.Find("CameraBody");
+        PlayerFoot = GameObject.Find("PlayerFoot").GetComponent<PlayerFoot>();
+        rigid = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -42,12 +51,28 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             PlayerFacingRot();
-            MoveREgular();
+            MoveRegular();
+            JumpRegular();
+        }
+    }
+
+    private void JumpRegular()
+    {
+        m_bIsGrounded = PlayerFoot.GetIsGrounded();
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && m_bIsGrounded)
+        {
+            Debug.Log("Jump");
+            rigid.AddForce(Vector3.up * m_JumpForce);
+
+            if(m_fVertical != 0 || m_fHorizontal != 0)
+                rigid.AddForce(transform.forward * m_JumpForce * 0.7f);
         }
     }
 
     private void ZoomInModeMove()
     {
+        if (!m_bIsGrounded) return;
+
         m_fHorizontal = Input.GetAxis("Horizontal");
         float dt = Time.fixedDeltaTime;
         if(m_fHorizontal > 0)
@@ -60,14 +85,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void MoveREgular()
+    private void MoveRegular()
     {
+        if (!m_bIsGrounded) return;
+
         m_fHorizontal = Input.GetAxis("Horizontal");
         m_fVertical = Input.GetAxis("Vertical");
         float dt = Time.fixedDeltaTime;
 
         if (m_fVertical != 0 && m_fHorizontal == 0)
-        {
+        {            
             transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
         }
         if (m_fHorizontal > 0.2f && m_fVertical == 0)
@@ -92,6 +119,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerFacingRot()
     {
+        if (!m_bIsGrounded) return;
+
         float dt = Time.fixedDeltaTime;
 
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
