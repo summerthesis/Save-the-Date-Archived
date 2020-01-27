@@ -29,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float m_fHorizontal;
     private float m_fVertical;
+    private float fdt;
 
     private Rigidbody rigid;
 
@@ -44,7 +45,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if( CameraBehaviour.GetInstance().GetIsZooming())
+        m_fHorizontal = Input.GetAxis("Horizontal");
+        m_fVertical = Input.GetAxis("Vertical");
+        fdt = Time.fixedDeltaTime;
+
+        if ( CameraBehaviour.GetInstance().GetIsZooming())
         {
             ZoomInModeMove();
         }
@@ -80,47 +85,42 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!m_bIsGrounded) return;
 
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        float dt = Time.fixedDeltaTime;
-        if(m_fHorizontal > 0)
-        {
-            transform.Translate(Vector3.right * m_fMoveSpeed * dt, Space.Self);
-        }
-        else if(m_fHorizontal < 0)
-        {
-            transform.Translate(-Vector3.right * m_fMoveSpeed * dt, Space.Self);
-        }
+        if (m_fHorizontal > 0 && m_fVertical == 0)
+            transform.Translate(Vector3.right * m_fMoveSpeed * fdt, Space.Self);
+        else if(m_fHorizontal < 0 && m_fVertical == 0)
+            transform.Translate(-Vector3.right * m_fMoveSpeed * fdt, Space.Self);
+
+        if(m_fVertical > 0 && m_fHorizontal == 0)
+            transform.Translate(Vector3.forward * m_fMoveSpeed * fdt, Space.Self);
+        else if (m_fVertical < 0 && m_fHorizontal == 0)
+            transform.Translate(-Vector3.forward * m_fMoveSpeed * fdt, Space.Self);
     }
 
     private void MoveRegular()
     {
         if (!m_bIsGrounded) return;
 
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
-        float dt = Time.fixedDeltaTime;
-
         if (m_fVertical != 0 && m_fHorizontal == 0)
         {            
-            transform.Translate(Vector3.forward * m_fMoveSpeed * dt, Space.Self);
+            transform.Translate(Vector3.forward * m_fMoveSpeed * fdt, Space.Self);
         }
         if (m_fHorizontal > 0.2f && m_fVertical == 0)
         {
-            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * dt);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * fdt);
         }
         else if (m_fHorizontal < -0.2f && m_fVertical == 0)
         {
-            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * dt);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * fdt);
         }
         else if (m_fVertical != 0 && m_fHorizontal > 0.2f)
         {
-            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * dt, Space.Self);
-            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * 0.03f * dt);
+            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * fdt, Space.Self);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, m_fSideMoveSpeed * 0.03f * fdt);
         }
         else if (m_fVertical != 0 && m_fHorizontal < -0.2f)
         {
-            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * dt, Space.Self);
-            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * 0.03f * dt);
+            transform.Translate(Vector3.forward * m_fMoveSpeed * 0.95f * fdt, Space.Self);
+            transform.RotateAround(CameraBody.transform.position, Vector3.up, -m_fSideMoveSpeed * 0.03f * fdt);
         }
     }
 
@@ -128,24 +128,22 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!m_bIsGrounded) return;
 
-        float dt = Time.fixedDeltaTime;
-
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
-            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * fdt);
         else if (m_fHorizontal > 0.2f && m_fVertical < -0.1f)
-            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * fdt);
         else if (m_fHorizontal < -0.2f && m_fVertical > 0.1f)
-            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * fdt);
         else if (m_fHorizontal < -0.2f && m_fVertical < -0.1f)
-            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation((-CameraBody.transform.forward - CameraBody.transform.right).normalized * m_fRotSpeed * fdt);
         else if (m_fHorizontal > 0.2f && m_fVertical == 0)
-            transform.rotation = Quaternion.LookRotation(CameraBody.transform.right * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation(CameraBody.transform.right * m_fRotSpeed * fdt);
         else if (m_fHorizontal < -0.2f && m_fVertical == 0)
-            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.right * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.right * m_fRotSpeed * fdt);
         else if (m_fHorizontal == 0 && m_fVertical > 0.1f)
-            transform.rotation = Quaternion.LookRotation(CameraBody.transform.forward * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation(CameraBody.transform.forward * m_fRotSpeed * fdt);
         else if (m_fHorizontal == 0 && m_fVertical < -0.1f)
-            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.forward * m_fRotSpeed * dt);
+            transform.rotation = Quaternion.LookRotation(-CameraBody.transform.forward * m_fRotSpeed * fdt);
     }
 
 }
