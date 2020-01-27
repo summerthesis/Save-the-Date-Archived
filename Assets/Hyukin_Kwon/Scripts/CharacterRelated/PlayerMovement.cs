@@ -63,8 +63,9 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
+            PlayerFoot.SetIsGrounded(false);
 
-            if(m_fVertical != 0)
+            if (m_fVertical != 0)
             {
                 rigid.AddForce(transform.forward * Mathf.Abs(m_fVertical) * m_JumpForce * 0.3f);
             }     

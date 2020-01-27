@@ -7,10 +7,11 @@ public class PlayerFoot : MonoBehaviour
     private bool m_bIsGrounded;
 
     public bool GetIsGrounded() { return m_bIsGrounded; }
+    public void SetIsGrounded(bool b) { m_bIsGrounded = b; }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag != "Player")
+        if (other.transform.tag != "Player" && !m_bIsGrounded)
         {
             m_bIsGrounded = true;
         }

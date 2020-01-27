@@ -179,11 +179,11 @@ public class CameraBehaviour : MonoBehaviour
         {
             m_bIsZooming = true;
 
-            transform.position = Vector3.MoveTowards(transform.position,
-               new Vector3(CamZoomPivot.transform.position.x, 
-               CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
-               CamZoomPivot.transform.position.z),
-               playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
+             transform.position = Vector3.MoveTowards(transform.position,
+            new Vector3(CamZoomPivot.transform.position.x, 
+            CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
+            CamZoomPivot.transform.position.z),
+            playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
 
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
