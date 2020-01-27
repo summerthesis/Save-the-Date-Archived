@@ -24,8 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float m_fRotSpeed;
 
     private float m_fHorizontal;
-    private float m_fVertical;
-
+    private float m_fVertical;    
     public float GetMoveSpeed() { return m_fMoveSpeed; }
     public float GetSideMoveSpeed() { return m_fSideMoveSpeed; }
 
@@ -73,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerFacingRot()
     {
         float dt = Time.fixedDeltaTime;
+
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
             transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * dt);
         else if (m_fHorizontal > 0.2f && m_fVertical < -0.1f)
