@@ -4,7 +4,7 @@
 * 
 * CameraBehaviour
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 26 Jan 2020 - Hyukin
+* Last Modified: 27 Jan 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 *
@@ -29,6 +29,7 @@ public class CameraBehaviour : MonoBehaviour
     private float m_fVertical;
     private float m_fHorizontal;
     private float m_fLastHOrizontal = 0.0f; //this will store negative or positive number from m_fHorizontal.
+    private float m_fLastVertical = 0.0f;
     private bool m_bMoveToBackOn = false;
     private float m_fMoveToBackTime = 2.0f;
     private float m_fCurMoveToBackTime = 0.0f;
@@ -131,6 +132,8 @@ public class CameraBehaviour : MonoBehaviour
         {
             if(m_fHorizontal != 0)
                 m_fLastHOrizontal = m_fHorizontal;
+            if (m_fVertical != 0)
+                m_fLastVertical = m_fVertical;
 
             if (m_fHorizontal == 0 && m_fVertical == 0)
             {
@@ -148,20 +151,24 @@ public class CameraBehaviour : MonoBehaviour
             {
                 Debug.Log("Player forward: " + player.transform.forward + ", Cam forward: " + transform.forward);
                 m_fLastHOrizontal = 0;
+                m_fLastVertical = 0;
                 m_bMoveToBackOn = false;
                 Debug.Log("Stop Rotating Around!");
             }
             else
             {
-                //if (m_fLastHOrizontal < 0)
-                //    transform.RotateAround(player.transform.position, Vector3.up, -100 * dt);
-                //else if (m_fLastHOrizontal >= 0)
-                //    transform.RotateAround(player.transform.position, Vector3.up, 100 * dt);
-                transform.position = Vector3.MoveTowards(transform.position,
-               new Vector3(CamPivot.transform.position.x,
-               CamPivot.transform.position.y + heightFromPlayer * 0.6f,
-               CamPivot.transform.position.z),
-               playerMovementCs.GetMoveSpeed() * 3.0f * Time.deltaTime);
+                if (m_fLastVertical < 0 && m_fLastHOrizontal == 0)
+                {
+                    transform.RotateAround(player.transform.position, Vector3.up, 300 * dt);
+                }
+                else
+                {
+                    transform.position = Vector3.MoveTowards(transform.position,
+                   new Vector3(CamPivot.transform.position.x,
+                   CamPivot.transform.position.y + heightFromPlayer * 0.6f,
+                   CamPivot.transform.position.z),
+                   playerMovementCs.GetMoveSpeed() * 3.0f * Time.deltaTime);
+                }
             }
         }
     }
