@@ -35,11 +35,32 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        PlayerFacingRot();
-        Move();
+        if( CameraBehaviour.GetInstance().GetIsZooming())
+        {
+            ZoomInModeMove();
+        }
+        else
+        {
+            PlayerFacingRot();
+            MoveREgular();
+        }
     }
 
-    private void Move()
+    private void ZoomInModeMove()
+    {
+        m_fHorizontal = Input.GetAxis("Horizontal");
+        float dt = Time.fixedDeltaTime;
+        if(m_fHorizontal > 0)
+        {
+            transform.Translate(Vector3.right * m_fMoveSpeed * dt, Space.Self);
+        }
+        else if(m_fHorizontal < 0)
+        {
+            transform.Translate(-Vector3.right * m_fMoveSpeed * dt, Space.Self);
+        }
+    }
+
+    private void MoveREgular()
     {
         m_fHorizontal = Input.GetAxis("Horizontal");
         m_fVertical = Input.GetAxis("Vertical");

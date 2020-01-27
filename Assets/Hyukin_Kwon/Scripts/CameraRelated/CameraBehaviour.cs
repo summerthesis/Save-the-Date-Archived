@@ -86,14 +86,11 @@ public class CameraBehaviour : MonoBehaviour
     {
         transform.rotation = new Quaternion();
         Camera.main.transform.rotation = new Quaternion();
-
         Vector3 targetPostition = new Vector3(player.transform.position.x,
                                         transform.position.y,
                                         player.transform.position.z);
         transform.LookAt(targetPostition);
-
         Camera.main.transform.rotation = transform.rotation;
-
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
         Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * Time.deltaTime);
     }
@@ -181,7 +178,7 @@ public class CameraBehaviour : MonoBehaviour
                CamZoomPivot.transform.position.z),
                playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
 
-            transform.LookAt(player.transform);
+            transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
         }
         else if(!Input.GetKey(KeyCode.Joystick1Button0))
