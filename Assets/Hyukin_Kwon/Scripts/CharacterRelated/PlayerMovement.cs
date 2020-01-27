@@ -64,8 +64,14 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
 
-            if(m_fVertical != 0 || m_fHorizontal != 0)
-                rigid.AddForce(transform.forward * m_JumpForce * 0.7f);
+            if(m_fVertical != 0)
+            {
+                rigid.AddForce(transform.forward * Mathf.Abs(m_fVertical) * m_JumpForce * 0.3f);
+            }     
+            else if (m_fHorizontal != 0)
+            {
+                rigid.AddForce(transform.forward * Mathf.Abs(m_fHorizontal) * m_JumpForce * 0.3f);
+            }
         }
     }
 
