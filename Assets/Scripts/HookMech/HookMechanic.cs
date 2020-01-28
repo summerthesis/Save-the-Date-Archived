@@ -53,8 +53,9 @@ public class HookMechanic : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
+        Debug.Log("collider entered: " + other);
         // checks to see if HookPoint is within range
-        if (other.gameObject.name.Contains("HookObject")) 
+        if (other.gameObject.name.Contains("HookType")) 
         {
             //set the nearest hook point
             nearestHookPoint = other;
