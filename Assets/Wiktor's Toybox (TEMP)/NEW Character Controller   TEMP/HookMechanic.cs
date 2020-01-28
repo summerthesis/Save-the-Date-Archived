@@ -105,7 +105,7 @@ public class HookMechanic : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             
             if (nearestHookPoint != null)
