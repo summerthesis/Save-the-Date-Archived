@@ -37,9 +37,9 @@ public class GearPlacementUI : MonoBehaviour
         if(State == States.Start)
         {
             animCount++;
-            LeftPanel.transform.Rotate(-1f, 0f, 0f, Space.Self);
-            RightPanel.transform.Rotate(-1f, 0f, 0f, Space.Self);
-            BackingPanel.transform.Rotate(-1f, 0f, 0f, Space.Self);
+            this.transform.Rotate(-1f, 0f, 0f, Space.Self);
+            //RightPanel.transform.Rotate(-1f, 0f, 0f, Space.Self);
+            //BackingPanel.transform.Rotate(-1f, 0f, 0f, Space.Self);
 
             if (animCount > 25)
             {
@@ -50,7 +50,7 @@ public class GearPlacementUI : MonoBehaviour
 
         if(State == States.Open)
         {
-
+            
         }
     }
 }
