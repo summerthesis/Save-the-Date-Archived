@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Chargeable
   - Platform
+  - HookPoint
   layers:
   - Default
   - TransparentFX
