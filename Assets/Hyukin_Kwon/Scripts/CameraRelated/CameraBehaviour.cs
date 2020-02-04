@@ -102,7 +102,6 @@ public class CameraBehaviour : MonoBehaviour
     private void MoveToPlayer()
     {
         float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
-        //Debug.Log(distance);
         Debug.DrawRay(player.transform.position, -player.transform.forward * m_fDistance, Color.red);
         Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
 
@@ -139,8 +138,6 @@ public class CameraBehaviour : MonoBehaviour
 
         if(m_bIsMovingToPlayerBack)
         {
-            //Debug.Log("Player forward: " + m_targetDir + ", Cam forward: " + transform.forward);
-            Debug.Log("Angle: " + Vector3.Angle(m_targetDir, transform.forward));
             if (Vector3.Angle(m_targetDir, transform.forward) <= 1)
             {
                 m_fLastHOrizontal = 0;
