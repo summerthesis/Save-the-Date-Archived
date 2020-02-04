@@ -4,7 +4,7 @@
 * 
 * CameraBehaviour
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 27 Jan 2020 - Hyukin
+* Last Modified: 04 Feb 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 *
@@ -30,11 +30,11 @@ public class CameraBehaviour : MonoBehaviour
     private float m_fHorizontal;
     private float m_fLastHOrizontal = 0.0f; //this will store negative or positive number from m_fHorizontal.
     private float m_fLastVertical = 0.0f;
-    private bool m_bMoveToBackOn = false;
-    private float m_fMoveToBackTime = 2.0f;
-    private float m_fCurMoveToBackTime = 0.0f;
 
     private bool m_bIsZooming = false;
+    private bool m_bIsMovingToPlayerBack = false;
+    private Vector3 m_targetDir;
+    private float fdt;
 
     public bool GetIsZooming() { return m_bIsZooming; }
     public float GetDistance() { return m_fDistance; }
@@ -74,11 +74,14 @@ public class CameraBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         Camera.main.transform.position = transform.position;
+        m_fHorizontal = Input.GetAxis("Horizontal");
+        m_fVertical = Input.GetAxis("Vertical");
+        fdt = Time.fixedDeltaTime;
         if (!m_bIsZooming)
         {
             MoveToPlayer();
             Rotate();
-            MoveToBackWhenNotMoving();
+            MoveToPlayerBack();
         }
         
     }
@@ -93,14 +96,13 @@ public class CameraBehaviour : MonoBehaviour
         transform.LookAt(targetPostition);
         Camera.main.transform.rotation = transform.rotation;
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
-        Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * Time.deltaTime);
+        Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);
     }
 
     private void MoveToPlayer()
     {
         float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
         //Debug.Log(distance);
-        float dt = Time.fixedDeltaTime;
         Debug.DrawRay(player.transform.position, -player.transform.forward * m_fDistance, Color.red);
         Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
 
@@ -108,67 +110,54 @@ public class CameraBehaviour : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
-                playerMovementCs.GetMoveSpeed() * dt);
+                playerMovementCs.GetMoveSpeed() * fdt);
         }
         else if(distance < m_fMinDistance && distance > 0)
         {
-            transform.Translate(-Vector3.forward * player.GetComponent<PlayerMovement>().GetMoveSpeed() * dt);
+            transform.Translate(-Vector3.forward * player.GetComponent<PlayerMovement>().GetMoveSpeed() * fdt);
         }
     }
 
-    private void MoveToBackWhenNotMoving() //Move to back of character when player is moving for certain amount of time 
+    private void MoveToPlayerBack() //Move to back of character when player is moving for certain amount of time 
     {
-        float dt = Time.deltaTime;
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
-
-        if (m_fHorizontal != 0 || m_fVertical != 0)
+        
+        if (m_fHorizontal == 0 && m_fVertical == 0)
         {
-            m_fCurMoveToBackTime = 0.0f;
-            m_bMoveToBackOn = false;
-        }
-
-        if (!m_bMoveToBackOn && player.transform.forward != transform.forward)
-        {
-            if(m_fHorizontal != 0)
-                m_fLastHOrizontal = m_fHorizontal;
-            if (m_fVertical != 0)
-                m_fLastVertical = m_fVertical;
-
-            if (m_fHorizontal == 0 && m_fVertical == 0)
+            if (Input.GetKey(KeyCode.B) || Input.GetKey(KeyCode.Joystick1Button3))
             {
-                m_fCurMoveToBackTime += dt;
-                if (m_fCurMoveToBackTime >= m_fMoveToBackTime)
+                if (!m_bIsMovingToPlayerBack)
                 {
-                    m_fCurMoveToBackTime = 0.0f;
-                    m_bMoveToBackOn = true;
+                    m_targetDir = player.transform.forward;
                 }
+                m_bIsMovingToPlayerBack = true;
             }
         }
-        else if(m_bMoveToBackOn)
+        else
         {
-            if (player.transform.forward == transform.forward)
+            m_bIsMovingToPlayerBack = false;
+        }
+
+        if(m_bIsMovingToPlayerBack)
+        {
+            //Debug.Log("Player forward: " + m_targetDir + ", Cam forward: " + transform.forward);
+            Debug.Log("Angle: " + Vector3.Angle(m_targetDir, transform.forward));
+            if (Vector3.Angle(m_targetDir, transform.forward) <= 1)
             {
-                Debug.Log("Player forward: " + player.transform.forward + ", Cam forward: " + transform.forward);
                 m_fLastHOrizontal = 0;
                 m_fLastVertical = 0;
-                m_bMoveToBackOn = false;
+                m_bIsMovingToPlayerBack = false;
+                m_targetDir = player.transform.forward;
                 Debug.Log("Stop Rotating Around!");
             }
             else
             {
-                if (m_fLastVertical < 0 && m_fLastHOrizontal == 0)
-                {
-                    transform.RotateAround(player.transform.position, Vector3.up, 300 * dt);
-                }
-                else
-                {
-                    transform.position = Vector3.MoveTowards(transform.position,
-                   new Vector3(CamPivot.transform.position.x,
-                   CamPivot.transform.position.y + heightFromPlayer * 0.6f,
-                   CamPivot.transform.position.z),
-                   playerMovementCs.GetMoveSpeed() * 3.0f * Time.deltaTime);
-                }
+                //transform.RotateAround(player.transform.position, Vector3.up, 300 * fdt);
+                transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(CamPivot.transform.position.x,
+                CamPivot.transform.position.y + heightFromPlayer * 0.6f,
+                CamPivot.transform.position.z),
+                45 * Time.deltaTime);
+                
             }
         }
     }
