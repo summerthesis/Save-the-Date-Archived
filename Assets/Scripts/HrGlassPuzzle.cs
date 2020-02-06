@@ -57,26 +57,26 @@ public class HrGlassPuzzle : MonoBehaviour
             switch (state)
             {
                 case 1:
-                    hrGlasses[4].transform.Rotate(Vector3.forward);
-                    hrGlasses[1].transform.Rotate(Vector3.back);
+                    hrGlasses[4].transform.Rotate(Vector3.forward * 4);
+                    hrGlasses[1].transform.Rotate(Vector3.back * 4);
                     break;
                 case 2:
-                    hrGlasses[1].transform.Rotate(Vector3.forward);
-                    hrGlasses[0].transform.Rotate(Vector3.back);
+                    hrGlasses[1].transform.Rotate(Vector3.forward * 4);
+                    hrGlasses[0].transform.Rotate(Vector3.back * 4);
                     break;
                 case 3:
-                    hrGlasses[0].transform.Rotate(Vector3.forward);
-                    hrGlasses[2].transform.Rotate(Vector3.back);
+                    hrGlasses[0].transform.Rotate(Vector3.forward * 4);
+                    hrGlasses[2].transform.Rotate(Vector3.back * 4);
                     break;
                 case 4:
-                    hrGlasses[2].transform.Rotate(Vector3.forward);
+                    hrGlasses[2].transform.Rotate(Vector3.forward * 4);
 
                     break;
             }
         }
         else
         {
-            hrGlasses[Focus].transform.Rotate(Vector3.back);
+            hrGlasses[Focus].transform.Rotate(Vector3.back*4);
         }
         //Reduce frames left, if were done, turn off animation, reset
         //focused button - if last state complete puzzle.
@@ -110,13 +110,13 @@ public class HrGlassPuzzle : MonoBehaviour
                         correct = true;
                         state++;
                         animating = true;
-                        animCount = 180;
+                        animCount = 180/4;
                     }
                     else
                     {
                         correct = false;
                         animating = true;
-                        animCount = 180;
+                        animCount = 360/4;
                     }
                 }
             }
