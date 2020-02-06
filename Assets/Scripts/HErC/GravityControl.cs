@@ -4,7 +4,7 @@
  *
  * Gravity Control
  * Created: December 05, 2019
- * Last Modified: December 09, 2019
+ * Last Modified: Jan 17 2020 by Hyukin
  * 
  * Inherits from MonoBehaviour
  * 
@@ -29,11 +29,11 @@ public class GravityControl : MonoBehaviour
 {
     //Camera component for target detection
     [SerializeField] private Camera camera;
-    private CameraAxis cameraAxis; //new target tracking functionality
-    public bool Aiming { get { return cameraAxis.GetIsAiming(); } }
+    //private CameraAxis cameraAxis; //new target tracking functionality - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
+    //public bool Aiming { get { return cameraAxis.GetIsAiming(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
     private Transform targetCheck;
     private Transform targetTransform;
-    public Transform TargetTransform { get { return cameraAxis.GetTarget(); } }
+    //public Transform TargetTransform { get { return cameraAxis.GetTarget(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
 
     private Transform innerTarget;
 
@@ -51,13 +51,15 @@ public class GravityControl : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    /// <summary>
-    /// Gets Camera Axis component from Camera
-    /// </summary>
-    void Start()
-    {
-        cameraAxis = camera.GetComponentInParent<CameraAxis>();
-    }
+
+    // - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
+    ///// <summary> 
+    ///// Gets Camera Axis component from Camera
+    ///// </summary>
+    //void Start()
+    //{
+    //    cameraAxis = camera.GetComponentInParent<CameraAxis>();
+    //}
 
     // Update is called once per frame
     /// <summary>
@@ -65,14 +67,16 @@ public class GravityControl : MonoBehaviour
     /// </summary>
     void Update()
     {
-        innerTarget = cameraAxis.GravityTarget();
+        //innerTarget = cameraAxis.GravityTarget(); -modified by Hyukin
+        innerTarget = CameraMovement.GetInstance().GravityTarget();
 
         if (innerTarget) {
             innerTargetPos = innerTarget.position;
             innerTargetRotation = innerTarget.rotation;
         }
-        
-        targetTransform = cameraAxis.GetTarget();
+
+        //targetTransform = cameraAxis.GetTarget();
+        targetTransform = CameraMovement.GetInstance().GetTarget();
         
         if (targetTransform)
         {

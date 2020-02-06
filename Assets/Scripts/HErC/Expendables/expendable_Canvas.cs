@@ -8,7 +8,7 @@
  * ITS CONTENTS WILL HAVE TO BE MERGED INTO OTHER CLASSES THAT CONTROL INTERFACE!!!
  * 
  * Created November 14, 2019
- * Last Modified November 28, 2019
+ * Last Modified Jan 17, 2020 by Hyukin Kwon
  * 
  * - Reads all info from the mediator class (ChargeHandler)
  *      and updates its UI elements accordingly.
@@ -57,16 +57,36 @@ public class expendable_Canvas : MonoBehaviour
         //charge text
         if (!m_mech) m_mech = GameObject.FindObjectOfType<ChargeHandler>();
 
-        if (m_mech.Aiming)
+        //old code
+        //if (m_mech.Aiming)
+        //{
+        //    if (m_mech.TargetTransform == null) m_crossHairs.color = aimColors[1];
+        //    else {
+        //        //FUNCTIONALITY THAT ACCOUNTS FOR DIFFERENT TYPES OF TARGETS
+        //        if (m_mech.TargetTransform.GetComponent<Chargeable>() != null)
+        //        {
+        //            m_crossHairs.color = aimColors[2];
+        //        }
+        //        if (m_mech.TargetTransform.GetComponent<Moveable>() != null)
+        //        {
+        //            m_crossHairs.color = aimColors[4];
+        //        }
+        //    }
+        //}
+        //new code -modified by Hyukin
+
+        CameraMovement tempCam = CameraMovement.GetInstance();
+        if (tempCam.GetIsAiming())
         {
-            if (m_mech.TargetTransform == null) m_crossHairs.color = aimColors[1];
-            else {
+            if (tempCam.GetTarget() == null) m_crossHairs.color = aimColors[1];
+            else
+            {
                 //FUNCTIONALITY THAT ACCOUNTS FOR DIFFERENT TYPES OF TARGETS
-                if (m_mech.TargetTransform.GetComponent<Chargeable>() != null)
+                if (tempCam.GetTarget().GetComponent<Chargeable>() != null)
                 {
                     m_crossHairs.color = aimColors[2];
                 }
-                if (m_mech.TargetTransform.GetComponent<Moveable>() != null)
+                if (tempCam.GetTarget().GetComponent<Moveable>() != null)
                 {
                     m_crossHairs.color = aimColors[4];
                 }
