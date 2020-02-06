@@ -4,7 +4,7 @@
 * 
 * CameraMovement
 * Modified: 27 November 2019
-* Last Modified: 17 Jan 2020
+* Last Modified: 25 Jan 2020
 * 
 * Inherits from Monobehaviour
 *
@@ -98,7 +98,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        CameraAimingState();
+        //CameraAimingState();
         
         if(!m_isChangingState)
         {
