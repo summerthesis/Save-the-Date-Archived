@@ -54,7 +54,7 @@ public class NewHookMechT : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button2))
+        if (Input.GetKeyDown(KeyCode.E))
         {
 
             if (nearestHookPoint != null)

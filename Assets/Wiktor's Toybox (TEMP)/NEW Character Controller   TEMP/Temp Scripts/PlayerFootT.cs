@@ -11,7 +11,7 @@ public class PlayerFootT : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag != "Player" && !m_bIsGrounded && other.transform.tag != "HookPoint")
+        if (other.transform.tag != "Player" && !m_bIsGrounded)
         {
             m_bIsGrounded = true;
         }
@@ -19,7 +19,7 @@ public class PlayerFootT : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.tag != "Player" && other.transform.tag != "HookPoint")
+        if (other.transform.tag != "Player")
         {
             m_bIsGrounded = false;
         }

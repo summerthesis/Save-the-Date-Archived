@@ -63,8 +63,8 @@ public class PlayerMovementT : MonoBehaviour
 
     private void JumpRegular()
     {
-        //m_bIsGrounded = PlayerFoot.GetIsGrounded();
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1))) //&& m_bIsGrounded)
+        m_bIsGrounded = PlayerFoot.GetIsGrounded();
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && m_bIsGrounded)
         {
             Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
@@ -83,7 +83,7 @@ public class PlayerMovementT : MonoBehaviour
 
     private void ZoomInModeMove()
     {
-        //if (!m_bIsGrounded) return;
+        if (!m_bIsGrounded) return;
 
         if (m_fHorizontal > 0 && m_fVertical == 0)
             transform.Translate(Vector3.right * m_fMoveSpeed * fdt, Space.Self);
@@ -98,7 +98,7 @@ public class PlayerMovementT : MonoBehaviour
 
     private void MoveRegular()
     {
-        //if (!m_bIsGrounded) return;
+        if (!m_bIsGrounded) return;
 
         if (m_fVertical != 0 && m_fHorizontal == 0)
         {
@@ -126,7 +126,7 @@ public class PlayerMovementT : MonoBehaviour
 
     private void PlayerFacingRot()
     {
-        //if (!m_bIsGrounded) return;
+        if (!m_bIsGrounded) return;
 
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
             transform.rotation = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized * m_fRotSpeed * fdt);
