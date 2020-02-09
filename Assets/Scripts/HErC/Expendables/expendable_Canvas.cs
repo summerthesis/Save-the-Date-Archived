@@ -75,8 +75,8 @@ public class expendable_Canvas : MonoBehaviour
         //}
         //new code -modified by Hyukin
 
-        CameraMovement tempCam = CameraMovement.GetInstance();
-        if (tempCam.GetIsAiming())
+        CameraBehaviour tempCam = CameraBehaviour.GetInstance();
+        if (tempCam.GetIsZooming())
         {
             if (tempCam.GetTarget() == null) m_crossHairs.color = aimColors[1];
             else

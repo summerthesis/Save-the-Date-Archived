@@ -29,6 +29,12 @@
  *   //CHANGES IN DEC 05:
  * - Removed Gravity Gun functionality from this script, moved it to the
  *      GravityControl class
+ *  
+ *   //CHANGES IN FEB 09:
+ * - Removed ThunderCaster from Prefab. Particle system will have to be
+ *      implemented by artists
+ * - Reworked some of the functionality related to the camera and control 
+ *      system, since they were overhauled
  * 
  ********************************************************************/
 
@@ -46,13 +52,7 @@ public class ChargeHandler : MonoBehaviour
 
     //Camera component for target detection
     [SerializeField] private Camera camera;
-    //private CameraAxis cameraAxis; //new target tracking functionality - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
-    //public bool Aiming { get { return cameraAxis.GetIsAiming(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
     private Transform targetTransform;
-    // public Transform TargetTransform { get { return cameraAxis.GetTarget(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
-
-    //Particle system manager
-    private ThunderCaster thunderCaster; //(child's) thunder caster component
 
     /// <summary>
     /// Script init functions. Gets references to the components and targets
@@ -60,45 +60,34 @@ public class ChargeHandler : MonoBehaviour
     void Awake()
     {
         targetTransform = null;
-        //targetTracker = this.gameObject.GetComponent<TargetTracker>();
         chargeTracker = this.gameObject.GetComponent<ChargeTracker>();
     }
 
     /// <summary>
-    /// Gets the Thunder Caster component from the child
+    /// Does nothing anymore
     /// </summary>
     void Start()
     {
-        //may require some sort of assertion
-        thunderCaster = this.gameObject.GetComponentInChildren<ThunderCaster>();
+
     }
 
     /// <summary>
     /// Performs two basic operations:
     /// 1. Checks for a target in range (from Target Tracker)
-    /// 2. There being a target, updates the Thunder Caster's target information
-    ///     If the player presses a button with the target in range, 
-    ///     it exchanges the charges
+    /// 2. If the player presses a button with the target in range, it exchanges the charges
     /// 3. If there's no target in range, it nullifies the corresponding transforms
     /// </summary>
     void Update()
     {
-        targetTransform = CameraMovement.GetInstance().GetTarget(); // modified by Hyukin
-
-        UpdateTarget();
+        targetTransform = CameraBehaviour.GetInstance().GetTarget(); // modified by Hyukin
 
         if (targetTransform)
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Fire2"))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button4))
             {
                 ExchangeCharges();
             }
         }
-    }
-
-    void UpdateTarget()
-    {
-        thunderCaster.SetTarget(targetTransform);
     }
 
     /// <summary>
@@ -120,9 +109,9 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void ExchangeCharges() {
 
-        Chargeable temp =targetTransform.GetComponent<Chargeable>();
+        Chargeable temp = targetTransform.GetComponent<Chargeable>();
         if (temp)
-        {
+        {            
             if (temp.Charged && chargeTracker.CanRecharge)
             {
                 Absorb();
@@ -151,7 +140,6 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Absorb()
     {
-        thunderCaster.CastThunder();
         targetTransform.GetComponent<Chargeable>().ReturnCharge();
         chargeTracker.Recharge();
     }
@@ -164,7 +152,6 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Charge()
     {
-        thunderCaster.CastThunder();
         chargeTracker.Discharge();
         targetTransform.GetComponent<Chargeable>().Charge();
     }
