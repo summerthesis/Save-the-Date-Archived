@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Chargeable
+  - Platform
+  - CameraTarget
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - 
   - ThunderPhysics
   - GravityPhysics
-  - 
-  - 
+  - CameraTarget
+  - Player
   - 
   - 
   - 

@@ -46,10 +46,10 @@ public class ChargeHandler : MonoBehaviour
 
     //Camera component for target detection
     [SerializeField] private Camera camera;
-    private CameraAxis cameraAxis; //new target tracking functionality
-    public bool Aiming { get { return cameraAxis.GetIsAiming(); } }
+    //private CameraAxis cameraAxis; //new target tracking functionality - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
+    //public bool Aiming { get { return cameraAxis.GetIsAiming(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
     private Transform targetTransform;
-    public Transform TargetTransform { get { return cameraAxis.GetTarget(); } }
+    // public Transform TargetTransform { get { return cameraAxis.GetTarget(); } } - [DOESN'T NEED IT ANYMORE SINCE] CameraMovement is Singleton - Hyukin
 
     //Particle system manager
     private ThunderCaster thunderCaster; //(child's) thunder caster component
@@ -70,7 +70,6 @@ public class ChargeHandler : MonoBehaviour
     void Start()
     {
         //may require some sort of assertion
-        cameraAxis = camera.GetComponentInParent<CameraAxis>();
         thunderCaster = this.gameObject.GetComponentInChildren<ThunderCaster>();
     }
 
@@ -84,7 +83,7 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Update()
     {
-        targetTransform = cameraAxis.GetTarget();
+        targetTransform = CameraMovement.GetInstance().GetTarget(); // modified by Hyukin
 
         UpdateTarget();
 
