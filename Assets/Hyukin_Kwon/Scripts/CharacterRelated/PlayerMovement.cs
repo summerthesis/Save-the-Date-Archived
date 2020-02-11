@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject CameraBody;
     private PlayerFoot PlayerFoot;
     private GameObject CamPivot;
-    private float m_fCampPivotDis;
+    [SerializeField] float m_fCampPivotDis;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
@@ -74,14 +74,15 @@ public class PlayerMovement : MonoBehaviour
     private void SetCampPivotPos()
     {
         RaycastHit hit;
-
         if (Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.forward), out hit, m_fCampPivotDis))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.forward) * hit.distance, Color.yellow);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
         }
         else
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.forward) * m_fCampPivotDis, Color.cyan);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -m_fCampPivotDis), 20 * fdt);
         }
     }
 
