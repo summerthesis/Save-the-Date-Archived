@@ -18,6 +18,8 @@ public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
     private PlayerFoot PlayerFoot;
+    private GameObject CamPivot;
+    private float m_fCampPivotDis;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
@@ -26,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] bool m_bIsGrounded = true;
     [SerializeField] float m_JumpForce;
+    
 
     private float m_fHorizontal;
     private float m_fVertical;
@@ -42,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
     {
         CameraBody = GameObject.Find("CameraBody");
         PlayerFoot = GameObject.Find("PlayerFoot").GetComponent<PlayerFoot>();
+        CamPivot = GameObject.Find("CamPivot");
+        m_fCampPivotDis = CameraBehaviour.GetInstance().GetDistance();
         rigid = GetComponent<Rigidbody>();
         qTo = transform.rotation;
     }
@@ -52,6 +57,8 @@ public class PlayerMovement : MonoBehaviour
         m_fVertical = Input.GetAxis("Vertical");
         fdt = Time.fixedDeltaTime;
 
+        SetCampPivotPos();
+
         if (CameraBehaviour.GetInstance().GetIsZooming())
         {
             ZoomInModeMove();
@@ -61,6 +68,20 @@ public class PlayerMovement : MonoBehaviour
             PlayerFacingRot();
             MoveRegular();
             JumpRegular();
+        }
+    }
+
+    private void SetCampPivotPos()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.forward), out hit, m_fCampPivotDis))
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.forward) * hit.distance, Color.yellow);
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.forward) * m_fCampPivotDis, Color.cyan);
         }
     }
 
