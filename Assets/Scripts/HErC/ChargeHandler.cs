@@ -110,7 +110,7 @@ public class ChargeHandler : MonoBehaviour
     void ExchangeCharges() {
 
         Chargeable temp = targetTransform.GetComponent<Chargeable>();
-        if (temp)
+        if (temp && temp.enabled)
         {            
             if (temp.Charged && chargeTracker.CanRecharge)
             {

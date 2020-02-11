@@ -25,13 +25,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Chargeable : MonoBehaviour
-{    
+{
     //allows designers to choose whether the object will (or not) have a charge at the beginning
-    [SerializeField] private bool isCharged; 
+    [SerializeField] private bool isCharged;
     public bool Charged { get { return isCharged; } }
 
+    private void Update()
+    {
+
+    }
+
     /// <summary>
-    /// Updates "charged" status and assigns material's emission (turns on)
+    /// Updates "charged" status
     /// </summary>
     public void Charge()
     {
@@ -39,7 +44,7 @@ public class Chargeable : MonoBehaviour
     }
 
     /// <summary>
-    /// Assigns material's emission (turns off) and updates "charged" status
+    /// Updates "charged" status
     /// </summary>
     public void ReturnCharge()
     {
