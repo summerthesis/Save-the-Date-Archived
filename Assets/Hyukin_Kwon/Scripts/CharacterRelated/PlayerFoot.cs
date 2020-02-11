@@ -7,6 +7,7 @@
 * Last Modified: 11 Feb 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
+* Stair need to be tagged with "Stair"
 * *******************************************************/
 using System.Collections;
 using System.Collections.Generic;

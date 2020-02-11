@@ -9,6 +9,7 @@
 * Inherits from Monobehaviour
 *
 * new Player behaviour
+* Stair need to be tagged with "Stair"
 * *******************************************************/
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
-    private PlayerFoot PlayerFoot;
     private GameObject CamPivot;
     private float m_fCampPivotDis;
 
@@ -31,13 +31,16 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] bool m_bIsOnStair = false;
     
-
     private float m_fHorizontal;
     private float m_fVertical;
     private Quaternion qTo;
     private float fdt;
 
     private Rigidbody rigid;
+
+    float PrevY;
+
+    #region SetterAndGetter
 
     public void SetIsGround(bool isGround) { m_bIsGrounded = isGround; }
     public bool GetIsGround() { return m_bIsGrounded; }
@@ -47,10 +50,11 @@ public class PlayerMovement : MonoBehaviour
 
     public Vector3 GetOverallSpeed() { return m_fOverallSpeed; }
 
+    #endregion
+
     private void Start()
     {
         CameraBody = GameObject.Find("CameraBody");
-        PlayerFoot = GameObject.Find("PlayerFoot").GetComponent<PlayerFoot>();
         CamPivot = GameObject.Find("CamPivot");
         m_fCampPivotDis = CameraBehaviour.GetInstance().GetDistance();
         rigid = GetComponent<Rigidbody>();
@@ -63,14 +67,13 @@ public class PlayerMovement : MonoBehaviour
         m_fVertical = Input.GetAxis("Vertical");
         fdt = Time.fixedDeltaTime;
 
-        SetCampPivotPos();
-
         if (CameraBehaviour.GetInstance().GetIsZooming())
         {
             ZoomInModeMove();
         }
         else
         {
+            SetCampPivotPos();
             PlayerFacingRot();
             MoveRegular();
             JumpRegular();

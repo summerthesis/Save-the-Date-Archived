@@ -28,8 +28,6 @@ public class CameraBehaviour : MonoBehaviour
 
     private float m_fVertical;
     private float m_fHorizontal;
-    private float m_fLastHOrizontal = 0.0f; //this will store negative or positive number from m_fHorizontal.
-    private float m_fLastVertical = 0.0f;
 
     private float m_fMoveBackTimer = 2.0f;
     private float m_fCurMoveBackTimer = 0.0f;
@@ -43,10 +41,11 @@ public class CameraBehaviour : MonoBehaviour
     private Vector3 m_targetDir;
     private float fdt;
 
+    #region SetterAndGetter
     public bool GetIsZooming() { return m_bIsZooming; }
     public float GetDistance() { return m_fDistance; }
     public float GetMinDistance() { return m_fMinDistance; }
-
+    #endregion
     #region Make Singleton
     private static CameraBehaviour instance;
     public static CameraBehaviour GetInstance() { return instance; }
@@ -170,8 +169,6 @@ public class CameraBehaviour : MonoBehaviour
         {
             if (Vector3.Angle(m_targetDir, transform.forward) <= 1)
             {
-                m_fLastHOrizontal = 0;
-                m_fLastVertical = 0;
                 m_bIsMovingToPlayerBack = false;
                 m_targetDir = player.transform.forward;
                 Debug.Log("Stop Rotating Around!");
