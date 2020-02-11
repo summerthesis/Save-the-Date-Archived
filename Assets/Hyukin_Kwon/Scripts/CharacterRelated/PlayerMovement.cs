@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject CameraBody;
     private PlayerFoot PlayerFoot;
     private GameObject CamPivot;
-    [SerializeField] float m_fCampPivotDis;
+    private float m_fCampPivotDis;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;

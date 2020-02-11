@@ -34,10 +34,12 @@ public class CameraBehaviour : MonoBehaviour
     private float m_fMoveBackTimer = 2.0f;
     private float m_fCurMoveBackTimer = 0.0f;
     private bool m_bIsMoveBackTimerOn = false;
+    [SerializeField] float m_fCamMoveToPlayerBackSpeed; //speed of camera move to player's back when player is not moving;
 
     private bool m_bIsZooming = false;
     private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
+    [SerializeField] float m_fCamZoomSpeed; // speed of camera move to player's back when zoomed in or off.
     private Vector3 m_targetDir;
     private float fdt;
 
@@ -132,12 +134,12 @@ public class CameraBehaviour : MonoBehaviour
                 CamPivot.transform.position.y + heightFromPlayer,
                 CamPivot.transform.position.z);
 
-            transform.position = Vector3.MoveTowards(transform.position, target, 20 * fdt);
-
             if (Vector3.Distance(transform.position, target) <= 0.25f)
             {
                 m_bIsMoveBackTimerOn = false;
             }
+
+            transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
 
         if (m_fHorizontal == 0 && m_fVertical == 0)
@@ -197,7 +199,7 @@ public class CameraBehaviour : MonoBehaviour
                 new Vector3(CamZoomPivot.transform.position.x,
                 CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
                 CamZoomPivot.transform.position.z),
-                playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
+                m_fCamZoomSpeed * Time.deltaTime);
 
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
@@ -214,7 +216,7 @@ public class CameraBehaviour : MonoBehaviour
                 CamPivot.transform.position.z);
 
             transform.position = Vector3.MoveTowards(transform.position, target,
-                playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
+                m_fCamZoomSpeed * Time.deltaTime);
 
             if (Vector3.Distance(transform.position, target) <= 0.25f)
             {

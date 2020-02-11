@@ -1437,6 +1437,16 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2036761064607884642, guid: e11827c3a2a095f4ca8f40a37dbef0f0,
+        type: 3}
+      propertyPath: m_fCamZoomSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2036761064607884642, guid: e11827c3a2a095f4ca8f40a37dbef0f0,
+        type: 3}
+      propertyPath: m_fCamMoveToPlayerBackSpeed
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 2036761065773813193, guid: e11827c3a2a095f4ca8f40a37dbef0f0,
         type: 3}
       propertyPath: m_Layer
