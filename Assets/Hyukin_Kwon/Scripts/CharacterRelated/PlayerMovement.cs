@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.forward), out hit, m_fCampPivotDis))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.forward) * hit.distance, Color.yellow);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance - 0.2f), 20 * fdt);
         }
         else
         {
@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -m_fCampPivotDis), 20 * fdt);
         }
     }
-
+        
     private void JumpRegular()
     {
         //m_bIsGrounded = PlayerFoot.GetIsGrounded();

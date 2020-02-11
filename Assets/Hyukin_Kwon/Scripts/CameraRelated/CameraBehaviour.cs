@@ -31,6 +31,10 @@ public class CameraBehaviour : MonoBehaviour
     private float m_fLastHOrizontal = 0.0f; //this will store negative or positive number from m_fHorizontal.
     private float m_fLastVertical = 0.0f;
 
+    private float m_fMoveBackTimer = 2.0f;
+    private float m_fCurMoveBackTimer = 0.0f;
+    private bool m_bIsMoveBackTimerOn = false;
+
     private bool m_bIsZooming = false;
     private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
@@ -122,9 +126,30 @@ public class CameraBehaviour : MonoBehaviour
 
     private void MoveToPlayerBack() //Move to back of character when player is moving for certain amount of time 
     {
+        if (m_bIsMoveBackTimerOn)
+        {
+            Vector3 target = new Vector3(CamPivot.transform.position.x,
+                CamPivot.transform.position.y + heightFromPlayer,
+                CamPivot.transform.position.z);
+
+            transform.position = Vector3.MoveTowards(transform.position, target, 20 * fdt);
+
+            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            {
+                m_bIsMoveBackTimerOn = false;
+            }
+        }
 
         if (m_fHorizontal == 0 && m_fVertical == 0)
         {
+            if(!m_bIsMoveBackTimerOn)
+                m_fCurMoveBackTimer += fdt;
+            if(m_fCurMoveBackTimer >= m_fMoveBackTimer)
+            {
+                m_bIsMoveBackTimerOn = true;
+                m_fCurMoveBackTimer = 0.0f;
+            }
+
             if (Input.GetKey(KeyCode.B) || Input.GetKey(KeyCode.Joystick1Button3))
             {
                 if (!m_bIsMovingToPlayerBack)
