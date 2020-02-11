@@ -15,8 +15,13 @@ using UnityEngine;
 public class PlayerFoot : MonoBehaviour
 {
     [SerializeField] GameObject Player;
+    PlayerMovement PlayerMovementCS;
     [SerializeField] float rayDis;
 
+    private void Start()
+    {
+        PlayerMovementCS = Player.GetComponent<PlayerMovement>();
+    }
     private void Update()
     {
         CheckGround();
@@ -32,9 +37,13 @@ public class PlayerFoot : MonoBehaviour
             {
                 if(hit.transform.tag == "Stair")
                 {
-                    
+                    PlayerMovementCS.SetIsOnStair(true);
                 }
-                Player.GetComponent<PlayerMovement>().SetIsGround(true);
+                else if(hit.transform.tag != "Stair")
+                {
+                    PlayerMovementCS.SetIsOnStair(false);
+                }
+                PlayerMovementCS.SetIsGround(true);
             }
 
         }
