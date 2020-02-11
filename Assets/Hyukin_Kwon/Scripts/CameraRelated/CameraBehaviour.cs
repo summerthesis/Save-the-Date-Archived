@@ -28,18 +28,24 @@ public class CameraBehaviour : MonoBehaviour
 
     private float m_fVertical;
     private float m_fHorizontal;
-    private float m_fLastHOrizontal = 0.0f; //this will store negative or positive number from m_fHorizontal.
-    private float m_fLastVertical = 0.0f;
+
+    private float m_fMoveBackTimer = 2.0f;
+    private float m_fCurMoveBackTimer = 0.0f;
+    private bool m_bIsMoveBackTimerOn = false;
+    [SerializeField] float m_fCamMoveToPlayerBackSpeed; //speed of camera move to player's back when player is not moving;
 
     private bool m_bIsZooming = false;
+    private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
+    [SerializeField] float m_fCamZoomSpeed; // speed of camera move to player's back when zoomed in or off.
     private Vector3 m_targetDir;
     private float fdt;
 
+    #region SetterAndGetter
     public bool GetIsZooming() { return m_bIsZooming; }
     public float GetDistance() { return m_fDistance; }
     public float GetMinDistance() { return m_fMinDistance; }
-
+    #endregion
     #region Make Singleton
     private static CameraBehaviour instance;
     public static CameraBehaviour GetInstance() { return instance; }
@@ -83,7 +89,7 @@ public class CameraBehaviour : MonoBehaviour
             Rotate();
             MoveToPlayerBack();
         }
-        
+
     }
 
     private void Rotate()
@@ -102,7 +108,6 @@ public class CameraBehaviour : MonoBehaviour
     private void MoveToPlayer()
     {
         float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
-        Debug.DrawRay(player.transform.position, -player.transform.forward * m_fDistance, Color.red);
         Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
 
         if (distance > m_fDistance)
@@ -111,17 +116,41 @@ public class CameraBehaviour : MonoBehaviour
                 new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
                 playerMovementCs.GetMoveSpeed() * fdt);
         }
-        else if(distance < m_fMinDistance && distance > 0)
+        else if (distance < m_fMinDistance && distance > 0)
         {
-            transform.Translate(-Vector3.forward * player.GetComponent<PlayerMovement>().GetMoveSpeed() * fdt);
+            Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
+            tempSpeed.x /= 16;
+            Debug.Log(tempSpeed.magnitude);
+            transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
         }
     }
 
     private void MoveToPlayerBack() //Move to back of character when player is moving for certain amount of time 
     {
-        
+        if (m_bIsMoveBackTimerOn)
+        {
+            Vector3 target = new Vector3(CamPivot.transform.position.x,
+                CamPivot.transform.position.y + heightFromPlayer,
+                CamPivot.transform.position.z);
+
+            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            {
+                m_bIsMoveBackTimerOn = false;
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
+        }
+
         if (m_fHorizontal == 0 && m_fVertical == 0)
         {
+            if(!m_bIsMoveBackTimerOn)
+                m_fCurMoveBackTimer += fdt;
+            if(m_fCurMoveBackTimer >= m_fMoveBackTimer)
+            {
+                m_bIsMoveBackTimerOn = true;
+                m_fCurMoveBackTimer = 0.0f;
+            }
+
             if (Input.GetKey(KeyCode.B) || Input.GetKey(KeyCode.Joystick1Button3))
             {
                 if (!m_bIsMovingToPlayerBack)
@@ -136,12 +165,10 @@ public class CameraBehaviour : MonoBehaviour
             m_bIsMovingToPlayerBack = false;
         }
 
-        if(m_bIsMovingToPlayerBack)
+        if (m_bIsMovingToPlayerBack)
         {
             if (Vector3.Angle(m_targetDir, transform.forward) <= 1)
             {
-                m_fLastHOrizontal = 0;
-                m_fLastVertical = 0;
                 m_bIsMovingToPlayerBack = false;
                 m_targetDir = player.transform.forward;
                 Debug.Log("Stop Rotating Around!");
@@ -154,29 +181,45 @@ public class CameraBehaviour : MonoBehaviour
                 CamPivot.transform.position.y + heightFromPlayer * 0.6f,
                 CamPivot.transform.position.z),
                 45 * Time.deltaTime);
-                
+
             }
         }
     }
 
     private void ZoomInMode()
     {
-        if(Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Z))
         {
             m_bIsZooming = true;
 
-             transform.position = Vector3.MoveTowards(transform.position,
-            new Vector3(CamZoomPivot.transform.position.x, 
-            CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
-            CamZoomPivot.transform.position.z),
-            playerMovementCs.GetMoveSpeed() * 10.0f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(CamZoomPivot.transform.position.x,
+                CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
+                CamZoomPivot.transform.position.z),
+                m_fCamZoomSpeed * Time.deltaTime);
 
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
         }
-        else if(!Input.GetKey(KeyCode.Joystick1Button0))
+        else if (!Input.GetKey(KeyCode.Joystick1Button0) && m_bIsZooming)
         {
-            m_bIsZooming = false;
+            m_bISZoomingBack = true;
+        }
+
+        if(m_bISZoomingBack)
+        {
+            Vector3 target = new Vector3(CamPivot.transform.position.x,
+                CamPivot.transform.position.y + heightFromPlayer,
+                CamPivot.transform.position.z);
+
+            transform.position = Vector3.MoveTowards(transform.position, target,
+                m_fCamZoomSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            {
+                m_bISZoomingBack = false;
+                m_bIsZooming = false;
+            }
         }
     }
 

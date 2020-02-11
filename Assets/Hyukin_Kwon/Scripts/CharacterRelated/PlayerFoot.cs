@@ -1,27 +1,56 @@
-﻿using System.Collections;
+﻿/*********************************************************
+* Hyukin Kwon
+* Save The Date
+* 
+* PlayerFoot
+* Modified: 25 Jan 2020 - Hyukin
+* Last Modified: 11 Feb 2020 - Hyukin
+* 
+* Inherits from Monobehaviour
+* Stair need to be tagged with "Stair"
+* *******************************************************/
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFoot : MonoBehaviour
 {
-    private bool m_bIsGrounded;
+    [SerializeField] GameObject Player;
+    PlayerMovement PlayerMovementCS;
+    [SerializeField] float rayDis;
 
-    public bool GetIsGrounded() { return m_bIsGrounded; }
-    public void SetIsGrounded(bool b) { m_bIsGrounded = b; }
-
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        if (other.transform.tag != "Player" && !m_bIsGrounded)
-        {
-            m_bIsGrounded = true;
-        }
+        PlayerMovementCS = Player.GetComponent<PlayerMovement>();
+    }
+    private void Update()
+    {
+        CheckGround();
     }
 
-    private void OnTriggerExit(Collider other)
+    private void CheckGround()
     {
-        if (other.transform.tag != "Player")
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(-Vector3.up), out hit, rayDis))
         {
-            m_bIsGrounded = false;
+            Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.up) * rayDis, Color.green);
+            if (hit.transform.tag != "Player")
+            {
+                if(hit.transform.tag == "Stair")
+                {
+                    PlayerMovementCS.SetIsOnStair(true);
+                }
+                else if(hit.transform.tag != "Stair")
+                {
+                    PlayerMovementCS.SetIsOnStair(false);
+                }
+                PlayerMovementCS.SetIsGround(true);
+            }
+
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.up) * rayDis, Color.red);
         }
     }
 }
