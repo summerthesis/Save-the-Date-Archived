@@ -14,11 +14,8 @@ using UnityEngine;
 
 public class PlayerFoot : MonoBehaviour
 {
-    private bool m_bIsGrounded;
+    [SerializeField] GameObject Player;
     [SerializeField] float rayDis;
-
-    public bool GetIsGrounded() { return m_bIsGrounded; }
-    public void SetIsGrounded(bool b) { m_bIsGrounded = b; }
 
     private void Update()
     {
@@ -33,7 +30,11 @@ public class PlayerFoot : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(-Vector3.up) * rayDis, Color.green);
             if (hit.transform.tag != "Player")
             {
-                m_bIsGrounded = true;
+                if(hit.transform.tag == "Stair")
+                {
+                    
+                }
+                Player.GetComponent<PlayerMovement>().SetIsGround(true);
             }
 
         }

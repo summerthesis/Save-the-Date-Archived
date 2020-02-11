@@ -28,6 +28,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] bool m_bIsGrounded = true;
     [SerializeField] float m_JumpForce;
+
+    [SerializeField] bool m_bIsOnStair = false;
     
 
     private float m_fHorizontal;
@@ -37,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rigid;
 
+    public void SetIsGround(bool isGround) { m_bIsGrounded = isGround; }
+    public bool GetIsGround() { return m_bIsGrounded; }
+    public void SetIsOnStair(bool isStair) { m_bIsOnStair = isStair; }
+    public bool GetIsOnStair() { return m_bIsOnStair; }
     public float GetMoveSpeed() { return m_fMoveSpeed; }
 
     public Vector3 GetOverallSpeed() { return m_fOverallSpeed; }
@@ -89,11 +95,11 @@ public class PlayerMovement : MonoBehaviour
     private void JumpRegular()
     {
         //m_bIsGrounded = PlayerFoot.GetIsGrounded();
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)))//&& m_bIsGrounded)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && m_bIsGrounded)
         {
             Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
-            PlayerFoot.SetIsGrounded(false);
+            m_bIsGrounded = false;
 
             if (m_fVertical != 0)
             {
