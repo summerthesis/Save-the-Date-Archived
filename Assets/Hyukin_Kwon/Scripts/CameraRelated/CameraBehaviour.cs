@@ -4,11 +4,14 @@
 * 
 * CameraBehaviour
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 04 Feb 2020 - Hyukin
+* Last Modified: 09 Feb 2020 - HErC
 * 
 * Inherits from Monobehaviour
 *
 * new Camera behaviour for the controller
+* 
+* Feb 9 mod: Re-added GetTarget() functionality to indicate
+*            whether the targeted objects are chargeable
 * *******************************************************/
 using System.Collections;
 using System.Collections.Generic;
@@ -40,6 +43,8 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] float m_fCamZoomSpeed; // speed of camera move to player's back when zoomed in or off.
     private Vector3 m_targetDir;
     private float fdt;
+    //Added by HErC:
+    [SerializeField] private float m_fRaycastDistance;//Max distance for target finding
 
     #region SetterAndGetter
     public bool GetIsZooming() { return m_bIsZooming; }
@@ -221,6 +226,29 @@ public class CameraBehaviour : MonoBehaviour
                 m_bIsZooming = false;
             }
         }
+    }
+
+    /// <summary>
+    /// Re-addition by HErC:
+    /// Get Target function: Raycasts from the camera to the target at the center of the viewport.
+    /// This function is aimed at indicating whether the target can be charged or moved
+    /// It works with Physics Layers!!!
+    /// It DOES have some leftover implementation for the Gravity Gun
+    /// </summary>
+    /// <returns></returns>
+    public Transform GetTarget() {
+
+        Transform camTransform = Camera.main.transform;
+        int thunderLayer = 1 << 8;
+        int gravityLayer = 1 << 9; //maintained
+        int layers = thunderLayer + gravityLayer;
+        RaycastHit tempTarget;
+
+        if (Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fRaycastDistance, layers, QueryTriggerInteraction.Ignore)) {
+            return tempTarget.transform;
+        }
+
+        return null;
     }
 
 }
