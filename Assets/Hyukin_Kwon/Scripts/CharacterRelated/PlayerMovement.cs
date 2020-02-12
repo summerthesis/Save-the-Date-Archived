@@ -30,15 +30,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float m_JumpForce;
 
     [SerializeField] bool m_bIsOnStair = false;
-    
+
     private float m_fHorizontal;
     private float m_fVertical;
     private Quaternion qTo;
     private float fdt;
 
     private Rigidbody rigid;
-
-    float PrevY;
+    [SerializeField] float rayDis; //for ground checking
 
     #region SetterAndGetter
 
@@ -67,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         m_fVertical = Input.GetAxis("Vertical");
         fdt = Time.fixedDeltaTime;
 
+        CheckGround();
         if (CameraBehaviour.GetInstance().GetIsZooming())
         {
             ZoomInModeMove();
@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -m_fCampPivotDis), 20 * fdt);
         }
     }
-        
+
     private void JumpRegular()
     {
         //m_bIsGrounded = PlayerFoot.GetIsGrounded();
@@ -102,7 +102,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
-            m_bIsGrounded = false;
 
             if (m_fVertical != 0)
             {
@@ -179,5 +178,22 @@ public class PlayerMovement : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, qTo, m_fRotSpeed * fdt);
     }
+    private void CheckGround()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDis))
+        {
+            Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.green);
+            m_bIsGrounded = true;
+            Debug.Log("On Ground");
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.red);
+            Debug.Log("On air");
 
+            m_bIsGrounded = false;
+        }
+
+    }
 }
