@@ -193,7 +193,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void ZoomInMode()
     {
-        if (Input.GetKey(KeyCode.Joystick1Button0) || Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Joystick1Button4) || Input.GetKey(KeyCode.Z))
         {
             m_bIsZooming = true;
 
@@ -206,7 +206,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
         }
-        else if (!Input.GetKey(KeyCode.Joystick1Button0) && m_bIsZooming)
+        else if (!Input.GetKey(KeyCode.Joystick1Button4) && m_bIsZooming)
         {
             m_bISZoomingBack = true;
         }

@@ -39,6 +39,12 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rigid;
     [SerializeField] float rayDis; //for ground checking
 
+    #region Player Input Action
+    PlayerInputAction inputAction;
+    Vector2 movementInput; 
+
+    #endregion
+
     #region SetterAndGetter
 
     public void SetIsGround(bool isGround) { m_bIsGrounded = isGround; }
@@ -51,6 +57,12 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
+    private void Awake()
+    {
+        inputAction = new PlayerInputAction();
+        inputAction.PlayerControls.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+    }
+
     private void Start()
     {
         CameraBody = GameObject.Find("CameraBody");
@@ -62,8 +74,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
+        m_fHorizontal = movementInput.x;
+        m_fVertical = movementInput.y;
         fdt = Time.fixedDeltaTime;
 
         CheckGround();
@@ -97,10 +109,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpRegular()
     {
-        //m_bIsGrounded = PlayerFoot.GetIsGrounded();
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && m_bIsGrounded)
         {
-            Debug.Log("Jump");
             rigid.AddForce(Vector3.up * m_JumpForce);
 
             if (m_fVertical != 0)
@@ -126,8 +136,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void MoveRegular()
     {
-        //if (!m_bIsGrounded) return;
-
         if (m_fVertical == 0 && m_fHorizontal != 0)
             m_fOverallSpeed.x = m_fHorizontal * m_fMoveSpeed * 10;
         else if (m_fVertical != 0 && m_fHorizontal == 0)
@@ -138,7 +146,6 @@ public class PlayerMovement : MonoBehaviour
             m_fOverallSpeed.z = Mathf.Abs(m_fVertical) * m_fMoveSpeed * 5;
         }
         m_fOverallSpeed = m_fOverallSpeed.normalized;
-        //Debug.Log(m_fOverallSpeed);
 
         if (m_fVertical != 0 && m_fHorizontal == 0)
         {
@@ -157,8 +164,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void PlayerFacingRot()
     {
-        //if (!m_bIsGrounded) return;
-
         if (m_fHorizontal > 0.2f && m_fVertical > 0.1f)
             qTo = Quaternion.LookRotation((CameraBody.transform.forward + CameraBody.transform.right).normalized);
         else if (m_fHorizontal > 0.2f && m_fVertical < -0.1f)
@@ -194,6 +199,15 @@ public class PlayerMovement : MonoBehaviour
 
             m_bIsGrounded = false;
         }
+    }
 
+    private void OnEnable()
+    {
+        inputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputAction.Disable();
     }
 }
