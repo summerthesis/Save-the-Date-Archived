@@ -132,9 +132,13 @@ public class CameraBehaviour : MonoBehaviour
             {
                 m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
                 if (rotateInput.x > 0)
+                {
                     transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
+                }
                 else if (rotateInput.x < 0)
+                {
                     transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
+                }
             }
             if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f)
             {
@@ -152,7 +156,6 @@ public class CameraBehaviour : MonoBehaviour
                 }
             }
         }
-
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
             heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
 
@@ -170,7 +173,7 @@ public class CameraBehaviour : MonoBehaviour
     private void MoveToPlayer()
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
-        Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
+        //Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
 
         if (distance > m_fDistance)
         {

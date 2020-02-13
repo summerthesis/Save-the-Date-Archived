@@ -101,13 +101,22 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, distance))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * hit.distance, Color.yellow);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance - 0.2f), 20 * fdt);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance + 0.3f), 20 * fdt);
         }
         else
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * distance, Color.cyan);
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
         }
+
+        Vector3 dir = (CameraBehaviour.GetInstance().transform.position - transform.position).normalized;
+        distance = Vector3.Distance(transform.position,CameraBehaviour.GetInstance().transform.position);
+        Debug.DrawRay(transform.position, dir * distance, Color.red);
+        if (Physics.Raycast(transform.position, dir, out hit, distance))
+        {
+            
+        }
+
     }
 
     private void JumpRegular()
