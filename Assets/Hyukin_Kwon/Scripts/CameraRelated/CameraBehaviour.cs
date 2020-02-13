@@ -22,6 +22,7 @@ public class CameraBehaviour : MonoBehaviour
     // ** CamPivot --> Set position of z to -m_fDistance manually in the editor **...
     private GameObject CamPivot;
     private GameObject CamZoomPivot;
+    private GameObject CamRotPivot;
     private GameObject player;
     private PlayerMovement playerMovementCs;
     public float m_fDistanceOrigin;
@@ -128,6 +129,7 @@ public class CameraBehaviour : MonoBehaviour
     private void Rotate()
     {
         RaycastHit hit;
+        float maxHeight = heightFromPlayerOrigin * 2.5f;
         if (rotateInput != Vector2.zero)
         {
             if (playerMoveAxis.x == 0)
@@ -148,14 +150,14 @@ public class CameraBehaviour : MonoBehaviour
                 {
                     heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
                 }
-                else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 3))
+                else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight))
                 {
                     if (heightFromPlayer < hit.distance)
                     {
                         heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
                     }
                 }
-                else if (rotateInput.y > 0.2f && heightFromPlayer <= heightFromPlayerOrigin * 3)
+                else if (rotateInput.y > 0.2f && heightFromPlayer <= maxHeight)
                 {
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
                 }              
@@ -166,7 +168,7 @@ public class CameraBehaviour : MonoBehaviour
             heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
         }
              
-        else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 3) ||
+        else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight) ||
             Physics.Raycast(new Vector3(transform.position.x, player.transform.position.y, transform.position.z), Vector3.up, out hit, heightFromPlayerOrigin * 2))
         {
             if (heightFromPlayer > hit.distance)
