@@ -197,7 +197,8 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.red);
-            m_bIsGrounded = false;
+            if(!CameraBehaviour.GetInstance().zoomInput)
+                m_bIsGrounded = false;
         }
     }
 

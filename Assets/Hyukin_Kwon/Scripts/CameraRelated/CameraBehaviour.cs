@@ -52,7 +52,7 @@ public class CameraBehaviour : MonoBehaviour
 
     #region Camera input Controls
     CameraInputAction inputAction;
-    bool zoomInput;
+    public bool zoomInput;
     bool resetInput;
     Vector2 rotateInput;
     #endregion
