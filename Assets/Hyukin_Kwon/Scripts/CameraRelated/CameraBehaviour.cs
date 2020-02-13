@@ -22,7 +22,7 @@ public class CameraBehaviour : MonoBehaviour
     // ** CamPivot --> Set position of z to -m_fDistance manually in the editor **...
     private GameObject CamPivot;
     private GameObject CamZoomPivot;
-    private GameObject CamRotPivot;
+    private GameObject CamZoomtargetView;
     private GameObject player;
     private PlayerMovement playerMovementCs;
     public float m_fDistanceOrigin;
@@ -97,6 +97,7 @@ public class CameraBehaviour : MonoBehaviour
         CamPivot = GameObject.Find("CamPivot");
         CamZoomPivot = GameObject.Find("CamZoomPivot");
         player = GameObject.FindGameObjectWithTag("Player");
+        CamZoomtargetView = GameObject.Find("CamZoomtargetView");
         playerMovementCs = player.GetComponent<PlayerMovement>();
         heightFromPlayerOrigin = heightFromPlayer;
         m_fDistanceOrigin = m_fDistance;
@@ -120,7 +121,7 @@ public class CameraBehaviour : MonoBehaviour
         {
             MoveToPlayer();
             Rotate();
-            //MoveToPlayerBack(); // I don't really know if you need this function try to put it back and decide which looks better.
+            //MoveToPlayerBack();
             Reset();
         }
 
@@ -164,33 +165,25 @@ public class CameraBehaviour : MonoBehaviour
             }
         }
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
-        {
             heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
-        }
-             
         else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight) ||
             Physics.Raycast(new Vector3(transform.position.x, player.transform.position.y, transform.position.z), Vector3.up, out hit, heightFromPlayerOrigin * 2))
-        {
             if (heightFromPlayer > hit.distance)
-            {
                 heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
-            }
-        }
-
 
         transform.position = Vector3.MoveTowards(transform.position,
             new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
             playerMovementCs.GetMoveSpeed() * fdt);
-
-        transform.rotation = new Quaternion();
-        Camera.main.transform.rotation = new Quaternion();
+      
         Vector3 targetPostition = new Vector3(player.transform.position.x,
                                         transform.position.y,
                                         player.transform.position.z);
+        transform.rotation = new Quaternion();
+        Camera.main.transform.rotation = new Quaternion();
         transform.LookAt(targetPostition);
         Camera.main.transform.rotation = transform.rotation;
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
-        Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);
+        Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);   
     }
 
     private void MoveToPlayer()
@@ -225,6 +218,7 @@ public class CameraBehaviour : MonoBehaviour
     {
         if (m_bIsMoveBackTimerOn)
         {
+            heightFromPlayer = heightFromPlayerOrigin;
             Vector3 target = new Vector3(CamPivot.transform.position.x,
                 CamPivot.transform.position.y + heightFromPlayer,
                 CamPivot.transform.position.z);
@@ -237,7 +231,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
 
-        if (playerMoveAxis.x == 0 && playerMoveAxis.y == 0)
+        if (playerMoveAxis == Vector2.zero && rotateInput == Vector2.zero)
         {
             if(!m_bIsMoveBackTimerOn)
                 m_fCurMoveBackTimer += fdt;
@@ -330,12 +324,12 @@ public class CameraBehaviour : MonoBehaviour
             //step 3: move to zoom point
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamZoomPivot.transform.position.x,
-                CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
+                CamZoomPivot.transform.position.y,
                 CamZoomPivot.transform.position.z),
                 m_fCamZoomSpeed * Time.deltaTime);
 
-            transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
-            Camera.main.transform.LookAt(player.transform);
+            transform.LookAt(CamZoomtargetView.transform);
+            Camera.main.transform.LookAt(CamZoomtargetView.transform);
         }
         else if (!zoomInput && m_bIsZooming) //step 4: stop zooming
         {
