@@ -8,6 +8,7 @@ TagManager:
   - Platform
   - CameraTarget
   - Stair
+  - Camera
   layers:
   - Default
   - TransparentFX

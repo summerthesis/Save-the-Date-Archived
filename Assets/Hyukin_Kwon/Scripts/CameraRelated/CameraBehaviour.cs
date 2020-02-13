@@ -24,6 +24,8 @@ public class CameraBehaviour : MonoBehaviour
     private GameObject CamZoomPivot;
     private GameObject player;
     private PlayerMovement playerMovementCs;
+    public float m_fDistanceOrigin;
+    public float m_fZoomDisOrigin;
     [SerializeField] float m_fDistance; //distance limit when player moving forward
     [SerializeField] float m_fMinDistance; //distance limit when player moving backward
     [SerializeField] float m_fCamRotateSpeed;
@@ -55,6 +57,7 @@ public class CameraBehaviour : MonoBehaviour
     public bool zoomInput;
     bool resetInput;
     Vector2 rotateInput;
+    GameObject transparencyObj;
     #endregion
 
     #region SetterAndGetter
@@ -94,6 +97,8 @@ public class CameraBehaviour : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovementCs = player.GetComponent<PlayerMovement>();
         heightFromPlayerOrigin = heightFromPlayer;
+        m_fDistanceOrigin = m_fDistance;
+        m_fZoomDisOrigin = Mathf.Abs(CamZoomPivot.transform.localPosition.z);
     }
 
     private void Update()
@@ -109,6 +114,7 @@ public class CameraBehaviour : MonoBehaviour
         camRotAxis.x = rotateInput.x;
         camRotAxis.y = rotateInput.y;
         fdt = Time.fixedDeltaTime;
+        //SetTransparency();
         if (!m_bIsZooming)
         {
             MoveToPlayer();
@@ -250,8 +256,19 @@ public class CameraBehaviour : MonoBehaviour
     private void Reset()
     {
         if ((playerMoveAxis.x == 0 && playerMoveAxis.y == 0 && resetInput))
+        {
             m_bIsReseting = true;
-
+            RaycastHit hit;
+            if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.back), out hit, m_fDistanceOrigin))
+            {
+                CamPivot.transform.localPosition = new Vector3(CamPivot.transform.localPosition.x, CamPivot.transform.localPosition.y, -hit.distance);
+            }
+            else
+            {
+                CamPivot.transform.localPosition = new Vector3(CamPivot.transform.localPosition.x, CamPivot.transform.localPosition.y, -m_fDistanceOrigin);
+            }
+        }
+          
         if (m_bIsReseting)
         {
             Vector3 target = new Vector3(CamPivot.transform.position.x,
@@ -264,11 +281,6 @@ public class CameraBehaviour : MonoBehaviour
             }
             transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
-
-        //if (Vector3.Distance(player.transform.position, transform.position) > m_fDistance * 2)
-        //    GetComponent<SphereCollider>().isTrigger = true;
-        //else
-        //    GetComponent<SphereCollider>().isTrigger = false;
     }
 
     private void ZoomInMode()
@@ -276,6 +288,15 @@ public class CameraBehaviour : MonoBehaviour
         if (zoomInput)
         {
             m_bIsZooming = true;
+            RaycastHit hit;
+            if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.back), out hit, m_fZoomDisOrigin))
+            {
+                CamZoomPivot.transform.localPosition = new Vector3(CamZoomPivot.transform.localPosition.x, CamZoomPivot.transform.localPosition.y, -hit.distance);
+            }
+            else
+            {
+                CamZoomPivot.transform.localPosition = new Vector3(CamZoomPivot.transform.localPosition.x, CamZoomPivot.transform.localPosition.y, -m_fZoomDisOrigin);
+            }
 
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamZoomPivot.transform.position.x,
@@ -304,6 +325,31 @@ public class CameraBehaviour : MonoBehaviour
             {
                 m_bISZoomingBack = false;
                 m_bIsZooming = false;
+            }
+        }
+    }
+
+    private void SetTransparency()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(player.transform.position, transform.position - player.transform.position, out hit, m_fDistanceOrigin))
+        {
+            if (hit.transform.tag != "Camera")
+            {
+                transparencyObj = hit.transform.gameObject;
+                Debug.Log("hit something: " + hit.transform.gameObject);
+                Color color = transparencyObj.GetComponent<MeshRenderer>().material.color;
+                color.a = 0.5f;
+                transparencyObj.GetComponent<MeshRenderer>().material.color = color;
+            }
+        }
+        else
+        {
+            if (transparencyObj != null)
+            {
+                Color color = transparencyObj.GetComponent<MeshRenderer>().material.color;
+                color.a = 1;
+                transparencyObj.GetComponent<MeshRenderer>().material.color = color;
             }
         }
     }
