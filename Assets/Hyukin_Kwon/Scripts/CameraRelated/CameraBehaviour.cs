@@ -30,6 +30,7 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] bool m_bCamRotateDirOnX; //use this to flip the roation direction;
 
     private float heightFromPlayer = 2.5f;
+    private float heightFromPlayerOrigin;
 
     private Vector2 playerMoveAxis = Vector2.zero;
     private Vector2 camRotAxis = Vector2.zero;
@@ -92,6 +93,7 @@ public class CameraBehaviour : MonoBehaviour
         CamZoomPivot = GameObject.Find("CamZoomPivot");
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovementCs = player.GetComponent<PlayerMovement>();
+        heightFromPlayerOrigin = heightFromPlayer;
     }
 
     private void Update()
@@ -147,7 +149,18 @@ public class CameraBehaviour : MonoBehaviour
                     transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
             }
         }
-        
+        if(rotateInput.y > 0 && heightFromPlayer <= heightFromPlayerOrigin * 3)
+        {
+            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+        }
+        else if(rotateInput.y < 0 && heightFromPlayer >= heightFromPlayerOrigin / 5)
+        {
+            heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+        }
+        else if(rotateInput.y == 0)
+        {
+            heightFromPlayer = heightFromPlayerOrigin;
+        }
     }
 
     private void MoveToPlayer()
