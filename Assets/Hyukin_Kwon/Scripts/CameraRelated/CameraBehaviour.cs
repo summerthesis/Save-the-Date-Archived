@@ -292,11 +292,12 @@ public class CameraBehaviour : MonoBehaviour
 
     private void ZoomInMode()
     {
-        if (zoomInput)
+        if (zoomInput) //step 1: key pressed
         {
             m_bIsZooming = true;
             RaycastHit hit;
-            if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.back), out hit, m_fZoomDisOrigin))
+            //step 2: shoot raycast to check if there is any object between zoom pivot point and player -> if there is make zoom pivot point closer to player
+            if (Physics.Raycast(player.transform.position, transform.TransformDirection(Vector3.back), out hit, m_fZoomDisOrigin)) 
             {
                 CamZoomPivot.transform.localPosition = new Vector3(CamZoomPivot.transform.localPosition.x, CamZoomPivot.transform.localPosition.y, -hit.distance);
             }
@@ -305,6 +306,7 @@ public class CameraBehaviour : MonoBehaviour
                 CamZoomPivot.transform.localPosition = new Vector3(CamZoomPivot.transform.localPosition.x, CamZoomPivot.transform.localPosition.y, -m_fZoomDisOrigin);
             }
 
+            //step 3: move to zoom point
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamZoomPivot.transform.position.x,
                 CamZoomPivot.transform.position.y + heightFromPlayer * 0.6f,
@@ -314,12 +316,12 @@ public class CameraBehaviour : MonoBehaviour
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
         }
-        else if (!zoomInput && m_bIsZooming)
+        else if (!zoomInput && m_bIsZooming) //step 4: stop zooming
         {
             m_bISZoomingBack = true;
         }
 
-        if (m_bISZoomingBack)
+        if (m_bISZoomingBack) // step 5: move to Cam pivot point;
         {
             Vector3 target = new Vector3(CamPivot.transform.position.x,
                 CamPivot.transform.position.y + heightFromPlayer,
