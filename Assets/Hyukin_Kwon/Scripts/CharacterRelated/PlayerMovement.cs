@@ -114,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(transform.position, dir * distance, Color.red);
         if (Physics.Raycast(transform.position, dir, out hit, distance))
         {
-            
+            //CameraBehaviour.GetInstance().heightFromPlayer  = hit
         }
 
     }

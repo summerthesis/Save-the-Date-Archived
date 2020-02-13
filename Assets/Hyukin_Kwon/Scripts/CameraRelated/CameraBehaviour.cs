@@ -31,7 +31,7 @@ public class CameraBehaviour : MonoBehaviour
     [SerializeField] float m_fCamRotateSpeed;
     [SerializeField] bool m_bCamRotateDirOnX; //use this to flip the roation direction;
 
-    private float heightFromPlayer = 2.5f;
+    public float heightFromPlayer = 2.5f;
     private float heightFromPlayerOrigin;
 
     private Vector2 playerMoveAxis = Vector2.zero;
@@ -159,6 +159,10 @@ public class CameraBehaviour : MonoBehaviour
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
             heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
 
+        transform.position = Vector3.MoveTowards(transform.position,
+                new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
+                playerMovementCs.GetMoveSpeed() * fdt);
+
         transform.rotation = new Quaternion();
         Camera.main.transform.rotation = new Quaternion();
         Vector3 targetPostition = new Vector3(player.transform.position.x,
@@ -174,7 +178,6 @@ public class CameraBehaviour : MonoBehaviour
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
         //Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
-
         if (distance > m_fDistance)
         {
             transform.position = Vector3.MoveTowards(transform.position,
