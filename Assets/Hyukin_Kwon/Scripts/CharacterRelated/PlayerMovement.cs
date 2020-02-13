@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] bool m_bIsGrounded = true;
     [SerializeField] float m_JumpForce;
+    private float m_fDisToGround = 0.0f;
 
     [SerializeField] bool m_bIsOnStair = false;
 
@@ -52,8 +53,8 @@ public class PlayerMovement : MonoBehaviour
     public void SetIsOnStair(bool isStair) { m_bIsOnStair = isStair; }
     public bool GetIsOnStair() { return m_bIsOnStair; }
     public float GetMoveSpeed() { return m_fMoveSpeed; }
-
     public Vector3 GetOverallSpeed() { return m_fOverallSpeed; }
+    public float GetDisToGround() { return m_fDisToGround; }
 
     #endregion
 
@@ -198,6 +199,11 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.red);
             if(!CameraBehaviour.GetInstance().zoomInput)
                 m_bIsGrounded = false;
+        }
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity))
+        {
+            m_fDisToGround = hit.distance;
         }
     }
 

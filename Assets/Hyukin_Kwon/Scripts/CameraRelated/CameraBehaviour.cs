@@ -114,7 +114,6 @@ public class CameraBehaviour : MonoBehaviour
         camRotAxis.x = rotateInput.x;
         camRotAxis.y = rotateInput.y;
         fdt = Time.fixedDeltaTime;
-        //SetTransparency();
         if (!m_bIsZooming)
         {
             MoveToPlayer();
@@ -127,6 +126,36 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Rotate()
     {
+        if (rotateInput != Vector2.zero)
+        {
+            if (playerMoveAxis.x == 0)
+            {
+                m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
+                if (rotateInput.x > 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
+                else if (rotateInput.x < 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
+            }
+            if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f)
+            {
+                if ((rotateInput.y > 0.2f && heightFromPlayer <= heightFromPlayerOrigin * 3))
+                {
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+                }
+                else if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
+                {
+                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+                }
+                else if (rotateInput.y <= 0.2f && rotateInput.y >= -0.2f)
+                {
+                    heightFromPlayer = heightFromPlayerOrigin;
+                }
+            }
+        }
+
+        if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
+            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+
         transform.rotation = new Quaternion();
         Camera.main.transform.rotation = new Quaternion();
         Vector3 targetPostition = new Vector3(player.transform.position.x,
@@ -136,37 +165,6 @@ public class CameraBehaviour : MonoBehaviour
         Camera.main.transform.rotation = transform.rotation;
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
         Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);
-
-        if(playerMoveAxis.x == 0)
-        {
-            m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
-            if(playerMoveAxis.y <= 0)
-            {
-                if (rotateInput.x > 0)
-                    transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
-                else if (rotateInput.x < 0)
-                    transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
-            }
-            if(playerMoveAxis.y > 0)
-            {
-                if (rotateInput.x > 0)
-                    transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
-                else if (rotateInput.x < 0)
-                    transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
-            }
-        }
-        if(rotateInput.y > 0 && heightFromPlayer <= heightFromPlayerOrigin * 3)
-        {
-            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
-        }
-        else if(rotateInput.y < 0 && heightFromPlayer >= heightFromPlayerOrigin / 5)
-        {
-            heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
-        }
-        else if(rotateInput.y == 0)
-        {
-            heightFromPlayer = heightFromPlayerOrigin;
-        }
     }
 
     private void MoveToPlayer()
