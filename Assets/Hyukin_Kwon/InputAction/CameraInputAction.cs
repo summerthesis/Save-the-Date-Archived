@@ -33,6 +33,14 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bf539f03-ad6f-4608-8c18-72db6646be12"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -79,6 +87,127 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Reset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4021b571-3b7b-45e7-b062-b7179452eda9"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""RotateAxis"",
+                    ""id"": ""9352a9b9-7df5-491b-8882-c0c346007d29"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""ba1a4ebe-f1fa-4e8f-b4c6-30edc9ecad49"",
+                    ""path"": ""<Gamepad>/rightStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""6029292e-2be1-4f9e-9e57-d4343899f6d9"",
+                    ""path"": ""<Gamepad>/rightStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""8d26eeb3-f35a-4117-aa55-beb560e78ac2"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""978e22e4-19c9-4ce6-a7e1-cfae37243675"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Arrows"",
+                    ""id"": ""49fdb8c5-e6b9-4bde-842f-cd0b328cbd70"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""b00ce340-2457-4467-9e36-ff3c3ebd3ae0"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""e8b521db-0a3c-4aae-8560-f117a57c28dc"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""dadb8b94-730b-442d-8c4b-8d0f1375be71"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""e53a2122-a8ff-4f7a-bd58-0406fff4a4df"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -112,6 +241,7 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
         m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
         m_CameraControls_Zoom = m_CameraControls.FindAction("Zoom", throwIfNotFound: true);
         m_CameraControls_Reset = m_CameraControls.FindAction("Reset", throwIfNotFound: true);
+        m_CameraControls_Rotate = m_CameraControls.FindAction("Rotate", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,12 +293,14 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
     private ICameraControlsActions m_CameraControlsActionsCallbackInterface;
     private readonly InputAction m_CameraControls_Zoom;
     private readonly InputAction m_CameraControls_Reset;
+    private readonly InputAction m_CameraControls_Rotate;
     public struct CameraControlsActions
     {
         private @CameraInputAction m_Wrapper;
         public CameraControlsActions(@CameraInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Zoom => m_Wrapper.m_CameraControls_Zoom;
         public InputAction @Reset => m_Wrapper.m_CameraControls_Reset;
+        public InputAction @Rotate => m_Wrapper.m_CameraControls_Rotate;
         public InputActionMap Get() { return m_Wrapper.m_CameraControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -184,6 +316,9 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
                 @Reset.started -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnReset;
                 @Reset.performed -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnReset;
                 @Reset.canceled -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnReset;
+                @Rotate.started -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnRotate;
+                @Rotate.performed -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnRotate;
+                @Rotate.canceled -= m_Wrapper.m_CameraControlsActionsCallbackInterface.OnRotate;
             }
             m_Wrapper.m_CameraControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -194,6 +329,9 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
                 @Reset.started += instance.OnReset;
                 @Reset.performed += instance.OnReset;
                 @Reset.canceled += instance.OnReset;
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
             }
         }
     }
@@ -220,5 +358,6 @@ public class @CameraInputAction : IInputActionCollection, IDisposable
     {
         void OnZoom(InputAction.CallbackContext context);
         void OnReset(InputAction.CallbackContext context);
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

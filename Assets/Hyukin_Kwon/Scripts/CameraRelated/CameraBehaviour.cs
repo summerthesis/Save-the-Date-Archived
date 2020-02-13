@@ -30,8 +30,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private float heightFromPlayer = 2.5f;
 
-    private float m_fVertical;
-    private float m_fHorizontal;
+    private Vector2 playerAxis;
 
     private float m_fMoveBackTimer = 2.0f;
     private float m_fCurMoveBackTimer = 0.0f;
@@ -52,6 +51,7 @@ public class CameraBehaviour : MonoBehaviour
     CameraInputAction inputAction;
     bool zoomInput;
     bool resetInput;
+    Vector2 rotateInput;
     #endregion
 
     #region SetterAndGetter
@@ -81,6 +81,7 @@ public class CameraBehaviour : MonoBehaviour
         inputAction.CameraControls.Zoom.canceled += ctx => zoomInput = false;
         inputAction.CameraControls.Reset.performed += ctx => resetInput = true;
         inputAction.CameraControls.Reset.canceled += ctx => resetInput = false;
+        inputAction.CameraControls.Rotate.performed += ctx => rotateInput = ctx.ReadValue<Vector2>();
     }
 
     private void Start()
@@ -100,8 +101,8 @@ public class CameraBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         Camera.main.transform.position = transform.position;
-        m_fHorizontal = playerMovementCs.movementInput.x;
-        m_fVertical = playerMovementCs.movementInput.y;
+        playerAxis.x = playerMovementCs.movementInput.x;
+        playerAxis.y = playerMovementCs.movementInput.y;
         fdt = Time.fixedDeltaTime;
         if (!m_bIsZooming)
         {
@@ -124,6 +125,8 @@ public class CameraBehaviour : MonoBehaviour
         Camera.main.transform.rotation = transform.rotation;
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
         Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);
+
+
     }
 
     private void MoveToPlayer()
@@ -162,7 +165,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
 
-        if (m_fHorizontal == 0 && m_fVertical == 0)
+        if (playerAxis.x == 0 && playerAxis.y == 0)
         {
             if(!m_bIsMoveBackTimerOn)
                 m_fCurMoveBackTimer += fdt;
@@ -208,7 +211,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Reset()
     {
-        if ((m_fHorizontal == 0 && m_fVertical == 0 && resetInput))
+        if ((playerAxis.x == 0 && playerAxis.y == 0 && resetInput))
             m_bIsReseting = true;
 
         if (m_bIsReseting)
