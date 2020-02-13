@@ -1431,6 +1431,11 @@ PrefabInstance:
       propertyPath: m_fMinDistance
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 515566078256464310, guid: 86167c0d527473446b8625032a097d06,
+        type: 3}
+      propertyPath: m_fCamRotateSpeed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 7729535787742107174, guid: 86167c0d527473446b8625032a097d06,
         type: 3}
       propertyPath: m_fRotSpeed

@@ -21,16 +21,18 @@ public class CameraBehaviour : MonoBehaviour
 {
     // ** CamPivot --> Set position of z to -m_fDistance manually in the editor **...
     private GameObject CamPivot;
-    private float originalCampPivotZ;
     private GameObject CamZoomPivot;
     private GameObject player;
     private PlayerMovement playerMovementCs;
     [SerializeField] float m_fDistance; //distance limit when player moving forward
     [SerializeField] float m_fMinDistance; //distance limit when player moving backward
+    [SerializeField] float m_fCamRotateSpeed;
+    [SerializeField] bool m_bCamRotateDirOnX; //use this to flip the roation direction;
 
     private float heightFromPlayer = 2.5f;
 
-    private Vector2 playerAxis;
+    private Vector2 playerMoveAxis = Vector2.zero;
+    private Vector2 camRotAxis = Vector2.zero;
 
     private float m_fMoveBackTimer = 2.0f;
     private float m_fCurMoveBackTimer = 0.0f;
@@ -90,7 +92,6 @@ public class CameraBehaviour : MonoBehaviour
         CamZoomPivot = GameObject.Find("CamZoomPivot");
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovementCs = player.GetComponent<PlayerMovement>();
-        originalCampPivotZ = CamPivot.transform.localPosition.z;
     }
 
     private void Update()
@@ -101,8 +102,10 @@ public class CameraBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         Camera.main.transform.position = transform.position;
-        playerAxis.x = playerMovementCs.movementInput.x;
-        playerAxis.y = playerMovementCs.movementInput.y;
+        playerMoveAxis.x = playerMovementCs.movementInput.x;
+        playerMoveAxis.y = playerMovementCs.movementInput.y;
+        camRotAxis.x = rotateInput.x;
+        camRotAxis.y = rotateInput.y;
         fdt = Time.fixedDeltaTime;
         if (!m_bIsZooming)
         {
@@ -126,7 +129,25 @@ public class CameraBehaviour : MonoBehaviour
         Quaternion q = Quaternion.LookRotation(player.transform.position - transform.position);
         Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);
 
-
+        if(playerMoveAxis.x == 0)
+        {
+            m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
+            if(playerMoveAxis.y <= 0)
+            {
+                if (rotateInput.x > 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
+                else if (rotateInput.x < 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
+            }
+            if(playerMoveAxis.y > 0)
+            {
+                if (rotateInput.x > 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
+                else if (rotateInput.x < 0)
+                    transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
+            }
+        }
+        
     }
 
     private void MoveToPlayer()
@@ -165,7 +186,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
 
-        if (playerAxis.x == 0 && playerAxis.y == 0)
+        if (playerMoveAxis.x == 0 && playerMoveAxis.y == 0)
         {
             if(!m_bIsMoveBackTimerOn)
                 m_fCurMoveBackTimer += fdt;
@@ -211,7 +232,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Reset()
     {
-        if ((playerAxis.x == 0 && playerAxis.y == 0 && resetInput))
+        if ((playerMoveAxis.x == 0 && playerMoveAxis.y == 0 && resetInput))
             m_bIsReseting = true;
 
         if (m_bIsReseting)
