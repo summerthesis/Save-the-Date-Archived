@@ -193,13 +193,10 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.green);
             m_bIsGrounded = true;
-            Debug.Log("On Ground");
         }
         else
         {
             Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.red);
-            Debug.Log("On air");
-
             m_bIsGrounded = false;
         }
     }

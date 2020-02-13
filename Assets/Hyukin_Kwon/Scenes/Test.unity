@@ -120,6 +120,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &397982086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7729535789369591425, guid: 86167c0d527473446b8625032a097d06,
+    type: 3}
+  m_PrefabInstance: {fileID: 7616913051339531668}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &569379553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4813397597123463224, guid: 86167c0d527473446b8625032a097d06,
+    type: 3}
+  m_PrefabInstance: {fileID: 7616913051339531668}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &595746041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,6 +1446,16 @@ PrefabInstance:
       propertyPath: m_JumpForce
       value: 220
       objectReference: {fileID: 0}
+    - target: {fileID: 7729535787742107174, guid: 86167c0d527473446b8625032a097d06,
+        type: 3}
+      propertyPath: CamPivot
+      value: 
+      objectReference: {fileID: 397982086}
+    - target: {fileID: 7729535787742107174, guid: 86167c0d527473446b8625032a097d06,
+        type: 3}
+      propertyPath: CameraBody
+      value: 
+      objectReference: {fileID: 569379553}
     - target: {fileID: 7729535787742107181, guid: 86167c0d527473446b8625032a097d06,
         type: 3}
       propertyPath: m_LocalPosition.y

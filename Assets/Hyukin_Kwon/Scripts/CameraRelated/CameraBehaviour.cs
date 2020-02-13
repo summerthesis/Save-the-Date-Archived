@@ -21,6 +21,7 @@ public class CameraBehaviour : MonoBehaviour
 {
     // ** CamPivot --> Set position of z to -m_fDistance manually in the editor **...
     private GameObject CamPivot;
+    private float originalCampPivotZ;
     private GameObject CamZoomPivot;
     private GameObject player;
     private PlayerMovement playerMovementCs;
@@ -88,6 +89,7 @@ public class CameraBehaviour : MonoBehaviour
         CamZoomPivot = GameObject.Find("CamZoomPivot");
         player = GameObject.FindGameObjectWithTag("Player");
         playerMovementCs = player.GetComponent<PlayerMovement>();
+        originalCampPivotZ = CamPivot.transform.localPosition.z;
     }
 
     private void Update()
@@ -105,7 +107,7 @@ public class CameraBehaviour : MonoBehaviour
         {
             MoveToPlayer();
             Rotate();
-            MoveToPlayerBack();
+            //MoveToPlayerBack(); // I don't really know if you need this function try to put it back and decide which looks better.
             Reset();
         }
 
@@ -126,7 +128,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void MoveToPlayer()
     {
-        float distance = new Vector2(player.transform.position.x - transform.position.x, player.transform.position.z - transform.position.z).magnitude;
+        float distance = Vector3.Distance(player.transform.position, transform.position);
         Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
 
         if (distance > m_fDistance)
@@ -206,26 +208,26 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Reset()
     {
-        if(m_fHorizontal == 0 && m_fVertical == 0)
+        if ((m_fHorizontal == 0 && m_fVertical == 0 && resetInput))
+            m_bIsReseting = true;
+
+        if (m_bIsReseting)
         {
-            if (resetInput)
-            {
-                m_bIsReseting = true;
-            }
-            if (m_bIsReseting)
-            {
-                Vector3 target = new Vector3(CamPivot.transform.position.x,
-                   CamPivot.transform.position.y + heightFromPlayer,
-                   CamPivot.transform.position.z);
+            Vector3 target = new Vector3(CamPivot.transform.position.x,
+               CamPivot.transform.position.y + heightFromPlayer,
+               CamPivot.transform.position.z);
 
-                if (Vector3.Distance(transform.position, target) <= 0.25f)
-                {
-                    m_bIsReseting = false;
-                }
-
-                transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
+            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            {
+                m_bIsReseting = false;
             }
+            transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
+
+        if (Vector3.Distance(player.transform.position, transform.position) > m_fDistance * 2)
+            GetComponent<SphereCollider>().isTrigger = true;
+        else
+            GetComponent<SphereCollider>().isTrigger = false;
     }
 
     private void ZoomInMode()
