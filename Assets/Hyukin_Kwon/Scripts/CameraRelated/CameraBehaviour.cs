@@ -178,21 +178,24 @@ public class CameraBehaviour : MonoBehaviour
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
         //Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
-        if (distance > m_fDistance)
+        if(playerMoveAxis != Vector2.zero)
         {
-            transform.position = Vector3.MoveTowards(transform.position,
-                new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
-                playerMovementCs.GetMoveSpeed() * fdt);
-        }
-        else if (distance < m_fMinDistance && distance > 0)
-        {
-            RaycastHit hit;
-            if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, 1))
+            if (distance > m_fDistance)
             {
-                Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
-                tempSpeed.x /= 16;
-                Debug.Log(tempSpeed.magnitude);
-                transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
+                transform.position = Vector3.MoveTowards(transform.position,
+                    new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
+                    playerMovementCs.GetMoveSpeed() * fdt);
+            }
+            else if (distance < m_fMinDistance && distance > 0)
+            {
+                RaycastHit hit;
+                if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, 1))
+                {
+                    Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
+                    tempSpeed.x /= 16;
+                    Debug.Log(tempSpeed.magnitude);
+                    transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
+                }
             }
         }
     }
