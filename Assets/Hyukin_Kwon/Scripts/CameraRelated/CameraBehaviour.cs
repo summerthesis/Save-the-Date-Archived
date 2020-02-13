@@ -69,6 +69,7 @@ public class CameraBehaviour : MonoBehaviour
     private static CameraBehaviour instance;
     public static CameraBehaviour GetInstance() { return instance; }
 
+
     private void OnDestroy()
     {
         if (instance != null)
@@ -126,6 +127,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Rotate()
     {
+        RaycastHit hit;
         if (rotateInput != Vector2.zero)
         {
             if (playerMoveAxis.x == 0)
@@ -141,8 +143,13 @@ public class CameraBehaviour : MonoBehaviour
                 }
             }
             if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f)
-            {
-                if ((rotateInput.y > 0.2f && heightFromPlayer <= heightFromPlayerOrigin * 3))
+            {  
+                if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 2))
+                {
+                    if(heightFromPlayer < hit.distance)
+                        heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+                }
+                else if (rotateInput.y > 0.2f && heightFromPlayer <= heightFromPlayerOrigin * 3)
                 {
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
                 }
@@ -157,11 +164,17 @@ public class CameraBehaviour : MonoBehaviour
             }
         }
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
-            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;   
+        else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 2) ||
+            Physics.Raycast(new Vector3(transform.position.x, player.transform.position.y, transform.position.z), Vector3.up, out hit, heightFromPlayerOrigin * 2))
+        {
+            if (heightFromPlayer > hit.distance)
+                heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+        }
 
         transform.position = Vector3.MoveTowards(transform.position,
-                new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
-                playerMovementCs.GetMoveSpeed() * fdt);
+            new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
+            playerMovementCs.GetMoveSpeed() * fdt);
 
         transform.rotation = new Quaternion();
         Camera.main.transform.rotation = new Quaternion();
@@ -176,8 +189,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void MoveToPlayer()
     {
-        float distance = Vector3.Distance(player.transform.position, transform.position);
-        //Debug.DrawRay(player.transform.position, (transform.position - player.transform.position), Color.green);
+        float distance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         if(playerMoveAxis != Vector2.zero)
         {
             if (distance > m_fDistance)
@@ -188,13 +200,16 @@ public class CameraBehaviour : MonoBehaviour
             }
             else if (distance < m_fMinDistance && distance > 0)
             {
+                Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
+                tempSpeed.x /= 16;
                 RaycastHit hit;
-                if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, 1))
+                if (!Physics.Raycast(transform.localPosition, Vector3.back, out hit, 1))
                 {
-                    Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
-                    tempSpeed.x /= 16;
-                    Debug.Log(tempSpeed.magnitude);
-                    transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
+                    transform.Translate(Vector3.back * tempSpeed.magnitude * fdt);
+                }
+                else
+                {
+                    transform.Translate(Vector3.forward * tempSpeed.magnitude * fdt);
                 }
             }
         }

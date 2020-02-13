@@ -101,7 +101,9 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, distance))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * hit.distance, Color.yellow);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance + 0.3f), 20 * fdt);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
+            if (hit.transform.tag != "Camera")
+                Debug.Log(hit.transform.gameObject);
         }
         else
         {
@@ -109,13 +111,19 @@ public class PlayerMovement : MonoBehaviour
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
         }
 
-        Vector3 dir = (CameraBehaviour.GetInstance().transform.position - transform.position).normalized;
-        distance = Vector3.Distance(transform.position,CameraBehaviour.GetInstance().transform.position);
-        Debug.DrawRay(transform.position, dir * distance, Color.red);
-        if (Physics.Raycast(transform.position, dir, out hit, distance))
-        {
-            //CameraBehaviour.GetInstance().heightFromPlayer  = hit
-        }
+        //Vector3 dir = (CameraBehaviour.GetInstance().transform.position - transform.position).normalized;
+        //distance = Vector3.Distance(transform.position,CameraBehaviour.GetInstance().transform.position);
+        //Debug.DrawRay(transform.position, dir * distance, Color.red);
+        //if (Physics.Raycast(transform.position, dir, out hit, distance))
+        //{
+        //    if (hit.transform.tag != "Camera")
+        //        Debug.Log(hit.transform.gameObject);
+        //        //CamPivot.transform.localPosition = new Vector3(hit.transform.position.x, 0, hit.transform.position.z);
+        //}
+        //else
+        //{
+        //   // CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
+        //}
 
     }
 
