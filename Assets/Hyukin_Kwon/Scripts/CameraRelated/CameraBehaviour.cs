@@ -176,10 +176,14 @@ public class CameraBehaviour : MonoBehaviour
         }
         else if (distance < m_fMinDistance && distance > 0)
         {
-            Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
-            tempSpeed.x /= 16;
-            Debug.Log(tempSpeed.magnitude);
-            transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
+            RaycastHit hit;
+            if (!Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, 1))
+            {
+                Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
+                tempSpeed.x /= 16;
+                Debug.Log(tempSpeed.magnitude);
+                transform.Translate(-Vector3.forward * tempSpeed.magnitude * fdt);
+            }
         }
     }
 
@@ -261,10 +265,10 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
 
-        if (Vector3.Distance(player.transform.position, transform.position) > m_fDistance * 2)
-            GetComponent<SphereCollider>().isTrigger = true;
-        else
-            GetComponent<SphereCollider>().isTrigger = false;
+        //if (Vector3.Distance(player.transform.position, transform.position) > m_fDistance * 2)
+        //    GetComponent<SphereCollider>().isTrigger = true;
+        //else
+        //    GetComponent<SphereCollider>().isTrigger = false;
     }
 
     private void ZoomInMode()
