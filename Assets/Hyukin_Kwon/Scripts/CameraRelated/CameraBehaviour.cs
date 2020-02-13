@@ -143,34 +143,38 @@ public class CameraBehaviour : MonoBehaviour
                 }
             }
             if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f)
-            {  
-                if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 2))
+            {
+                if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
                 {
-                    if(heightFromPlayer < hit.distance)
+                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+                }
+                else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 3))
+                {
+                    if (heightFromPlayer < hit.distance)
+                    {
                         heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+                    }
                 }
                 else if (rotateInput.y > 0.2f && heightFromPlayer <= heightFromPlayerOrigin * 3)
                 {
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
-                }
-                else if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
-                {
-                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
-                }
-                else if (rotateInput.y <= 0.2f && rotateInput.y >= -0.2f)
-                {
-                    heightFromPlayer = heightFromPlayerOrigin;
-                }
+                }              
             }
         }
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
-            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;   
-        else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 2) ||
+        {
+            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+        }
+             
+        else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, heightFromPlayerOrigin * 3) ||
             Physics.Raycast(new Vector3(transform.position.x, player.transform.position.y, transform.position.z), Vector3.up, out hit, heightFromPlayerOrigin * 2))
         {
             if (heightFromPlayer > hit.distance)
+            {
                 heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+            }
         }
+
 
         transform.position = Vector3.MoveTowards(transform.position,
             new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
