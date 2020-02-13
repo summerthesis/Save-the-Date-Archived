@@ -41,7 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
     #region Player Input Action
     PlayerInputAction inputAction;
-    Vector2 movementInput; 
+    public Vector2 movementInput;
+    public bool jumpInput;
 
     #endregion
 
@@ -61,6 +62,8 @@ public class PlayerMovement : MonoBehaviour
     {
         inputAction = new PlayerInputAction();
         inputAction.PlayerControls.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+        inputAction.PlayerControls.Jump.performed += ctx => jumpInput = true;
+        inputAction.PlayerControls.Jump.canceled += ctx => jumpInput = false;
     }
 
     private void Start()
@@ -109,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpRegular()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Joystick1Button1)) && m_bIsGrounded)
+        if (jumpInput && m_bIsGrounded)
         {
             rigid.AddForce(Vector3.up * m_JumpForce);
 

@@ -37,6 +37,7 @@ public class CameraBehaviour : MonoBehaviour
     private bool m_bIsMoveBackTimerOn = false;
     [SerializeField] float m_fCamMoveToPlayerBackSpeed; //speed of camera move to player's back when player is not moving;
 
+    private bool m_bIsReseting = false;
     private bool m_bIsZooming = false;
     private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
@@ -45,6 +46,12 @@ public class CameraBehaviour : MonoBehaviour
     private float fdt;
     //Added by HErC:
     [SerializeField] private float m_fRaycastDistance;//Max distance for target finding
+
+    #region Camera input Controls
+    CameraInputAction inputAction;
+    bool zoomInput;
+    bool resetInput;
+    #endregion
 
     #region SetterAndGetter
     public bool GetIsZooming() { return m_bIsZooming; }
@@ -55,12 +62,6 @@ public class CameraBehaviour : MonoBehaviour
     private static CameraBehaviour instance;
     public static CameraBehaviour GetInstance() { return instance; }
 
-    private void Awake()
-    {
-        if (instance == null)
-            instance = this;
-    }
-
     private void OnDestroy()
     {
         if (instance != null)
@@ -68,6 +69,18 @@ public class CameraBehaviour : MonoBehaviour
     }
 
     #endregion
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+
+        inputAction = new CameraInputAction();
+        inputAction.CameraControls.Zoom.performed += ctx => zoomInput = true;
+        inputAction.CameraControls.Zoom.canceled += ctx => zoomInput = false;
+        inputAction.CameraControls.Reset.performed += ctx => resetInput = true;
+        inputAction.CameraControls.Reset.canceled += ctx => resetInput = false;
+    }
 
     private void Start()
     {
@@ -85,14 +98,15 @@ public class CameraBehaviour : MonoBehaviour
     private void FixedUpdate()
     {
         Camera.main.transform.position = transform.position;
-        m_fHorizontal = Input.GetAxis("Horizontal");
-        m_fVertical = Input.GetAxis("Vertical");
+        m_fHorizontal = playerMovementCs.movementInput.x;
+        m_fVertical = playerMovementCs.movementInput.y;
         fdt = Time.fixedDeltaTime;
         if (!m_bIsZooming)
         {
             MoveToPlayer();
             Rotate();
             MoveToPlayerBack();
+            Reset();
         }
 
     }
@@ -180,7 +194,6 @@ public class CameraBehaviour : MonoBehaviour
             }
             else
             {
-                //transform.RotateAround(player.transform.position, Vector3.up, 300 * fdt);
                 transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamPivot.transform.position.x,
                 CamPivot.transform.position.y + heightFromPlayer * 0.6f,
@@ -191,9 +204,33 @@ public class CameraBehaviour : MonoBehaviour
         }
     }
 
+    private void Reset()
+    {
+        if(m_fHorizontal == 0 && m_fVertical == 0)
+        {
+            if (resetInput)
+            {
+                m_bIsReseting = true;
+            }
+            if (m_bIsReseting)
+            {
+                Vector3 target = new Vector3(CamPivot.transform.position.x,
+                   CamPivot.transform.position.y + heightFromPlayer,
+                   CamPivot.transform.position.z);
+
+                if (Vector3.Distance(transform.position, target) <= 0.25f)
+                {
+                    m_bIsReseting = false;
+                }
+
+                transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
+            }
+        }
+    }
+
     private void ZoomInMode()
     {
-        if (Input.GetKey(KeyCode.Joystick1Button4) || Input.GetKey(KeyCode.Z))
+        if (zoomInput)
         {
             m_bIsZooming = true;
 
@@ -206,12 +243,12 @@ public class CameraBehaviour : MonoBehaviour
             transform.LookAt(new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z));
             Camera.main.transform.LookAt(player.transform);
         }
-        else if (!Input.GetKey(KeyCode.Joystick1Button4) && m_bIsZooming)
+        else if (!zoomInput && m_bIsZooming)
         {
             m_bISZoomingBack = true;
         }
 
-        if(m_bISZoomingBack)
+        if (m_bISZoomingBack)
         {
             Vector3 target = new Vector3(CamPivot.transform.position.x,
                 CamPivot.transform.position.y + heightFromPlayer,
@@ -251,4 +288,13 @@ public class CameraBehaviour : MonoBehaviour
         return null;
     }
 
+    private void OnEnable()
+    {
+        inputAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputAction.Disable();
+    }
 }
