@@ -33,6 +33,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ActivateHook"",
+                    ""type"": ""Button"",
+                    ""id"": ""6298dd73-24c4-47ca-89f2-34b42bf65d0b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -178,6 +186,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cc62609-36fa-4ea7-9cb8-bf43da07e1bc"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ActivateHook"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -211,6 +230,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls = asset.FindActionMap("Player Controls", throwIfNotFound: true);
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
         m_PlayerControls_Jump = m_PlayerControls.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerControls_ActivateHook = m_PlayerControls.FindAction("ActivateHook", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,12 +282,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private IPlayerControlsActions m_PlayerControlsActionsCallbackInterface;
     private readonly InputAction m_PlayerControls_Move;
     private readonly InputAction m_PlayerControls_Jump;
+    private readonly InputAction m_PlayerControls_ActivateHook;
     public struct PlayerControlsActions
     {
         private @PlayerInputAction m_Wrapper;
         public PlayerControlsActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerControls_Jump;
+        public InputAction @ActivateHook => m_Wrapper.m_PlayerControls_ActivateHook;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,6 +305,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnJump;
+                @ActivateHook.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
+                @ActivateHook.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
+                @ActivateHook.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -293,6 +318,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @ActivateHook.started += instance.OnActivateHook;
+                @ActivateHook.performed += instance.OnActivateHook;
+                @ActivateHook.canceled += instance.OnActivateHook;
             }
         }
     }
@@ -319,5 +347,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnActivateHook(InputAction.CallbackContext context);
     }
 }
