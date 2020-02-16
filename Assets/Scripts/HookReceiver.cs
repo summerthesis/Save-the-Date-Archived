@@ -38,6 +38,11 @@ public class HookReceiver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isReady)
+        {
+            this.GetComponent<MeshRenderer>().material = focusMaterial;
+        }
+        else this.GetComponent<MeshRenderer>().material = idleMaterial;
         switch (State)
 
         {
@@ -62,6 +67,7 @@ public class HookReceiver : MonoBehaviour
 
             case 1:
                 float step = speed * Time.deltaTime;
+                this.GetComponent<MeshRenderer>().material = activeMaterial;
                 if (Vector3.Distance(mWayPoints[0].transform.position, mPlayer.transform.position) < 0.001f)
                 {
                     State++;
@@ -111,7 +117,7 @@ public class HookReceiver : MonoBehaviour
                 }
                 else
                     mCamera.transform.position = Vector3.MoveTowards(mCamera.transform.position, mWayPoints[2].transform.position, 1.25f);
-         
+                this.GetComponent<MeshRenderer>().material = idleMaterial;
                 Debug.Log("GRAPPLE COMPLETE");
                 break;
             default:
