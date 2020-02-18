@@ -4,7 +4,7 @@
 * 
 * PlayerMovement
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 26 Jan 2020 - Hyukin
+* Last Modified: 18 Feb 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 *
@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
     private GameObject CamPivot;
+    private GameObject FrontHeightCheck;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
@@ -28,8 +29,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] bool m_bIsGrounded = true;
     [SerializeField] float m_JumpForce;
     private float m_fDisToGround = 0.0f;
+    private float m_fFrontDisToGround = 0.0f;
 
     [SerializeField] bool m_bIsOnStair = false;
+    [SerializeField] bool m_bIsStairInFront = false;
 
     private float m_fHorizontal;
     private float m_fVertical;
@@ -70,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
     {
         CameraBody = GameObject.Find("CameraBody");
         CamPivot = GameObject.Find("CamPivot");
+        FrontHeightCheck = GameObject.Find("FrontHeightCheck");
         rigid = GetComponent<Rigidbody>();
         qTo = transform.rotation;
     }
@@ -110,21 +114,6 @@ public class PlayerMovement : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * distance, Color.cyan);
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
         }
-
-        //Vector3 dir = (CameraBehaviour.GetInstance().transform.position - transform.position).normalized;
-        //distance = Vector3.Distance(transform.position,CameraBehaviour.GetInstance().transform.position);
-        //Debug.DrawRay(transform.position, dir * distance, Color.red);
-        //if (Physics.Raycast(transform.position, dir, out hit, distance))
-        //{
-        //    if (hit.transform.tag != "Camera")
-        //        Debug.Log(hit.transform.gameObject);
-        //        //CamPivot.transform.localPosition = new Vector3(hit.transform.position.x, 0, hit.transform.position.z);
-        //}
-        //else
-        //{
-        //   // CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
-        //}
-
     }
 
     private void JumpRegular()
@@ -205,11 +194,14 @@ public class PlayerMovement : MonoBehaviour
     }
     private void CheckGround()
     {
+        m_bIsOnStair = false;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, rayDis))
         {
             Debug.DrawRay(transform.position, Vector3.down * rayDis, Color.green);
             m_bIsGrounded = true;
+            if (hit.transform.tag == "Stair")
+                m_bIsOnStair = true;
         }
         else
         {
@@ -218,10 +210,18 @@ public class PlayerMovement : MonoBehaviour
                 m_bIsGrounded = false;
         }
 
+        if (m_bIsOnStair && Physics.Raycast(FrontHeightCheck.transform.position, Vector3.down, out hit, Mathf.Infinity))
+        {
+            m_bIsStairInFront = true;
+            m_fFrontDisToGround = hit.distance;
+        }
+
         if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity))
         {
             m_fDisToGround = hit.distance;
         }
+
+        Debug.Log("m_fDisToGround: " + m_fDisToGround + ", m_fFrontDisToGround: " + m_fFrontDisToGround);
     }
 
     private void OnEnable()

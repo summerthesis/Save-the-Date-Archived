@@ -4,7 +4,7 @@
 * 
 * CameraBehaviour
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 09 Feb 2020 - HErC
+* Last Modified: 18 Feb 2020 - HErC
 * 
 * Inherits from Monobehaviour
 *
@@ -349,31 +349,6 @@ public class CameraBehaviour : MonoBehaviour
             {
                 m_bISZoomingBack = false;
                 m_bIsZooming = false;
-            }
-        }
-    }
-
-    private void SetTransparency()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(player.transform.position, transform.position - player.transform.position, out hit, m_fDistanceOrigin))
-        {
-            if (hit.transform.tag != "Camera")
-            {
-                transparencyObj = hit.transform.gameObject;
-                Debug.Log("hit something: " + hit.transform.gameObject);
-                Color color = transparencyObj.GetComponent<MeshRenderer>().material.color;
-                color.a = 0.5f;
-                transparencyObj.GetComponent<MeshRenderer>().material.color = color;
-            }
-        }
-        else
-        {
-            if (transparencyObj != null)
-            {
-                Color color = transparencyObj.GetComponent<MeshRenderer>().material.color;
-                color.a = 1;
-                transparencyObj.GetComponent<MeshRenderer>().material.color = color;
             }
         }
     }
