@@ -41,6 +41,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ElecArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""56a0e44a-df62-43f1-b37f-028d909a1dc5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -197,6 +205,28 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""ActivateHook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""495b632a-6f12-497c-800c-bb9774eef36e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ElecArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""01f14076-9c49-4df6-a4c5-42b24dd8b7b4"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ElecArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -231,6 +261,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
         m_PlayerControls_Jump = m_PlayerControls.FindAction("Jump", throwIfNotFound: true);
         m_PlayerControls_ActivateHook = m_PlayerControls.FindAction("ActivateHook", throwIfNotFound: true);
+        m_PlayerControls_ElecArm = m_PlayerControls.FindAction("ElecArm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -283,6 +314,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerControls_Move;
     private readonly InputAction m_PlayerControls_Jump;
     private readonly InputAction m_PlayerControls_ActivateHook;
+    private readonly InputAction m_PlayerControls_ElecArm;
     public struct PlayerControlsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -290,6 +322,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerControls_Jump;
         public InputAction @ActivateHook => m_Wrapper.m_PlayerControls_ActivateHook;
+        public InputAction @ElecArm => m_Wrapper.m_PlayerControls_ElecArm;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +341,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @ActivateHook.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
                 @ActivateHook.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
                 @ActivateHook.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateHook;
+                @ElecArm.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
+                @ElecArm.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
+                @ElecArm.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -321,6 +357,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @ActivateHook.started += instance.OnActivateHook;
                 @ActivateHook.performed += instance.OnActivateHook;
                 @ActivateHook.canceled += instance.OnActivateHook;
+                @ElecArm.started += instance.OnElecArm;
+                @ElecArm.performed += instance.OnElecArm;
+                @ElecArm.canceled += instance.OnElecArm;
             }
         }
     }
@@ -348,5 +387,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnActivateHook(InputAction.CallbackContext context);
+        void OnElecArm(InputAction.CallbackContext context);
     }
 }

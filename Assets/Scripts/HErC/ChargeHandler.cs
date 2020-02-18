@@ -50,6 +50,9 @@ public class ChargeHandler : MonoBehaviour
     public int MaxCharges { get { return chargeTracker.MaxCharges; } }
     public int Charges { get { return chargeTracker.Charges; } }
 
+    private PlayerInputAction m_chargeAction;
+    private bool m_bChargeExchange;
+
     //Camera component for target detection
     [SerializeField] private Camera camera;
     private Transform targetTransform;
@@ -61,6 +64,12 @@ public class ChargeHandler : MonoBehaviour
     {
         targetTransform = null;
         chargeTracker = this.gameObject.GetComponent<ChargeTracker>();
+
+        m_chargeAction = new PlayerInputAction();
+        
+        //m_chargeAction.PlayerControls.ElecArm.started += ctx => m_bChargeExchange = true;
+        m_chargeAction.PlayerControls.ElecArm.performed += ctx => m_bChargeExchange = true;
+        //m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
     }
 
     /// <summary>
@@ -83,8 +92,9 @@ public class ChargeHandler : MonoBehaviour
 
         if (targetTransform)
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button4))
+            if (m_bChargeExchange)
             {
+                m_bChargeExchange = false;
                 ExchangeCharges();
             }
         }
@@ -154,5 +164,15 @@ public class ChargeHandler : MonoBehaviour
     {
         chargeTracker.Discharge();
         targetTransform.GetComponent<Chargeable>().Charge();
+    }
+
+    private void OnEnable()
+    {
+        m_chargeAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        m_chargeAction.Disable();
     }
 }
