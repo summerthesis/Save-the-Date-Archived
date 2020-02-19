@@ -14,12 +14,16 @@ public class Turnstile : MonoBehaviour
     Quaternion toAngle;
     bool isRunning = false;
 
-
+    /// <summary>
+    /// HErC's observation: I changed the tracking system of the Port:
+    /// if it's charged but not active, it activates.
+    /// After the activation ends, it deactivates
+    /// </summary>
     void Update()
     {
         if (!isPort)
         {
-            if (port.GetComponent<PushButton>().isActive && !isRunning)
+            if (port.GetComponentInChildren<PushButton>().isActive && !isRunning)
             {
                 isRunning = true;
                 TurnWheel();
@@ -28,7 +32,7 @@ public class Turnstile : MonoBehaviour
 
         if (isPort)
         {
-            if (port.GetComponent<ElectricalPort>().isActive  && !isRunning)
+            if (port.GetComponentInChildren<ElectricalPort>().Active && !isRunning)
             {
                 isRunning = true;
                 TurnWheel();
@@ -65,8 +69,12 @@ public class Turnstile : MonoBehaviour
         isRunning = false;
 
         if (!isPort)
-            port.GetComponent<PushButton>().isActive = false;
+        {
+            port.GetComponentInChildren<PushButton>().isActive = false;
+        }
         else
-            port.GetComponent<ElectricalPort>().isActive = false;
+        {
+            port.GetComponentInChildren<ElectricalPort>().SetActiveState(port.GetComponentInChildren<ElectricalPort>().isCharged);
+        }
     }
 }

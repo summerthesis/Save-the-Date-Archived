@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 5936776936985302653}
   - component: {fileID: 5936776936985302652}
   - component: {fileID: 5936776936985302649}
-  - component: {fileID: 5110890567669571317}
+  - component: {fileID: 3754120256117268403}
+  - component: {fileID: 1256018764715658091}
   m_Layer: 8
   m_Name: expendable_Chargeable
   m_TagString: Untagged
@@ -29,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5936776936985302595}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 0.5, z: 2.5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -109,7 +110,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5110890567669571317
+--- !u!114 &3754120256117268403
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,5 +122,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ea4b92727919444ba75f78503c4104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emissionColour: {r: 0, g: 0.49803922, b: 0.2509804, a: 1}
   isCharged: 0
+--- !u!114 &1256018764715658091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936776936985302595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32d9ede844c409242a979c038fea40bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_emissive: {r: 0.048508644, g: 1, b: 0, a: 0.39215687}
