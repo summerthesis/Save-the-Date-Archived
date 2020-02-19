@@ -97,8 +97,8 @@ public class expendable_Canvas : MonoBehaviour
             case 0:
                 for (int i = 0; i < m_mech.MaxCharges; ++i) {
                     if (m_lights[i].GetBool("LightIsOn")) {
-                        m_lights[i].SetBool("LightIsOn", false);
                         m_lights[i].SetTrigger("TurnOff");
+                        m_lights[i].SetBool("LightIsOn", false);
                     }
                 }
                 break;
