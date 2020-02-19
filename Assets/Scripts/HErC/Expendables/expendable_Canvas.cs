@@ -93,37 +93,20 @@ public class expendable_Canvas : MonoBehaviour
     /// </summary>
     private void UpdateArmLights() {
 
-        switch (m_mech.Charges) {
-            case 0:
-                for (int i = 0; i < m_mech.MaxCharges; ++i) {
-                    if (m_lights[i].GetBool("LightIsOn")) {
-                        m_lights[i].SetTrigger("TurnOff");
-                        m_lights[i].SetBool("LightIsOn", false);
-                    }
-                }
-                break;
-            case 1:
-            case 2:
-            case 3:
-                for (int j = 0; j < m_mech.Charges; ++j) {
-                    if (!m_lights[j].GetBool("LightIsOn")) {
-                        m_lights[j].SetTrigger("TurnOn");
-                        m_lights[j].SetBool("LightIsOn", true);
-                    }
-                }
-                for (int k = m_mech.Charges; k < m_mech.MaxCharges; ++k) {
-                    if (m_lights[k].GetBool("LightIsOn")) {
-                        m_lights[k].SetTrigger("TurnOff");
-                        m_lights[k].SetBool("LightIsOn", false);
-                    }
-                }
-                break;
-            default:
-                for (int i = 0; i < m_mech.MaxCharges; ++i) {
-                        m_lights[i].SetTrigger("TurnOff");
-                        m_lights[i].SetBool("LightIsOn", false);
-                }
-                break;
+        //Turns on lights that shouldn't be off
+        for (int j = 0; j < m_mech.Charges; ++j) {
+            if (!m_lights[j].GetBool("LightIsOn")) {
+                m_lights[j].SetTrigger("TurnOn");
+                m_lights[j].SetBool("LightIsOn", true);
+            }
+        }
+
+        //turns off lights that shouldn't be on
+        for (int k = m_mech.Charges; k < m_mech.MaxCharges; ++k) {
+            if (m_lights[k].GetBool("LightIsOn")) {
+                m_lights[k].SetTrigger("TurnOff");
+                m_lights[k].SetBool("LightIsOn", false);
+            }
         }
     }
 }
