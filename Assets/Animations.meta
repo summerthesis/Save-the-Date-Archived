@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Models/Calendar.meta
-guid: ea715545a780c134aa096250e6c9461c
-=======
-guid: d697804c260fc6f4096b956cd8214220
->>>>>>> Develop:Assets/Animations.meta
+guid: 4b458d0534689c6418da8b04dc1986c8
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

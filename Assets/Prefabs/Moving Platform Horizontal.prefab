@@ -88,16 +88,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6895209523710183957}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5740b2630506f9640bae8e10b8769a09, type: 3}
+  m_Script: {fileID: 11500000, guid: 30cf563618920f24f8d943d3898e2166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 6895209525552378221}
-  - {fileID: 6895209525379806876}
-  m_speed: 4
-  m_stopTime: 0.5
+  waypoints: []
+  m_speed: 0
+  m_stopTime: 0
   m_loop: 1
   m_isMoving: 1
+  m_starDelayTime: 0
 --- !u!64 &6895209523710183947
 MeshCollider:
   m_ObjectHideFlags: 0

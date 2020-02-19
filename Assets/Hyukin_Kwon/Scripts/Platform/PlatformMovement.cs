@@ -4,13 +4,14 @@
 * 
 * PlatformMovement
 * Created: 27 November 2019
-* Last Modified: 27 November 2019
+* Last Modified: 17 Jan 2020
 * 
 * Inherits from Monobehaviour
 *
 *
 * - Moving Platform through waypoints
 * - Player moves with platform only when colliding
+* - Adding start delay time
 * *******************************************************/
 
 using System.Collections;
@@ -29,11 +30,15 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] float m_stopTime;
 
     //if false it will stop moving once it reaches to the last waypoint
-    [SerializeField] bool m_loop  = true;
+    [SerializeField] bool m_loop = true;
 
     [SerializeField] bool m_isMoving = true; //if false, platform won't move
     bool GetIsMoving() { return m_isMoving; }
     void SetIsMoving(bool isMoving) { m_isMoving = isMoving; }
+
+    //Start Delay related
+    bool m_isStartMoving = false;
+    [SerializeField] float m_starDelayTime;
 
     //
 
@@ -44,14 +49,19 @@ public class PlatformMovement : MonoBehaviour
 
     private void MovePlatform()
     {
-        if (!m_isMoving) return;
-        
-        if(transform.position != waypoints[m_curWaypoint].transform.position)
+        if (!m_isStartMoving)
         {
-            transform.position = Vector3.MoveTowards(transform.position, 
+            StartCoroutine(StartMovingTimer());
+            return;
+        }
+        if (!m_isMoving) return;
+
+        if (transform.position != waypoints[m_curWaypoint].transform.position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position,
                 waypoints[m_curWaypoint].transform.position, m_speed * Time.fixedDeltaTime);
         }
-        if(transform.position == waypoints[m_curWaypoint].transform.position)
+        if (transform.position == waypoints[m_curWaypoint].transform.position)
         {
             StartCoroutine(StopMovingForCertainTime());
             m_curWaypoint = m_dir ? (m_curWaypoint + 1) : (m_curWaypoint - 1);
@@ -61,7 +71,7 @@ public class PlatformMovement : MonoBehaviour
                 m_curWaypoint = (m_curWaypoint >= waypoints.Count) ? (waypoints.Count - 1) : 0;
                 if (m_loop)
                 {
-                    m_dir =! m_dir;
+                    m_dir = !m_dir;
                 }
                 else
                 {
@@ -71,6 +81,13 @@ public class PlatformMovement : MonoBehaviour
         }
     }
 
+
+    private IEnumerator StartMovingTimer()
+    {
+        yield return new WaitForSeconds(m_starDelayTime);
+        m_isStartMoving = true;
+    }
+
     private IEnumerator StopMovingForCertainTime()
     {
         m_isMoving = false;
@@ -78,9 +95,10 @@ public class PlatformMovement : MonoBehaviour
         m_isMoving = true;
     }
 
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform.tag == "Player")
+        if (collision.transform.tag == "Player")
             collision.transform.parent = transform;
     }
 
