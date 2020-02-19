@@ -23,6 +23,9 @@ public class ElectricalPort : MonoBehaviour
         hasCharged = chargeable.Charged;
         if (chargeable) GetComponent<Renderer>().material.color = chargeable.Charged ? Color.red : Color.blue;
         else GetComponent<Renderer>().material.color = Color.blue;
+
+        if (Active) { this.gameObject.layer = 0; }
+        else { this.gameObject.layer = 8; } //LAYER 8 is ThunderPhysics
     }
 
     public void SetActiveState(bool activeState)
