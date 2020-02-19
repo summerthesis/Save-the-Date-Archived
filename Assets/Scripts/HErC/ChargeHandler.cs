@@ -3,8 +3,8 @@
  * Save The Date
  *
  * Charge Handler
- * Created: November 14, 2019
- * Last Modified: November 28, 2019
+ * Created:       Nov 14, 2019
+ * Last Modified: Feb 19, 2019
  * 
  * Inherits from MonoBehaviour
  * 
@@ -35,12 +35,17 @@
  *      implemented by artists
  * - Reworked some of the functionality related to the camera and control 
  *      system, since they were overhauled
+ *  
+ *  //CHANGES IN FEB 18&19
+ * - Reworked the controls to match Unity's new system
+ * - Completely removed camera reference
  * 
  ********************************************************************/
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 [RequireComponent(typeof(ChargeTracker))]
 public class ChargeHandler : MonoBehaviour
@@ -53,10 +58,9 @@ public class ChargeHandler : MonoBehaviour
     private PlayerInputAction m_chargeAction;
     private bool m_bChargeExchange;
 
-    //Camera component for target detection
-    [SerializeField] private Camera camera;
     private Transform targetTransform;
 
+    XRNode test;
     /// <summary>
     /// Script init functions. Gets references to the components and targets
     /// </summary>
@@ -69,7 +73,8 @@ public class ChargeHandler : MonoBehaviour
         
         //m_chargeAction.PlayerControls.ElecArm.started += ctx => m_bChargeExchange = true;
         m_chargeAction.PlayerControls.ElecArm.performed += ctx => m_bChargeExchange = true;
-        //m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
+        m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
+        test = XRNode.GameController;
     }
 
     /// <summary>
@@ -174,5 +179,23 @@ public class ChargeHandler : MonoBehaviour
     private void OnDisable()
     {
         m_chargeAction.Disable();
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.layer == 8) {
+
+        }
+    }
+
+    void OnTriggerStay(Collider other) {
+        if (other.gameObject.layer == 8) {
+
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        if (other.gameObject.layer == 8) {
+            
+        }
     }
 }
