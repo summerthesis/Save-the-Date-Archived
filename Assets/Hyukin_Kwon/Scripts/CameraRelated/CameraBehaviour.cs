@@ -369,7 +369,9 @@ public class CameraBehaviour : MonoBehaviour
         int layers = thunderLayer + gravityLayer;
         RaycastHit tempTarget;
 
+        Debug.DrawLine(camTransform.position, camTransform.position+( camTransform.forward * m_fRaycastDistance), Color.magenta);
         if (Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fRaycastDistance, layers, QueryTriggerInteraction.Ignore)) {
+            
             return tempTarget.transform;
         }
 

@@ -91,8 +91,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cf563618920f24f8d943d3898e2166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints: []
-  m_speed: 0
+  waypoints:
+  - {fileID: 6895209525552378221}
+  - {fileID: 6895209525379806876}
+  m_speed: 5
   m_stopTime: 0
   m_loop: 1
   m_isMoving: 1

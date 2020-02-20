@@ -814,6 +814,7 @@ GameObject:
   - component: {fileID: 4547709552926675468}
   - component: {fileID: 4547709552926675469}
   - component: {fileID: 2055394438017437782}
+  - component: {fileID: 7381259580890990971}
   m_Layer: 0
   m_Name: Icosphere (2)
   m_TagString: Untagged
@@ -3349,6 +3350,19 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &7381259580890990971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4547709552926675471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ea4b92727919444ba75f78503c4104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCharged: 1
 --- !u!1 &4547709553193584671
 GameObject:
   m_ObjectHideFlags: 0
