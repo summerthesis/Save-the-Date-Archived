@@ -142,6 +142,7 @@ public class HookReceiver : MonoBehaviour
     {
         if(isReady)
         {
+            speed = 0;
             mPlayer.GetComponent<Rigidbody>().useGravity = false;
             State++;
             isReady = false;
