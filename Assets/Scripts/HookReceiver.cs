@@ -67,22 +67,24 @@ public class HookReceiver : MonoBehaviour
 
             case 1:
                 mPlayer.GetComponent<Rigidbody>().useGravity = false;
+                mPlayer.transform.LookAt(mWayPoints[0].transform.position);
                 float step = speed * Time.deltaTime;
                 this.GetComponent<MeshRenderer>().material = activeMaterial;
-                if (Vector3.Distance(mWayPoints[0].transform.position, mPlayer.transform.position) < 1.2f)
+                if (Vector3.Distance(mWayPoints[0].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
                 else
                 {
-                    if (speed < 1.0f) speed += 0.03f;
+                    if (speed < 1.0f) speed += 0.01f;
                     mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[0].transform.position, speed);
                 }
                     
                 break;
 
             case 2:
-                if (Vector3.Distance(mWayPoints[1].transform.position, mPlayer.transform.position) < 1.2f)
+              //  mPlayer.transform.LookAt(mWayPoints[1].transform.position);
+                if (Vector3.Distance(mWayPoints[1].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
@@ -92,8 +94,8 @@ public class HookReceiver : MonoBehaviour
                 break;
 
             case 3:
-
-                if (Vector3.Distance(mWayPoints[2].transform.position, mPlayer.transform.position) < 1.2f)
+              //  mPlayer.transform.LookAt(mWayPoints[2].transform.position);
+                if (Vector3.Distance(mWayPoints[2].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
@@ -101,7 +103,8 @@ public class HookReceiver : MonoBehaviour
                     mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[2].transform.position, 0.35f);
                 break;
             case 4:
-                if (Vector3.Distance(mWayPoints[3].transform.position, mPlayer.transform.position) < 1.2f)
+             //   mPlayer.transform.LookAt(mWayPoints[3].transform.position);
+                if (Vector3.Distance(mWayPoints[3].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
