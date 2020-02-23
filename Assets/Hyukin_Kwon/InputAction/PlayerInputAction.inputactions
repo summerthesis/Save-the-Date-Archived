@@ -216,6 +216,169 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "InventoryControls",
+            "id": "b07e10e3-90e4-45e2-af4e-0ca004d01b92",
+            "actions": [
+                {
+                    "name": "Left Bumper",
+                    "type": "Button",
+                    "id": "96fcca6c-8af8-41d3-9a29-550779a22693",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Right Bumper",
+                    "type": "Button",
+                    "id": "f59fdf44-6f47-49b8-a790-0357988b8d93",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LeftSelectCog",
+                    "type": "Button",
+                    "id": "16e84fa2-5b4f-4f6f-b652-04d56b19475e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightSelectCog",
+                    "type": "Button",
+                    "id": "3b2f8056-134a-4de9-a533-ccb3853960b0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "East Button",
+                    "type": "Button",
+                    "id": "04748b9e-1b5a-4987-9681-ecdad844cf1a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "South Button",
+                    "type": "Button",
+                    "id": "6861ee0b-ad32-47fb-94c7-7909cc523062",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SelectPushed",
+                    "type": "Button",
+                    "id": "524d8a71-3cab-43f4-b090-8bb9972209ad",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "df1970f9-7f88-49f2-9d60-fec4195a338d",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Left Bumper",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9a3987f-9a4d-4818-a619-c60793f206cc",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Right Bumper",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13a11cdc-417e-4308-a848-7a7e5ec74a9c",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LeftSelectCog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e69e55e-c8b2-4a73-ae78-bb54f91dc342",
+                    "path": "<Gamepad>/rightStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "LeftSelectCog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "905876c8-133d-4ff2-b21a-30eaed5dde01",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RightSelectCog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81fd1348-ca24-4903-bc7b-f4116fb7a60b",
+                    "path": "<Gamepad>/rightStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RightSelectCog",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "42ff141b-b233-40ca-aa16-3ea30a0e9f1c",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "East Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98fcad01-a135-400a-a5ae-78f73d0d61e4",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "South Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14a2bafd-1a5a-4ea8-83d2-d3a0cadfa04d",
+                    "path": "<Gamepad>/select",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SelectPushed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
