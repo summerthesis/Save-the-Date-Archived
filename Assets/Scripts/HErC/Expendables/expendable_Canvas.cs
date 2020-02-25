@@ -76,6 +76,10 @@ public class expendable_Canvas : MonoBehaviour
                 {
                     m_crossHairs.color = aimColors[4];
                 }
+                if (tempCam.GetTarget().GetComponent<Destructible>() != null)
+                {
+                    m_crossHairs.color = aimColors[3];
+                }
             }
         }
         else

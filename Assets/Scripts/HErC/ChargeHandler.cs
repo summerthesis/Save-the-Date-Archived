@@ -45,7 +45,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(ChargeTracker))]
 public class ChargeHandler : MonoBehaviour
@@ -60,7 +60,9 @@ public class ChargeHandler : MonoBehaviour
 
     private Transform targetTransform;
 
-    XRNode test;
+    //TEST FUNCTIONALITY. WILL BE MOVED
+    Gamepad m_pad;
+
     /// <summary>
     /// Script init functions. Gets references to the components and targets
     /// </summary>
@@ -74,7 +76,10 @@ public class ChargeHandler : MonoBehaviour
         //m_chargeAction.PlayerControls.ElecArm.started += ctx => m_bChargeExchange = true;
         m_chargeAction.PlayerControls.ElecArm.performed += ctx => m_bChargeExchange = true;
         m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
-        test = XRNode.GameController;
+
+        //TEST
+        m_pad = m_chargeAction.devices.HasValue ? Gamepad.current : null;
+        
     }
 
     /// <summary>
@@ -82,7 +87,11 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        //TEST
+        if (m_pad != null) {
+            m_pad.SetMotorSpeeds(0.0f, 0.25f);
+            m_pad.PauseHaptics();
+        }
     }
 
     /// <summary>
@@ -95,7 +104,7 @@ public class ChargeHandler : MonoBehaviour
     {
         targetTransform = CameraBehaviour.GetInstance().GetTarget(); // modified by Hyukin
 
-        if (targetTransform)
+        if (targetTransform && targetTransform.gameObject.layer == 8)
         {
             if (m_bChargeExchange)
             {
@@ -144,7 +153,6 @@ public class ChargeHandler : MonoBehaviour
                 //ping error: both empty
             }
         }
-        
     }
 
     /// <summary>
@@ -196,6 +204,17 @@ public class ChargeHandler : MonoBehaviour
     void OnTriggerExit(Collider other) {
         if (other.gameObject.layer == 8) {
             
+        }
+    }
+
+    //TEST
+    IEnumerator Vibrate() {
+        if (m_pad != null) {
+            m_pad.ResumeHaptics();
+        }
+        yield return new WaitForSeconds(5.0f);
+        if (m_pad != null) {
+            m_pad.PauseHaptics();
         }
     }
 }
