@@ -289,6 +289,38 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""897c15cc-dc3a-4189-a1b6-ddab6841ef7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea9d91ea-40c6-4562-bcf9-e4c592fe0117"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""8582c7af-b2c5-4cc5-b4ef-baa79247ebba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""647367cc-52b9-4697-bcba-a9b0fbd84242"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -390,6 +422,50 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""SelectPushed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb84442a-e9fd-4b4a-942d-7c12764f3ea1"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ce5a48d-53d9-4aee-b14f-d1ba3462e121"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de0389e8-cc18-468e-b08e-a330c0a8ec52"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""abbcc1af-9dbe-48eb-a610-7ae4c80d90c5"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -434,6 +510,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_InventoryControls_EastButton = m_InventoryControls.FindAction("East Button", throwIfNotFound: true);
         m_InventoryControls_SouthButton = m_InventoryControls.FindAction("South Button", throwIfNotFound: true);
         m_InventoryControls_SelectPushed = m_InventoryControls.FindAction("SelectPushed", throwIfNotFound: true);
+        m_InventoryControls_Up = m_InventoryControls.FindAction("Up", throwIfNotFound: true);
+        m_InventoryControls_Down = m_InventoryControls.FindAction("Down", throwIfNotFound: true);
+        m_InventoryControls_Left = m_InventoryControls.FindAction("Left", throwIfNotFound: true);
+        m_InventoryControls_Right = m_InventoryControls.FindAction("Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -547,6 +627,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_InventoryControls_EastButton;
     private readonly InputAction m_InventoryControls_SouthButton;
     private readonly InputAction m_InventoryControls_SelectPushed;
+    private readonly InputAction m_InventoryControls_Up;
+    private readonly InputAction m_InventoryControls_Down;
+    private readonly InputAction m_InventoryControls_Left;
+    private readonly InputAction m_InventoryControls_Right;
     public struct InventoryControlsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -558,6 +642,10 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @EastButton => m_Wrapper.m_InventoryControls_EastButton;
         public InputAction @SouthButton => m_Wrapper.m_InventoryControls_SouthButton;
         public InputAction @SelectPushed => m_Wrapper.m_InventoryControls_SelectPushed;
+        public InputAction @Up => m_Wrapper.m_InventoryControls_Up;
+        public InputAction @Down => m_Wrapper.m_InventoryControls_Down;
+        public InputAction @Left => m_Wrapper.m_InventoryControls_Left;
+        public InputAction @Right => m_Wrapper.m_InventoryControls_Right;
         public InputActionMap Get() { return m_Wrapper.m_InventoryControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -588,6 +676,18 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @SelectPushed.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
                 @SelectPushed.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
                 @SelectPushed.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
+                @Up.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Up.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Up.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Down.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Left.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Left.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Left.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Right.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
+                @Right.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
+                @Right.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
             }
             m_Wrapper.m_InventoryControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -613,6 +713,18 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @SelectPushed.started += instance.OnSelectPushed;
                 @SelectPushed.performed += instance.OnSelectPushed;
                 @SelectPushed.canceled += instance.OnSelectPushed;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
             }
         }
     }
@@ -651,5 +763,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnEastButton(InputAction.CallbackContext context);
         void OnSouthButton(InputAction.CallbackContext context);
         void OnSelectPushed(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
     }
 }
