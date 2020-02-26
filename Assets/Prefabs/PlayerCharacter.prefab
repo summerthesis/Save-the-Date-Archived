@@ -314,9 +314,9 @@ MonoBehaviour:
   heightFromPlayer: 2.5
   m_fCamMoveToPlayerBackSpeed: 30
   m_fCamZoomSpeed: 40
-  m_fElectricDistance: 0
-  m_fGravityDistance: 0
-  m_fLaserDistance: 0
+  m_fElectricDistance: 5
+  m_fGravityDistance: 10
+  m_fLaserDistance: 20
   zoomInput: 0
 --- !u!1 &4813397598125082228
 GameObject:
@@ -413,6 +413,7 @@ GameObject:
   - component: {fileID: 7807695541808610087}
   - component: {fileID: 2363077126205224479}
   - component: {fileID: 5467314473211002998}
+  - component: {fileID: 6094478428604635883}
   m_Layer: 0
   m_Name: ChargePart
   m_TagString: Untagged
@@ -461,6 +462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019ddbaf8eb47f5419a65fae16eafac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_characterTransform: {fileID: 7729535787742107181}
+  targetTransform: {fileID: 0}
 --- !u!114 &5467314473211002998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +476,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be27689dc4452ff4b8a1a21b7fe1efd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ParticleTransform: {fileID: 6601735432966526227}
+--- !u!135 &6094478428604635883
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6540019845202249878}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7729535787742107175
 GameObject:
   m_ObjectHideFlags: 0
