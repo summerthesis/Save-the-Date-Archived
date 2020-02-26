@@ -34,6 +34,7 @@ public class CameraBehaviour : MonoBehaviour
     public float m_fZoomDisOrigin;
     [SerializeField] float m_fDistance; //distance limit when player moving forward
     [SerializeField] float m_fMinDistance; //distance limit when player moving backward
+    private float m_fCurDistance;
     [SerializeField] float m_fCamRotateSpeed;
     [SerializeField] bool m_bCamRotateDirOnX; //use this to flip the roation direction;
 
@@ -130,6 +131,8 @@ public class CameraBehaviour : MonoBehaviour
         camRotAxis.x = rotateInput.x;
         camRotAxis.y = rotateInput.y;
         fdt = Time.fixedDeltaTime;
+        DistanceFixer();
+        ObstableChecker();
         if (!m_bIsZooming)
         {
             MoveToPlayer();
@@ -137,16 +140,14 @@ public class CameraBehaviour : MonoBehaviour
             //MoveToPlayerBack();
             Reset();
         }
-
-        DistanceFixer();
     }
 
     private void DistanceFixer()
     {
-        float distance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
+        m_fCurDistance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         float disToCamPivot = Vector3.Distance(new Vector3(CamPivot.transform.position.x, 0, CamPivot.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
 
-        if (distance >= m_fDistance * 2.5f && !m_bAdjustingDistance)
+        if (m_fCurDistance >= m_fDistance * 2.5f && !m_bAdjustingDistance)
         {
             m_bAdjustingDistance = true;
         }
@@ -155,7 +156,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position,
             new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
             disToCamPivot * 2.5f * fdt);
-            if (distance < m_fDistance * 2f)
+            if (m_fCurDistance < m_fDistance * 2f)
             {
                 m_bAdjustingDistance = false;
             }
@@ -176,9 +177,13 @@ public class CameraBehaviour : MonoBehaviour
                     m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? -Mathf.Abs(m_fCamRotateSpeed) : Mathf.Abs(m_fCamRotateSpeed);
 
                 if (rotateInput.x > 0)
+                {
                     transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
+                }
                 else if (rotateInput.x < 0)
+                {
                     transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
+                }
             }
             if (m_bCamRotateDirOnX)
             {
@@ -200,6 +205,9 @@ public class CameraBehaviour : MonoBehaviour
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
             }
         }
+        //CamPivot
+        CamPivot.transform.position = new Vector3(transform.position.x, CamPivot.transform.position.y, transform.position.z);
+
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
             heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
         else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight) ||
@@ -222,19 +230,30 @@ public class CameraBehaviour : MonoBehaviour
         Camera.main.transform.rotation = Quaternion.RotateTowards(transform.rotation, q, 10000 * fdt);   
     }
 
+
+    private void ObstableChecker()
+    {
+        RaycastHit hit;
+        Vector3 dir = (player.transform.position - Camera.main.transform.position).normalized;
+        Debug.DrawRay(Camera.main.transform.position, dir * m_fCurDistance, Color.blue);
+        if(Physics.Raycast(Camera.main.transform.position, dir, out hit, m_fCurDistance))
+        {
+
+        }
+    }
+
     private void MoveToPlayer()
     {
-        float distance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         float disToCamPivot = Vector3.Distance(new Vector3(CamPivot.transform.position.x, 0, CamPivot.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         if (playerMoveAxis.y != 0)
         {
-            if (distance > m_fDistance)
+            if (m_fCurDistance > m_fDistance)
             {
                 transform.position = Vector3.MoveTowards(transform.position,
                     new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
                     disToCamPivot * 2.5f * fdt);
             }
-            else if (distance < m_fMinDistance && distance > 0)
+            else if (m_fCurDistance < m_fMinDistance && m_fCurDistance > 0)
             {
                 Vector3 tempSpeed = player.GetComponent<PlayerMovement>().GetOverallSpeed() * player.GetComponent<PlayerMovement>().GetMoveSpeed();
                 tempSpeed.x /= 16;

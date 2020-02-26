@@ -3132,6 +3132,7 @@ MonoBehaviour:
   m_bCamRotateDirOnX: 1
   heightFromPlayer: 2.5
   m_fCamMoveToPlayerBackSpeed: 30
+  m_bAdjustingDistance: 0
   m_fCamZoomSpeed: 40
   m_fElectricDistance: 5
   m_fGravityDistance: 10
