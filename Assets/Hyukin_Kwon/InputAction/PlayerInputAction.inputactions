@@ -36,6 +36,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ActivateMagArm",
+                    "type": "Button",
+                    "id": "27dca19b-aede-49a3-a087-caa37659cb1f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -212,6 +220,17 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "ElecArm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b00e7355-636d-488c-85a9-1da79951eaf5",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ActivateMagArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

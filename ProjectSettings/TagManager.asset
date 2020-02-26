@@ -9,6 +9,7 @@ TagManager:
   - CameraTarget
   - Stair
   - Camera
+  - MagCollectable
   layers:
   - Default
   - TransparentFX

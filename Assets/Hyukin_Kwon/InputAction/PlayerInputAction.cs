@@ -49,6 +49,14 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ActivateMagArm"",
+                    ""type"": ""Button"",
+                    ""id"": ""27dca19b-aede-49a3-a087-caa37659cb1f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -227,6 +235,17 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""action"": ""ElecArm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b00e7355-636d-488c-85a9-1da79951eaf5"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ActivateMagArm"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -262,6 +281,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls_Jump = m_PlayerControls.FindAction("Jump", throwIfNotFound: true);
         m_PlayerControls_ActivateHook = m_PlayerControls.FindAction("ActivateHook", throwIfNotFound: true);
         m_PlayerControls_ElecArm = m_PlayerControls.FindAction("ElecArm", throwIfNotFound: true);
+        m_PlayerControls_ActivateMagArm = m_PlayerControls.FindAction("ActivateMagArm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -315,6 +335,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerControls_Jump;
     private readonly InputAction m_PlayerControls_ActivateHook;
     private readonly InputAction m_PlayerControls_ElecArm;
+    private readonly InputAction m_PlayerControls_ActivateMagArm;
     public struct PlayerControlsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -323,6 +344,7 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerControls_Jump;
         public InputAction @ActivateHook => m_Wrapper.m_PlayerControls_ActivateHook;
         public InputAction @ElecArm => m_Wrapper.m_PlayerControls_ElecArm;
+        public InputAction @ActivateMagArm => m_Wrapper.m_PlayerControls_ActivateMagArm;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -344,6 +366,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @ElecArm.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
                 @ElecArm.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
                 @ElecArm.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnElecArm;
+                @ActivateMagArm.started -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateMagArm;
+                @ActivateMagArm.performed -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateMagArm;
+                @ActivateMagArm.canceled -= m_Wrapper.m_PlayerControlsActionsCallbackInterface.OnActivateMagArm;
             }
             m_Wrapper.m_PlayerControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -360,6 +385,9 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                 @ElecArm.started += instance.OnElecArm;
                 @ElecArm.performed += instance.OnElecArm;
                 @ElecArm.canceled += instance.OnElecArm;
+                @ActivateMagArm.started += instance.OnActivateMagArm;
+                @ActivateMagArm.performed += instance.OnActivateMagArm;
+                @ActivateMagArm.canceled += instance.OnActivateMagArm;
             }
         }
     }
@@ -388,5 +416,6 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnActivateHook(InputAction.CallbackContext context);
         void OnElecArm(InputAction.CallbackContext context);
+        void OnActivateMagArm(InputAction.CallbackContext context);
     }
 }
