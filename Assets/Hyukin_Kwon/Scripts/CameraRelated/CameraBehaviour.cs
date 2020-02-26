@@ -170,33 +170,34 @@ public class CameraBehaviour : MonoBehaviour
         {
             if (playerMoveAxis.x == 0)
             {
-                m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
+                if(m_bCamRotateDirOnX)
+                    m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? Mathf.Abs(m_fCamRotateSpeed) : -Mathf.Abs(m_fCamRotateSpeed);
+                else
+                    m_fCamRotateSpeed = (m_bCamRotateDirOnX) ? -Mathf.Abs(m_fCamRotateSpeed) : Mathf.Abs(m_fCamRotateSpeed);
+
                 if (rotateInput.x > 0)
-                {
                     transform.RotateAround(player.transform.position, Vector3.up, m_fCamRotateSpeed * fdt);
-                }
                 else if (rotateInput.x < 0)
-                {
                     transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
-                }
             }
-            if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f)
+            if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f && m_bCamRotateDirOnX)
             {
                 if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
-                {
                     heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
-                }
-                else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight))
-                {
-                    if (heightFromPlayer < hit.distance)
-                    {
-                        heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
-                    }
-                }
                 else if (rotateInput.y > 0.2f && heightFromPlayer <= maxHeight)
-                {
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;            
+            }
+            else if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f && !m_bCamRotateDirOnX)
+            {
+                if (rotateInput.y < -0.2f && heightFromPlayer <= maxHeight) 
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
-                }              
+                else if (rotateInput.y > 0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
+                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+            }
+            if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight))
+            {
+                if (heightFromPlayer < hit.distance)
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
             }
         }
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
