@@ -42,6 +42,17 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rigid;
     [SerializeField] float rayDis; //for ground checking
 
+    private Rigidbody rigidbody;
+    public Rigidbody RIGIDBODY
+    {
+        get
+        {
+            if (rigidbody == null)
+                rigidbody = GetComponent<Rigidbody>();
+            return rigidbody;
+        }
+    }
+
     #region Player Input Action
     PlayerInputAction inputAction;
     public Vector2 movementInput;

@@ -52,6 +52,7 @@ public class CameraBehaviour : MonoBehaviour
     private bool m_bIsZooming = false;
     private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
+    public bool m_bAdjustingDistance = false;
     [SerializeField] float m_fCamZoomSpeed; // speed of camera move to player's back when zoomed in or off.
     private Vector3 m_targetDir;
     private float fdt;
@@ -120,6 +121,7 @@ public class CameraBehaviour : MonoBehaviour
         ZoomInMode();
     }
 
+
     private void FixedUpdate()
     {
         Camera.main.transform.position = transform.position;
@@ -136,6 +138,28 @@ public class CameraBehaviour : MonoBehaviour
             Reset();
         }
 
+        DistanceFixer();
+    }
+
+    private void DistanceFixer()
+    {
+        float distance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
+        float disToCamPivot = Vector3.Distance(new Vector3(CamPivot.transform.position.x, 0, CamPivot.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
+
+        if (distance >= m_fDistance * 2.5f && !m_bAdjustingDistance)
+        {
+            m_bAdjustingDistance = true;
+        }
+        if (m_bAdjustingDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position,
+            new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
+            disToCamPivot * 2.5f * fdt);
+            if (distance < m_fDistance * 2f)
+            {
+                m_bAdjustingDistance = false;
+            }
+        }
     }
 
     private void Rotate()
@@ -200,13 +224,14 @@ public class CameraBehaviour : MonoBehaviour
     private void MoveToPlayer()
     {
         float distance = Vector3.Distance(new Vector3(player.transform.position.x, 0, player.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
-        if(playerMoveAxis != Vector2.zero)
+        float disToCamPivot = Vector3.Distance(new Vector3(CamPivot.transform.position.x, 0, CamPivot.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
+        if (playerMoveAxis.y != 0)
         {
             if (distance > m_fDistance)
             {
                 transform.position = Vector3.MoveTowards(transform.position,
                     new Vector3(CamPivot.transform.position.x, CamPivot.transform.position.y + heightFromPlayer, CamPivot.transform.position.z),
-                    playerMovementCs.GetMoveSpeed() * fdt);
+                    disToCamPivot * 2.5f * fdt);
             }
             else if (distance < m_fMinDistance && distance > 0)
             {
