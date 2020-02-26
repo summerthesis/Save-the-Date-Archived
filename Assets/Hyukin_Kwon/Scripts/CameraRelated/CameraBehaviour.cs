@@ -180,14 +180,14 @@ public class CameraBehaviour : MonoBehaviour
                 else if (rotateInput.x < 0)
                     transform.RotateAround(player.transform.position, Vector3.up, -m_fCamRotateSpeed * fdt);
             }
-            if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f && m_bCamRotateDirOnX)
+            if (m_bCamRotateDirOnX)
             {
                 if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
                     heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
                 else if (rotateInput.y > 0.2f && heightFromPlayer <= maxHeight)
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;            
             }
-            else if (rotateInput.x <= 0.2f && rotateInput.x >= -0.2f && !m_bCamRotateDirOnX)
+            else if (!m_bCamRotateDirOnX)
             {
                 if (rotateInput.y < -0.2f && heightFromPlayer <= maxHeight) 
                     heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
