@@ -53,6 +53,9 @@ public class CameraBehaviour : MonoBehaviour
     private bool m_bIsZooming = false;
     private bool m_bISZoomingBack = false;
     private bool m_bIsMovingToPlayerBack = false;
+    [SerializeField] float m_fZoomDis = 0.0f;
+    [SerializeField] float m_fMaxZoomDis = 4.0f;
+    [SerializeField] float m_fZoomSpeed;
     public bool m_bAdjustingDistance = false;
     [SerializeField] float m_fCamZoomSpeed; // speed of camera move to player's back when zoomed in or off.
     private Vector3 m_targetDir;
@@ -132,13 +135,16 @@ public class CameraBehaviour : MonoBehaviour
         camRotAxis.y = rotateInput.y;
         fdt = Time.fixedDeltaTime;
         DistanceFixer();
-        ObstableChecker();
+        //ObstableChecker();
         if (!m_bIsZooming)
         {
             MoveToPlayer();
             Rotate();
-            //MoveToPlayerBack();
             Reset();
+        }
+        else
+        {
+            ZoomZoom();
         }
     }
 
@@ -235,7 +241,7 @@ public class CameraBehaviour : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 dir = (player.transform.position - Camera.main.transform.position).normalized;
-        Debug.DrawRay(Camera.main.transform.position, dir * m_fCurDistance, Color.blue);
+        
         if(Physics.Raycast(Camera.main.transform.position, dir, out hit, m_fCurDistance))
         {
 
@@ -381,7 +387,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamZoomPivot.transform.position.x,
                 CamZoomPivot.transform.position.y,
-                CamZoomPivot.transform.position.z),
+                CamZoomPivot.transform.position.z + m_fZoomDis),
                 m_fCamZoomSpeed * Time.deltaTime);
 
             transform.LookAt(CamZoomtargetView.transform);
@@ -394,6 +400,7 @@ public class CameraBehaviour : MonoBehaviour
 
         if (m_bISZoomingBack) // step 5: move to Cam pivot point;
         {
+            m_fZoomDis = 0.0f;
             Vector3 target = new Vector3(CamPivot.transform.position.x,
                 CamPivot.transform.position.y + heightFromPlayer,
                 CamPivot.transform.position.z);
@@ -407,6 +414,19 @@ public class CameraBehaviour : MonoBehaviour
                 m_bIsZooming = false;
             }
         }
+    }
+
+    private void ZoomZoom() //lol
+    {
+        if(camRotAxis.y > 0 && m_fZoomDis < m_fMaxZoomDis)
+        {
+            m_fZoomDis += m_fZoomSpeed * fdt;
+        }
+        else if(camRotAxis.y < 0 && m_fZoomDis > 0)
+        {
+            m_fZoomDis -= m_fZoomSpeed * fdt;
+        }
+        m_fZoomDis = Mathf.Clamp(m_fZoomDis, 0, m_fMaxZoomDis);
     }
 
     /// <summary>

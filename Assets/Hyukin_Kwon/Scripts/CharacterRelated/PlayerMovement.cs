@@ -113,16 +113,17 @@ public class PlayerMovement : MonoBehaviour
     {
         RaycastHit hit;
         float distance = CameraBehaviour.GetInstance().m_fDistanceOrigin;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, distance))
+        Vector3 dir = (CamPivot.transform.position - transform.position).normalized;
+        if (Physics.Raycast(transform.position, dir, out hit, distance))
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * hit.distance, Color.yellow);
+            Debug.DrawRay(transform.position, dir * hit.distance, Color.yellow);
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
             if (hit.transform.tag != "Camera")
                 Debug.Log(hit.transform.gameObject);
         }
         else
         {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * distance, Color.cyan);
+            Debug.DrawRay(transform.position, dir * distance, Color.cyan);
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
         }
     }
