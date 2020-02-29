@@ -112,19 +112,26 @@ public class PlayerMovement : MonoBehaviour
     private void SetCampPivotPos()
     {
         RaycastHit hit;
-        float distance = CameraBehaviour.GetInstance().m_fDistanceOrigin;
-        Vector3 dir = (CamPivot.transform.position - transform.position).normalized;
+        float distance = Vector3.Distance(CameraBody.transform.position, transform.position);
+        Vector3 dir = (CameraBody.transform.position - transform.position).normalized;
         if (Physics.Raycast(transform.position, dir, out hit, distance))
         {
+            Vector3 hitPos = transform.position + (dir * hit.distance);
             Debug.DrawRay(transform.position, dir * hit.distance, Color.yellow);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
+            CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, new Vector3(hitPos.x, CameraBody.transform.position.y, hitPos.z), 10 * fdt);
+            Debug.DrawRay(hitPos, Vector3.up * 10, Color.green);
             if (hit.transform.tag != "Camera")
                 Debug.Log(hit.transform.gameObject);
+            if(distance > CameraBehaviour.GetInstance().GetDistance())
+            {
+                CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, transform.position + (dir * CameraBehaviour.GetInstance().GetDistance()), 20 * fdt);
+            }
         }
         else
         {
             Debug.DrawRay(transform.position, dir * distance, Color.cyan);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
+            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -CameraBehaviour.GetInstance().m_fDistanceOrigin), 10 * fdt);
+            CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, transform.position + (dir * CameraBehaviour.GetInstance().GetDistance()), 20 * fdt);
         }
     }
 
