@@ -2900,7 +2900,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211781094740730645}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -5}
+  m_LocalPosition: {x: 0, y: 0.89, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 211781096401580985}
@@ -3044,7 +3044,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211781096401580979}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.51454717, z: -0, w: 0.85746205}
   m_LocalPosition: {x: 0.51608557, y: 1.5, z: -7.4219184}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_Children:
@@ -3055,7 +3055,7 @@ Transform:
   - {fileID: 7616913051395460309}
   m_Father: {fileID: 1811917044053358178}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 61.934002, z: 0}
 --- !u!1 &325006546442958949
 GameObject:
   m_ObjectHideFlags: 0
@@ -3442,14 +3442,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbde3acb13a2194cb45cb0eac36c10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_fDistanceOrigin: 0
   m_fZoomDisOrigin: 0
-  m_fDistance: 4
-  m_fMinDistance: 3.6
+  m_fDistance: 8
   m_fCamRotateSpeed: 200
   m_bCamRotateDirOnX: 1
   heightFromPlayer: 2.5
-  m_fCamMoveToPlayerBackSpeed: 30
+  m_fCamMoveToPlayerBackSpeed: 10
   m_fZoomDis: 0
   m_fMaxZoomDis: 4
   m_fZoomSpeed: 3
