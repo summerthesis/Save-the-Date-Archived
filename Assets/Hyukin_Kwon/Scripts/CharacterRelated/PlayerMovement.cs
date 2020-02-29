@@ -18,7 +18,6 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
-    private GameObject CamPivot;
     private GameObject FrontHeightCheck;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
@@ -83,7 +82,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         CameraBody = GameObject.Find("CameraBody");
-        CamPivot = GameObject.Find("CamPivot");
         FrontHeightCheck = GameObject.Find("FrontHeightCheck");
         rigid = GetComponent<Rigidbody>();
         qTo = transform.rotation;
@@ -102,36 +100,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            SetCampPivotPos();
             PlayerFacingRot();
             MoveRegular();
             JumpRegular();
-        }
-    }
-
-    private void SetCampPivotPos()
-    {
-        RaycastHit hit;
-        float distance = Vector3.Distance(CameraBody.transform.position, transform.position);
-        Vector3 dir = (CameraBody.transform.position - transform.position).normalized;
-        if (Physics.Raycast(transform.position, dir, out hit, distance))
-        {
-            Vector3 hitPos = transform.position + (dir * hit.distance);
-            Debug.DrawRay(transform.position, dir * hit.distance, Color.yellow);
-            CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, new Vector3(hitPos.x, CameraBody.transform.position.y, hitPos.z), 10 * fdt);
-            Debug.DrawRay(hitPos, Vector3.up * 10, Color.green);
-            if (hit.transform.tag != "Camera")
-                Debug.Log(hit.transform.gameObject);
-            if(distance > CameraBehaviour.GetInstance().GetDistance())
-            {
-                CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, transform.position + (dir * CameraBehaviour.GetInstance().GetDistance()), 20 * fdt);
-            }
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, dir * distance, Color.cyan);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -CameraBehaviour.GetInstance().m_fDistanceOrigin), 10 * fdt);
-            CameraBody.transform.position = Vector3.Lerp(CameraBody.transform.position, transform.position + (dir * CameraBehaviour.GetInstance().GetDistance()), 20 * fdt);
         }
     }
 
