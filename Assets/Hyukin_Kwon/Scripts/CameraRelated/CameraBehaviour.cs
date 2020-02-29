@@ -246,18 +246,25 @@ public class CameraBehaviour : MonoBehaviour
                 CamPivot.transform.position = player.transform.position + (-player.transform.forward * m_fDistance);
             }
         }
+        if(m_bIsReseting && resetInput)
+        {
+            heightFromPlayer = heightFromPlayerOrigin;
+            resetInput = false;
+        }
           
         if (m_bIsReseting)
         {
             Vector3 target = player.transform.position + (-player.transform.forward * m_fDistance) + (Vector3.up * heightFromPlayer);
             transform.position = Vector3.Lerp(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
 
-            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            if (Vector3.Distance(transform.position, target) <= 0.35f)
             {
                 m_bIsReseting = false;
+                transform.position = target;
             }
         }
     }
+
 
     private void ZoomInMode()
     {
@@ -293,13 +300,15 @@ public class CameraBehaviour : MonoBehaviour
         if (m_bISZoomingBack) // step 5: move to Cam pivot point;
         {
             m_fZoomDis = 0.0f;
+            
             Vector3 target = player.transform.position + (-player.transform.forward * m_fDistance) + (Vector3.up * heightFromPlayer);
             transform.position = Vector3.Lerp(transform.position, target, m_fCamZoomSpeed * fdt);
 
-            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            if (Vector3.Distance(transform.position, target) <= 0.35f)
             {
                 m_bISZoomingBack = false;
                 m_bIsZooming = false;
+                transform.position = target;
             }
         }
     }
