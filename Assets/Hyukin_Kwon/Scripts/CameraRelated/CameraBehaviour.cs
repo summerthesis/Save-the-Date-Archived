@@ -32,6 +32,7 @@ public class CameraBehaviour : MonoBehaviour
     private PlayerMovement playerMovementCs;
     public float m_fZoomDisOrigin;
     [SerializeField] float m_fDistance; //distance limit when player moving forward
+    private Vector3 direction;
     [SerializeField] float m_fCamRotateSpeed;
     [SerializeField] bool m_bCamRotateDirOnX; //use this to flip the roation direction;
 
@@ -108,6 +109,7 @@ public class CameraBehaviour : MonoBehaviour
         playerMovementCs = player.GetComponent<PlayerMovement>();
         heightFromPlayerOrigin = heightFromPlayer;
         m_fZoomDisOrigin = Mathf.Abs(CamZoomPivot.transform.localPosition.z);
+        direction = (transform.position - player.transform.position).normalized;
     }
 
     private void Update()
@@ -142,25 +144,25 @@ public class CameraBehaviour : MonoBehaviour
     {
         RaycastHit hit;
         float distance = Vector3.Distance(transform.position, player.transform.position);
-        Vector3 dir = (transform.position - player.transform.position).normalized;
-        if (Physics.Raycast(player.transform.position, dir, out hit, distance))
+        direction = (transform.position - player.transform.position).normalized;
+        if (Physics.Raycast(player.transform.position, direction, out hit, distance))
         {
-            Vector3 hitPos = player.transform.position + (dir * hit.distance);
-            Debug.DrawRay(player.transform.position, dir * -hit.distance, Color.yellow);
+            Vector3 hitPos = player.transform.position + (direction * hit.distance);
+            Debug.DrawRay(player.transform.position, direction * -hit.distance, Color.yellow);
             transform.position = Vector3.Lerp(transform.position, new Vector3(hitPos.x, transform.position.y, hitPos.z), 10 * fdt);
             Debug.DrawRay(hitPos, Vector3.up * 10, Color.green);
             if (hit.transform.tag != "Camera")
                 Debug.Log(hit.transform.gameObject);
             if (distance > m_fDistance)
             {
-                transform.position = Vector3.Lerp(transform.position, player.transform.position + (dir * m_fDistance), 10 * fdt);
+                transform.position = Vector3.Lerp(transform.position, player.transform.position + (direction * m_fDistance), 10 * fdt);
             }
         }
         else
         {
-            Debug.DrawRay(transform.position, dir * -distance, Color.cyan);
+            Debug.DrawRay(transform.position, direction * -distance, Color.cyan);
             CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -m_fDistance), 10 * fdt);
-            transform.position = Vector3.Lerp(transform.position, player.transform.position + (dir * m_fDistance), 10 * fdt);
+            transform.position = Vector3.Lerp(transform.position, player.transform.position + (direction * m_fDistance), 10 * fdt);
         }
     }
 
@@ -189,30 +191,30 @@ public class CameraBehaviour : MonoBehaviour
             if (m_bCamRotateDirOnX)
             {
                 if (rotateInput.y < -0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
-                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 15;
                 else if (rotateInput.y > 0.2f && heightFromPlayer <= maxHeight)
-                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;            
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 15;            
             }
             else if (!m_bCamRotateDirOnX)
             {
                 if (rotateInput.y < -0.2f && heightFromPlayer <= maxHeight) 
-                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 15;
                 else if (rotateInput.y > 0.2f && heightFromPlayer >= -playerMovementCs.GetDisToGround() + 0.5f)
-                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+                    heightFromPlayer -= fdt * m_fCamRotateSpeed / 15;
             }
             if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight))
             {
                 if (heightFromPlayer < hit.distance)
-                    heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+                    heightFromPlayer += fdt * m_fCamRotateSpeed / 15;
             }
         }
 
         if ((heightFromPlayer < -playerMovementCs.GetDisToGround() + 0.5f))
-            heightFromPlayer += fdt * m_fCamRotateSpeed / 20;
+            heightFromPlayer += fdt * m_fCamRotateSpeed / 15;
         else if (Physics.Raycast(player.transform.position, Vector3.up, out hit, maxHeight) ||
             Physics.Raycast(new Vector3(transform.position.x, player.transform.position.y, transform.position.z), Vector3.up, out hit, heightFromPlayerOrigin * 2))
             if (heightFromPlayer > hit.distance)
-                heightFromPlayer -= fdt * m_fCamRotateSpeed / 20;
+                heightFromPlayer -= fdt * m_fCamRotateSpeed / 15;
 
         transform.position = Vector3.MoveTowards(transform.position,
             new Vector3(transform.position.x, CamPivot.transform.position.y + heightFromPlayer, transform.position.z),
@@ -247,15 +249,13 @@ public class CameraBehaviour : MonoBehaviour
           
         if (m_bIsReseting)
         {
-            Vector3 target = new Vector3(CamPivot.transform.position.x,
-               CamPivot.transform.position.y + heightFromPlayer,
-               CamPivot.transform.position.z);
+            Vector3 target = player.transform.position + (-player.transform.forward * m_fDistance) + (Vector3.up * heightFromPlayer);
+            transform.position = Vector3.Lerp(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
 
             if (Vector3.Distance(transform.position, target) <= 0.25f)
             {
                 m_bIsReseting = false;
             }
-            transform.position = Vector3.MoveTowards(transform.position, target, m_fCamMoveToPlayerBackSpeed * fdt);
         }
     }
 
@@ -279,7 +279,7 @@ public class CameraBehaviour : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position,
                 new Vector3(CamZoomPivot.transform.position.x,
                 CamZoomPivot.transform.position.y,
-                CamZoomPivot.transform.position.z + m_fZoomDis),
+                CamZoomPivot.transform.position.z) + transform.forward * m_fZoomDis,
                 m_fCamZoomSpeed * Time.deltaTime);
 
             transform.LookAt(CamZoomtargetView.transform);
@@ -293,22 +293,15 @@ public class CameraBehaviour : MonoBehaviour
         if (m_bISZoomingBack) // step 5: move to Cam pivot point;
         {
             m_fZoomDis = 0.0f;
-            Vector3 target = new Vector3(CamPivot.transform.position.x,
-                CamPivot.transform.position.y + heightFromPlayer,
-                CamPivot.transform.position.z);
+            Vector3 target = player.transform.position + (-player.transform.forward * m_fDistance) + (Vector3.up * heightFromPlayer);
+            transform.position = Vector3.Lerp(transform.position, target, m_fCamZoomSpeed * fdt);
 
-            transform.position = Vector3.MoveTowards(transform.position, target,
-                m_fCamZoomSpeed * Time.deltaTime);
-
-            StartCoroutine(SetOfReset());
+            if (Vector3.Distance(transform.position, target) <= 0.25f)
+            {
+                m_bISZoomingBack = false;
+                m_bIsZooming = false;
+            }
         }
-    }
-
-    IEnumerator SetOfReset()
-    {
-        yield return new WaitForSeconds(1f);
-        m_bISZoomingBack = false;
-        m_bIsZooming = false;
     }
 
     private void ZoomZoom() //lol
