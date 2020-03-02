@@ -5,16 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Old scenes (First Playable)/caleighattempt.unity
     guid: 15446575f7a288540a318d0476b84817
-  - enabled: 1
-    path: Assets/NewMainMenu.unity
-    guid: 6f7275c9db50837449a83f1383afba21
-  - enabled: 1
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/Old scenes (First Playable)/main.unity
     guid: e0da437854233d04a84bea5754b48318
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Herc's Mech Arm Scene.unity
+    guid: d762f62b1ca652245914b8a24417b1b1
   m_configObjects: {}

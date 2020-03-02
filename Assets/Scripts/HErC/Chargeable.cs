@@ -30,11 +30,6 @@ public class Chargeable : MonoBehaviour
     [SerializeField] private bool isCharged;
     public bool Charged { get { return isCharged; } }
 
-    private void Update()
-    {
-
-    }
-
     /// <summary>
     /// Updates "charged" status
     /// </summary>

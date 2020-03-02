@@ -12,6 +12,11 @@
 * 
 * Feb 9 mod: Re-added GetTarget() functionality to indicate
 *            whether the targeted objects are chargeable
+*            
+* Feb 24, 25 mod: Modified GetTarget() functionality to include 
+*                 shootable(destructible) objects
+*                 Included getters and debug drawing of distances
+*                 for chargeable, floatable and destructible objects
 * *******************************************************/
 using System.Collections;
 using System.Collections.Generic;
@@ -51,7 +56,9 @@ public class CameraBehaviour : MonoBehaviour
     private Vector3 m_targetDir;
     private float fdt;
     //Added by HErC:
-    [SerializeField] private float m_fRaycastDistance;//Max distance for target finding
+    [SerializeField] private float m_fElectricDistance;// Max distance for chargeable finding
+    [SerializeField] private float m_fGravityDistance; // Max distance for gravity detection
+    [SerializeField] private float m_fLaserDistance;   // Max distance for laser cast
 
     #region Camera input Controls
     CameraInputAction inputAction;
@@ -65,6 +72,10 @@ public class CameraBehaviour : MonoBehaviour
     public bool GetIsZooming() { return m_bIsZooming; }
     public float GetDistance() { return m_fDistance; }
     public float GetMinDistance() { return m_fMinDistance; }
+    //Added by HErC:
+    public float GetElectricDistance() { return m_fElectricDistance; }
+    public float GetGravityDistance() { return m_fGravityDistance; }
+    public float GetLaserDistance() { return m_fLaserDistance; }
     #endregion
     #region Make Singleton
     private static CameraBehaviour instance;
@@ -356,7 +367,7 @@ public class CameraBehaviour : MonoBehaviour
     /// <summary>
     /// Re-addition by HErC:
     /// Get Target function: Raycasts from the camera to the target at the center of the viewport.
-    /// This function is aimed at indicating whether the target can be charged or moved
+    /// This function is aimed at indicating whether the target can be charged, moved or shot
     /// It works with Physics Layers!!!
     /// It DOES have some leftover implementation for the Gravity Gun
     /// </summary>
@@ -365,16 +376,22 @@ public class CameraBehaviour : MonoBehaviour
 
         Transform camTransform = Camera.main.transform;
         int thunderLayer = 1 << 8;
-        int gravityLayer = 1 << 9; //maintained
-        int layers = thunderLayer + gravityLayer;
+        int gravityLayer = 1 << 9; //maintained for gravity
+        int laserLayer = 1 << 12;
         RaycastHit tempTarget;
 
-        Debug.DrawLine(camTransform.position, camTransform.position+( camTransform.forward * m_fRaycastDistance), Color.magenta);
-        if (Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fRaycastDistance, layers, QueryTriggerInteraction.Ignore)) {
-            
-            return tempTarget.transform;
-        }
+        if (m_bIsZooming) {
+            //Debug lines. Should be erased for final version
+            Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + this.gameObject.transform.forward * m_fLaserDistance, Color.red);
+            Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + this.gameObject.transform.forward * m_fGravityDistance, Color.magenta);
+            Debug.DrawLine(this.gameObject.transform.position, this.gameObject.transform.position + this.gameObject.transform.forward * m_fElectricDistance, Color.green);
 
+            if (Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fElectricDistance, thunderLayer, QueryTriggerInteraction.Ignore) ||
+                Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fGravityDistance, gravityLayer, QueryTriggerInteraction.Ignore) ||
+                Physics.Raycast(camTransform.position, camTransform.forward, out tempTarget, m_fLaserDistance, laserLayer, QueryTriggerInteraction.Ignore)) {
+                return tempTarget.transform;
+            }
+        }
         return null;
     }
 
