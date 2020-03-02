@@ -73,6 +73,7 @@ public class ChargeHandler : MonoBehaviour
     private SphereCollider m_sphereCol;
 
     //TEST FUNCTIONALITY. WILL BE MOVED
+    [SerializeField] private bool m_bFlipMotors;
     Gamepad m_pad;
 
     /// <summary>
@@ -121,6 +122,12 @@ public class ChargeHandler : MonoBehaviour
        
         if (targetTransform)
         {
+            float tempL = 1-((targetTransform.position - this.gameObject.transform.position).magnitude/m_sphereCol.radius);
+            float tempR = 0.1f;
+
+            if (m_bFlipMotors) { m_pad.SetMotorSpeeds(tempL, tempR); }
+            else { m_pad.SetMotorSpeeds(tempR, tempL); }
+            
             if (m_bChargeExchange)
             {
                 m_bChargeExchange = false;

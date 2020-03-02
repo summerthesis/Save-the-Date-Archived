@@ -5,10 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class expendable_Pickup : MonoBehaviour
 {
-    [SerializeField] private int m_chargeCapacity;
-
     private Rigidbody m_rb;
-    private float m_rotation;
+    [SerializeField] private float m_rotation;
 
     void Awake() {
         m_rb = this.gameObject.GetComponent<Rigidbody>();
@@ -25,17 +23,17 @@ public class expendable_Pickup : MonoBehaviour
     void FixedUpdate()
     {
         m_rb.AddTorque(Vector3.up*m_rotation);
-        
     }
 
     void OnTriggerEnter(Collider other) {
 
-        ChargeTracker temp = other.gameObject.GetComponent<ChargeTracker>();
-
+        PlayerStats temp = other.gameObject.GetComponent<PlayerStats>();
         //if the player is fully charged, the pickup will refuse to charge it
-        if (temp && temp.Recharge(m_chargeCapacity)) {
+        if (temp) {
+            temp.AddGear();
             //alternatively, play sound before destroying
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
+            Destroy(this.gameObject, 1.0f);
         }
     }
 }

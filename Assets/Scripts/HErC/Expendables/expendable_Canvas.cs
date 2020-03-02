@@ -27,6 +27,11 @@ public class expendable_Canvas : MonoBehaviour
     private Canvas m_canvas;
     
     private ChargeHandler m_mech; //Tracks charges
+    private PlayerStats m_pStats;
+    
+    [SerializeField] private Text m_iLives;
+    [SerializeField] private Text m_iGears;
+
     [SerializeField] Animator[] m_lights;
 
     [SerializeField] Color[] aimColors; /* 5 colors:
@@ -39,7 +44,7 @@ public class expendable_Canvas : MonoBehaviour
 
     //Stuff going on for camera and crosshairs
     private RawImage m_crossHairs;
-
+    
     void Awake() {
 
         m_canvas = this.gameObject.GetComponent<Canvas>();
@@ -50,6 +55,7 @@ public class expendable_Canvas : MonoBehaviour
     void Start()
     {
         m_mech = GameObject.FindObjectOfType<ChargeHandler>();
+        m_pStats = GameObject.FindObjectOfType<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -57,7 +63,9 @@ public class expendable_Canvas : MonoBehaviour
     {
         //charge text
         if (!m_mech) m_mech = GameObject.FindObjectOfType<ChargeHandler>();
+        if (!m_pStats) m_pStats = GameObject.FindObjectOfType<PlayerStats>();
 
+        UpdatePlayerStats();
         UpdateArmLights();
 
         //new code -modified by Hyukin
@@ -112,5 +120,10 @@ public class expendable_Canvas : MonoBehaviour
                 m_lights[k].SetBool("LightIsOn", false);
             }
         }
+    }
+
+    private void UpdatePlayerStats() {
+        m_iLives.text = "Lives: " + m_pStats.Lives;
+        m_iGears.text = "Gears: " + m_pStats.PlayerGears;
     }
 }

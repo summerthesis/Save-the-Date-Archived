@@ -464,6 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_characterTransform: {fileID: 7729535787742107181}
   targetTransform: {fileID: 0}
+  m_bFlipMotors: 0
 --- !u!114 &5467314473211002998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +506,7 @@ GameObject:
   - component: {fileID: 7729535787742107169}
   - component: {fileID: 7729535787742107174}
   - component: {fileID: 7729535787742107173}
+  - component: {fileID: 8866259216536152574}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -640,6 +642,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forceAmount: 200
+--- !u!114 &8866259216536152574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729535787742107175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1735342b6cccea44c8123489bb24d38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_iMaxGears: 35
 --- !u!1 &7729535788919537464
 GameObject:
   m_ObjectHideFlags: 0
