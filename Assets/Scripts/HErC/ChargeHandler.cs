@@ -214,9 +214,11 @@ public class ChargeHandler : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.GetComponent<Chargeable>()!= null || 
-            other.gameObject.GetComponentInChildren<Chargeable>()!= null) {
-
+        Debug.Log(other.gameObject.name);
+        Chargeable temp = other.gameObject.GetComponent<Chargeable>();
+        if (!temp) temp = other.gameObject.GetComponentInChildren<Chargeable>();
+        if (temp) {
+            Debug.Log(temp.gameObject.name);
             if (!targetTransform) {
                 targetTransform = other.gameObject.transform;
             }
