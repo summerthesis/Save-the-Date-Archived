@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 90378b8e955e9824ba972e0028cb596c
+guid: e22044d8c2e8d8b45b69583d9f948003
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable:
   - first:
-      74: 8332809342168634894
-    second: TM_JUMP
+      74: 1827226128182048838
+    second: Jump
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -35,10 +35,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: TM_JUMP
-      takeName: TM_JUMP
-      internalID: 8332809342168634894
-      firstFrame: 1
+      name: Jump
+      takeName: Take 001
+      internalID: 1827226128182048838
+      firstFrame: 16
       lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0

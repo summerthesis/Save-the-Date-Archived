@@ -96,7 +96,7 @@ public class PlatformMovement : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.transform.tag == "Player")
             collision.transform.parent.parent = transform;

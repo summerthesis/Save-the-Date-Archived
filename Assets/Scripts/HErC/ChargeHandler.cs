@@ -3,8 +3,8 @@
  * Save The Date
  *
  * Charge Handler
- * Created: November 14, 2019
- * Last Modified: November 28, 2019
+ * Created:       Nov 14, 2019
+ * Last Modified: Feb 25, 2019
  * 
  * Inherits from MonoBehaviour
  * 
@@ -35,16 +35,30 @@
  *      implemented by artists
  * - Reworked some of the functionality related to the camera and control 
  *      system, since they were overhauled
+ *  
+ *  //CHANGES IN FEB 18&19
+ * - Reworked the controls to match Unity's new system
+ * - Completely removed camera reference
+ * 
+ *  //CHANGES IN FEB 24&25
+ * - Reworked detection system to match the initial, range-based design
+ * - Implemented test functionality for the haptics feedback.
+ * - (OBS: This test shall be moved to a different script)
+ * - CURRENT ISSUES:
+ *      Chargeable script not being found in children.
+ *      
  * 
  ********************************************************************/
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(ChargeTracker))]
 public class ChargeHandler : MonoBehaviour
 {
+    [SerializeField] private Transform m_characterTransform;
     //Charge Tracking variables
     private ChargeTracker chargeTracker;
     public int MaxCharges { get { return chargeTracker.MaxCharges; } }
@@ -53,9 +67,16 @@ public class ChargeHandler : MonoBehaviour
     private PlayerInputAction m_chargeAction;
     private bool m_bChargeExchange;
 
-    //Camera component for target detection
-    [SerializeField] private Camera camera;
-    private Transform targetTransform;
+    public Animator anim;
+
+    //Serialized for visualization purposes only
+    [SerializeField] private Transform targetTransform; 
+
+    private SphereCollider m_sphereCol;
+
+    //TEST FUNCTIONALITY. WILL BE MOVED
+    [SerializeField] private bool m_bFlipMotors;
+    Gamepad m_pad;
 
     /// <summary>
     /// Script init functions. Gets references to the components and targets
@@ -69,7 +90,13 @@ public class ChargeHandler : MonoBehaviour
         
         //m_chargeAction.PlayerControls.ElecArm.started += ctx => m_bChargeExchange = true;
         m_chargeAction.PlayerControls.ElecArm.performed += ctx => m_bChargeExchange = true;
-        //m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
+        m_chargeAction.PlayerControls.ElecArm.canceled += ctx => m_bChargeExchange = false;
+
+        m_sphereCol = this.gameObject.GetComponent<SphereCollider>();
+
+        //TEST
+        m_pad = Gamepad.current;
+        m_pad.SetMotorSpeeds(0.1f, 0.0f);
     }
 
     /// <summary>
@@ -77,7 +104,10 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        if (m_sphereCol) { m_sphereCol.radius = CameraBehaviour.GetInstance().GetElectricDistance(); }
+        //TEST
+        
+        m_pad.PauseHaptics();
     }
 
     /// <summary>
@@ -88,12 +118,21 @@ public class ChargeHandler : MonoBehaviour
     /// </summary>
     void Update()
     {
-        targetTransform = CameraBehaviour.GetInstance().GetTarget(); // modified by Hyukin
+        this.gameObject.transform.position = m_characterTransform.position;
 
+        //targetTransform = CameraBehaviour.GetInstance().GetTarget(); // modified by Hyukin
+       
         if (targetTransform)
         {
+            float tempL = 1-((targetTransform.position - this.gameObject.transform.position).magnitude/m_sphereCol.radius);
+            float tempR = 0.1f;
+
+            if (m_bFlipMotors) { m_pad.SetMotorSpeeds(tempL, tempR); }
+            else { m_pad.SetMotorSpeeds(tempR, tempL); }
+            
             if (m_bChargeExchange)
             {
+                anim.SetBool("ChargeHand", m_bChargeExchange);
                 m_bChargeExchange = false;
                 ExchangeCharges();
             }
@@ -120,7 +159,8 @@ public class ChargeHandler : MonoBehaviour
     void ExchangeCharges() {
 
         Chargeable temp = targetTransform.GetComponent<Chargeable>();
-        if (temp && temp.enabled)
+        if (!temp) temp = targetTransform.GetComponentInChildren<Chargeable>();
+        if (temp)
         {            
             if (temp.Charged && chargeTracker.CanRecharge)
             {
@@ -139,7 +179,6 @@ public class ChargeHandler : MonoBehaviour
                 //ping error: both empty
             }
         }
-        
     }
 
     /// <summary>
@@ -173,6 +212,30 @@ public class ChargeHandler : MonoBehaviour
 
     private void OnDisable()
     {
+        m_pad.ResetHaptics();
         m_chargeAction.Disable();
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.GetComponent<Chargeable>()!= null || 
+            other.gameObject.GetComponentInChildren<Chargeable>()!= null) {
+
+            if (!targetTransform) {
+                targetTransform = other.gameObject.transform;
+            }
+            else
+            {
+                Debug.Log("There's already another target in range...");
+            }
+            m_pad.ResumeHaptics();
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        if (other.gameObject.GetComponent<Chargeable>() != null ||
+            other.gameObject.GetComponentInChildren<Chargeable>() != null) {
+            targetTransform = null;
+            m_pad.PauseHaptics();
+        }
     }
 }

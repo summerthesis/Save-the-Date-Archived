@@ -4,7 +4,7 @@
 * 
 * PlayerMovement
 * Modified: 25 Jan 2020 - Hyukin
-* Last Modified: 18 Feb 2020 - Hyukin
+* Last Modified: 29 Feb 2020 - Hyukin
 * 
 * Inherits from Monobehaviour
 *
@@ -18,8 +18,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
-    private GameObject CamPivot;
     private GameObject FrontHeightCheck;
+    private Animator anim;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
@@ -41,6 +41,17 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rigid;
     [SerializeField] float rayDis; //for ground checking
+
+    private Rigidbody rigidbody;
+    public Rigidbody RIGIDBODY
+    {
+        get
+        {
+            if (rigidbody == null)
+                rigidbody = GetComponent<Rigidbody>();
+            return rigidbody;
+        }
+    }
 
     #region Player Input Action
     PlayerInputAction inputAction;
@@ -72,10 +83,10 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         CameraBody = GameObject.Find("CameraBody");
-        CamPivot = GameObject.Find("CamPivot");
         FrontHeightCheck = GameObject.Find("FrontHeightCheck");
         rigid = GetComponent<Rigidbody>();
         qTo = transform.rotation;
+        anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -84,6 +95,9 @@ public class PlayerMovement : MonoBehaviour
         m_fVertical = movementInput.y;
         fdt = Time.fixedDeltaTime;
 
+        anim.SetFloat("HSpeed", Mathf.Abs(m_fHorizontal));
+        anim.SetFloat("VSpeed", Mathf.Abs(m_fVertical));
+
         CheckGround();
         if (CameraBehaviour.GetInstance().GetIsZooming())
         {
@@ -91,33 +105,16 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            SetCampPivotPos();
             PlayerFacingRot();
             MoveRegular();
             JumpRegular();
         }
     }
 
-    private void SetCampPivotPos()
-    {
-        RaycastHit hit;
-        float distance = CameraBehaviour.GetInstance().m_fDistanceOrigin;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), out hit, distance))
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * hit.distance, Color.yellow);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -hit.distance), 20 * fdt);
-            if (hit.transform.tag != "Camera")
-                Debug.Log(hit.transform.gameObject);
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.back) * distance, Color.cyan);
-            CamPivot.transform.localPosition = Vector3.Lerp(CamPivot.transform.localPosition, new Vector3(0, 0, -distance), 20 * fdt);
-        }
-    }
-
     private void JumpRegular()
     {
+        anim.SetBool("Jump", !m_bIsGrounded);
+
         if (jumpInput && m_bIsGrounded)
         {
             rigid.AddForce(Vector3.up * m_JumpForce);
