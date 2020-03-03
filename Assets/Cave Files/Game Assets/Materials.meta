@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Cave Files/Game Assets/Materials.meta
-guid: fd40f329302209c4cb2f2ca20f0cd75c
-=======
-guid: b0c7762251b9f5041a949a7d6d7419eb
->>>>>>> Develop:Assets/Models/CharacterModel/mgear_3.3.1/release/platforms.meta
+guid: b4b69305d6597bf4da5e3c258ebc9fcd
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
