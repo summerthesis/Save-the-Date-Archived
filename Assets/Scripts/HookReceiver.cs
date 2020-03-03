@@ -66,46 +66,50 @@ public class HookReceiver : MonoBehaviour
                 break;
 
             case 1:
+                mPlayer.GetComponent<Rigidbody>().useGravity = false;
+                mPlayer.transform.LookAt(mWayPoints[0].transform.position);
                 float step = speed * Time.deltaTime;
                 this.GetComponent<MeshRenderer>().material = activeMaterial;
-                if (Vector3.Distance(mWayPoints[0].transform.position, mPlayer.transform.position) < 0.001f)
+                if (Vector3.Distance(mWayPoints[0].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
                 else
                 {
-                    if (speed < 1.0f) speed += 0.03f;
+                    if (speed < 1.0f) speed += 0.01f;
                     mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[0].transform.position, speed);
                 }
                     
                 break;
 
             case 2:
-                if (Vector3.Distance(mWayPoints[1].transform.position, mPlayer.transform.position) < 0.001f)
+              //  mPlayer.transform.LookAt(mWayPoints[1].transform.position);
+                if (Vector3.Distance(mWayPoints[1].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
                 else
-                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[1].transform.position, 0.25f);
+                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[1].transform.position, 0.35f);
 
                 break;
 
             case 3:
-
-                if (Vector3.Distance(mWayPoints[2].transform.position, mPlayer.transform.position) < 0.001f)
+              //  mPlayer.transform.LookAt(mWayPoints[2].transform.position);
+                if (Vector3.Distance(mWayPoints[2].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
                 else
-                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[2].transform.position, 0.25f);
+                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[2].transform.position, 0.35f);
                 break;
             case 4:
-                if (Vector3.Distance(mWayPoints[3].transform.position, mPlayer.transform.position) < 0.001f)
+             //   mPlayer.transform.LookAt(mWayPoints[3].transform.position);
+                if (Vector3.Distance(mWayPoints[3].transform.position, mPlayer.transform.position) < 1.5f)
                 {
                     State++;
                 }
                 else
-                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[3].transform.position, 0.25f);
+                    mPlayer.transform.position = Vector3.MoveTowards(mPlayer.transform.position, mWayPoints[3].transform.position, 0.35f);
                 break;
              
             case 5: // Complete
@@ -116,7 +120,7 @@ public class HookReceiver : MonoBehaviour
                     State=0;
                 }
                 else
-                    mCamera.transform.position = Vector3.MoveTowards(mCamera.transform.position, mWayPoints[2].transform.position, 1.25f);
+                    mCamera.transform.position = Vector3.MoveTowards(mCamera.transform.position, mWayPoints[1].transform.position, 3.25f);
                 this.GetComponent<MeshRenderer>().material = idleMaterial;
                 Debug.Log("GRAPPLE COMPLETE");
                 break;
@@ -138,6 +142,7 @@ public class HookReceiver : MonoBehaviour
     {
         if(isReady)
         {
+            speed = 0;
             mPlayer.GetComponent<Rigidbody>().useGravity = false;
             State++;
             isReady = false;
