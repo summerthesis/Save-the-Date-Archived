@@ -94,7 +94,7 @@ public class ChargeHandler : MonoBehaviour
 
         //TEST
         m_pad = Gamepad.current;
-        m_pad.SetMotorSpeeds(0.1f, 0.0f);
+        if (m_pad != null) m_pad.SetMotorSpeeds(0.1f, 0.0f);
     }
 
     /// <summary>
@@ -104,8 +104,8 @@ public class ChargeHandler : MonoBehaviour
     {
         if (m_sphereCol) { m_sphereCol.radius = CameraBehaviour.GetInstance().GetElectricDistance(); }
         //TEST
-        
-        m_pad.PauseHaptics();
+
+        if (m_pad != null) m_pad.PauseHaptics();
     }
 
     /// <summary>
@@ -209,7 +209,7 @@ public class ChargeHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        m_pad.ResetHaptics();
+        if(m_pad != null) m_pad.ResetHaptics();
         m_chargeAction.Disable();
     }
 
