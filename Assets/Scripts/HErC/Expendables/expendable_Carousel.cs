@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlatformRotation { NoRotation = 0,
+                               TowardsCenter = 1,
+                               AwayFromCenter = 1 << 1}
+
 public class expendable_Carousel : MonoBehaviour
 {
     [SerializeField] private PrimitiveType m_pTypeToCreate;
     [SerializeField] private float m_fRotationSpeed;
     [SerializeField] private float m_fCarouselRadius;
     [SerializeField] private float m_fPlatformSize;
-    [SerializeField] private bool m_bShouldLookAtCenter;//takes precedence
-    [SerializeField] private bool m_bShouldLookAwayFromCenter;
+    [SerializeField] private PlatformRotation m_PlatformRotation;    
     [SerializeField] private GameObject m_PlatformPrefab;
     [SerializeField] private GameObject[] m_Platforms;
 
@@ -19,7 +22,7 @@ public class expendable_Carousel : MonoBehaviour
     #region EditorVariables
     public int NumberOfPlatforms { get { return m_Platforms.Length; } }
     public float CarouselRadius { get { return m_fCarouselRadius; } }
-    public float PlatformSize { get { return m_fPlatformSize; } }
+    public PlatformRotation platformRotation { get { return m_PlatformRotation; } }
 
     #endregion
         
@@ -28,8 +31,7 @@ public class expendable_Carousel : MonoBehaviour
         angle = m_Platforms.Length > 0 ? 2 * Mathf.PI / m_Platforms.Length : 0;
         for  (int i = 0; i < m_Platforms.Length; ++i) {
             angleDiv = i * angle;
-            if (m_PlatformPrefab)
-            {
+            if (m_PlatformPrefab) {
                 m_Platforms[i] = GameObject.Instantiate(m_PlatformPrefab, //template
                                                         CalculateInitialPosition(angleDiv), //position
                                                         Quaternion.identity, this.gameObject.transform); //rotation/parent
@@ -70,19 +72,17 @@ public class expendable_Carousel : MonoBehaviour
         if (m_pTypeToCreate != PrimitiveType.Quad) {
             for (int i = 0; i < m_Platforms.Length; ++i) {
                 angleDiv = angle * i;
-                m_Platforms[i].transform.rotation = Quaternion.identity; //REFACTOR
-                if (m_bShouldLookAtCenter)
-                {
-                    //Vector3 endResult = m_Platforms[i].transform.position - this.gameObject.transform.position;
-                    //m_Platforms[i].transform.LookAt(this.gameObject.transform.position);
-                }
-                else if (m_bShouldLookAwayFromCenter)
-                {
-                    //Vector3 endResult = m_Platforms[i].transform.position - this.gameObject.transform.position;
-                    //m_Platforms[i].transform.LookAt(endResult * -1);
-                }
-                else {
+                if (m_PlatformRotation == PlatformRotation.NoRotation) {
                     m_Platforms[i].transform.rotation = Quaternion.identity;
+                }
+                else { 
+                    Vector3 endResult = this.gameObject.transform.position;
+                    endResult.y = m_Platforms[i].transform.position.y;
+                    m_Platforms[i].transform.LookAt(endResult);
+
+                    if (m_PlatformRotation == PlatformRotation.AwayFromCenter) {
+                        m_Platforms[i].transform.Rotate(Vector3.up * 180);
+                    }
                 }
             }
         } else {
@@ -93,7 +93,6 @@ public class expendable_Carousel : MonoBehaviour
             }
         }
     }
-
 
     /// <summary>
     /// Calculates the platform's initial position based on the parent's initial position and the 

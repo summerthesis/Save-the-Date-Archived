@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_pTypeToCreate: 2
-  m_fRotationSpeed: 0.5
-  m_vRotationAxis: {x: 0, y: 1, z: 0}
-  m_fCarouselRadius: 15
+  m_fRotationSpeed: 1
+  m_fCarouselRadius: 10
   m_fPlatformSize: 4
+  m_PlatformRotation: 0
+  m_PlatformPrefab: {fileID: 0}
   m_Platforms:
   - {fileID: 0}
   - {fileID: 0}
