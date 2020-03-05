@@ -56,17 +56,17 @@ public class expendable_lights : MonoBehaviour
         greenLight.color = Color.green;
         blueLight.color = Color.blue;
 
-        redLight.range = 15;
-        greenLight.range = 15;
-        blueLight.range = 15;
+        redLight.range = 20;
+        greenLight.range = 20;
+        blueLight.range = 20;
 
         redLight.spotAngle = 120;
         greenLight.spotAngle = 120;
         blueLight.spotAngle = 120;
 
-        redLight.intensity = 5;
-        greenLight.intensity = 5;
-        blueLight.intensity = 5;
+        redLight.intensity = 7;
+        greenLight.intensity = 7;
+        blueLight.intensity = 7;
     }
 
     // Update is called once per frame

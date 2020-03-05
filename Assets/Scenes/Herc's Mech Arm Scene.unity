@@ -889,8 +889,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38c810a925075384ebba92192895f050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_cubeModel: {fileID: 3778063887161953660, guid: 8e837aa942b1ef64f9f3739fa3a0fa14,
-    type: 3}
+  m_fCubeSize: 2.5
+  m_fAmplitude: 300
 --- !u!114 &776211220
 MonoBehaviour:
   m_ObjectHideFlags: 0
