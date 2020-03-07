@@ -68,6 +68,7 @@ public class ChargeHandler : MonoBehaviour
     private bool m_bChargeExchange;
 
     //Serialized for visualization purposes only
+    [Tooltip("FOR VISUALIZATION PURPOSES ONLY")]
     [SerializeField] private Transform targetTransform; 
 
     private SphereCollider m_sphereCol;
@@ -125,8 +126,8 @@ public class ChargeHandler : MonoBehaviour
             float tempL = 1-((targetTransform.position - this.gameObject.transform.position).magnitude/m_sphereCol.radius);
             float tempR = 0.1f;
 
-            if (m_bFlipMotors) { m_pad.SetMotorSpeeds(tempL, tempR); }
-            else { m_pad.SetMotorSpeeds(tempR, tempL); }
+            if (m_bFlipMotors) { if (m_pad != null) m_pad.SetMotorSpeeds(tempL, tempR); }
+            else { if (m_pad != null) m_pad.SetMotorSpeeds(tempR, tempL); }
             
             if (m_bChargeExchange)
             {
@@ -226,7 +227,7 @@ public class ChargeHandler : MonoBehaviour
             {
                 Debug.Log("There's already another target in range...");
             }
-            m_pad.ResumeHaptics();
+            if (m_pad != null) m_pad.ResumeHaptics();
         }
     }
 
@@ -234,7 +235,7 @@ public class ChargeHandler : MonoBehaviour
         if (other.gameObject.GetComponent<Chargeable>() != null ||
             other.gameObject.GetComponentInChildren<Chargeable>() != null) {
             targetTransform = null;
-            m_pad.PauseHaptics();
+            if (m_pad != null) m_pad.PauseHaptics();
         }
     }
 }
