@@ -139,4 +139,4 @@ Material:
     - _MossTint: {r: 20.05, g: 2.0741382, b: 0, a: 1}
     - _Tess_min_max: {r: 2.99, g: 0, b: 0, a: 0}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _UVs: {r: 3, g: 3, b: 0, a: 0}
+    - _UVs: {r: 0.5, g: 0.5, b: 0.5, a: 0}

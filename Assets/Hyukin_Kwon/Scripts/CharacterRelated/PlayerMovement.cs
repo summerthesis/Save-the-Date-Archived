@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 {
     private GameObject CameraBody;
     private GameObject FrontHeightCheck;
+    private Animator anim;
 
     //** m_fMoveSpeed need to be roughly 0.12 of m_fSideMoveSpeed **
     [SerializeField] float m_fMoveSpeed;
@@ -85,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
         FrontHeightCheck = GameObject.Find("FrontHeightCheck");
         rigid = GetComponent<Rigidbody>();
         qTo = transform.rotation;
+        anim = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -92,6 +94,9 @@ public class PlayerMovement : MonoBehaviour
         m_fHorizontal = movementInput.x;
         m_fVertical = movementInput.y;
         fdt = Time.fixedDeltaTime;
+
+        anim.SetFloat("HSpeed", Mathf.Abs(m_fHorizontal));
+        anim.SetFloat("VSpeed", Mathf.Abs(m_fVertical));
 
         CheckGround();
         if (CameraBehaviour.GetInstance().GetIsZooming())
@@ -108,18 +113,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void JumpRegular()
     {
+        anim.SetBool("Jump", !m_bIsGrounded);
+
         if (jumpInput && m_bIsGrounded)
         {
-            rigid.AddForce(Vector3.up * m_JumpForce);
-
-            if (m_fVertical != 0)
-            {
-                rigid.AddForce(transform.forward * Mathf.Abs(m_fVertical) * m_JumpForce * 0.3f);
-            }
-            else if (m_fHorizontal != 0)
-            {
-                rigid.AddForce(transform.forward * Mathf.Abs(m_fHorizontal) * m_JumpForce * 0.3f);
-            }
+            if(rigid.velocity.y == 0)
+                rigid.AddForce(Vector3.up * m_JumpForce);
         }
     }
 

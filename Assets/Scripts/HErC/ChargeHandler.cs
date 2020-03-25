@@ -67,6 +67,8 @@ public class ChargeHandler : MonoBehaviour
     private PlayerInputAction m_chargeAction;
     private bool m_bChargeExchange;
 
+    public Animator anim;
+
     //Serialized for visualization purposes only
     [Tooltip("FOR VISUALIZATION PURPOSES ONLY")]
     [SerializeField] private Transform targetTransform; 
@@ -131,6 +133,7 @@ public class ChargeHandler : MonoBehaviour
             
             if (m_bChargeExchange)
             {
+                anim.SetBool("ChargeHand", m_bChargeExchange);
                 m_bChargeExchange = false;
                 ExchangeCharges();
             }
