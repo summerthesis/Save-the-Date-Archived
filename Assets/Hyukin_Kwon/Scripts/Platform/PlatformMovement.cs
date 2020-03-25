@@ -105,7 +105,7 @@ public class PlatformMovement : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         if (collision.transform.tag == "Player")
-            collision.transform.parent = null;
+            collision.transform.parent.parent = null;
     }
 
 }
