@@ -117,16 +117,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (jumpInput && m_bIsGrounded)
         {
-            rigid.AddForce(Vector3.up * m_JumpForce);
-
-            if (m_fVertical != 0)
-            {
-                rigid.AddForce(transform.forward * Mathf.Abs(m_fVertical) * m_JumpForce * 0.3f);
-            }
-            else if (m_fHorizontal != 0)
-            {
-                rigid.AddForce(transform.forward * Mathf.Abs(m_fHorizontal) * m_JumpForce * 0.3f);
-            }
+            if(rigid.velocity.y == 0)
+                rigid.AddForce(Vector3.up * m_JumpForce);
         }
     }
 

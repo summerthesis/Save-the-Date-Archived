@@ -112,10 +112,10 @@ public class CameraBehaviour : MonoBehaviour
         direction = (transform.position - player.transform.position).normalized;
     }
 
-    private void Update()
-    {
-        ZoomInMode();
-    }
+    //private void Update()
+    //{
+    //    ZoomInMode();
+    //}
 
 
     private void FixedUpdate()
@@ -133,10 +133,10 @@ public class CameraBehaviour : MonoBehaviour
             Rotate();
             Reset();
         }
-        else
-        {
-            ZoomZoom();
-        }
+        //else
+        //{
+        //    ZoomZoom();
+        //}
     }
 
 
