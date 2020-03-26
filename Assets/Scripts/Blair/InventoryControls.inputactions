@@ -1,0 +1,58 @@
+{
+    "name": "InventoryControls",
+    "maps": [
+        {
+            "name": "InventoryControls",
+            "id": "21b5d3af-f3da-4481-931c-f0c64807e4ae",
+            "actions": [
+                {
+                    "name": "LeftShoulder",
+                    "type": "Button",
+                    "id": "f6e003c7-93ad-49fc-8009-14a8e5dcd24b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "RightShoulder",
+                    "type": "Button",
+                    "id": "b508c6eb-1c0c-4e3b-a979-d14ec2ce294d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "48339858-5334-4c62-bdbd-9c701b675a4b",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Initial",
+                    "action": "LeftShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "244c7c7b-0014-4c58-ba92-c0c323a27296",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Initial",
+                    "action": "RightShoulder",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Initial",
+            "bindingGroup": "Initial",
+            "devices": []
+        }
+    ]
+}

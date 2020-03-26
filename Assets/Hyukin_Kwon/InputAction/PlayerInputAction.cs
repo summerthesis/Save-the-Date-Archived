@@ -248,6 +248,245 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""InventoryControls"",
+            ""id"": ""b07e10e3-90e4-45e2-af4e-0ca004d01b92"",
+            ""actions"": [
+                {
+                    ""name"": ""Left Bumper"",
+                    ""type"": ""Button"",
+                    ""id"": ""96fcca6c-8af8-41d3-9a29-550779a22693"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right Bumper"",
+                    ""type"": ""Button"",
+                    ""id"": ""f59fdf44-6f47-49b8-a790-0357988b8d93"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LeftSelectCog"",
+                    ""type"": ""Button"",
+                    ""id"": ""16e84fa2-5b4f-4f6f-b652-04d56b19475e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""RightSelectCog"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b2f8056-134a-4de9-a533-ccb3853960b0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""East Button"",
+                    ""type"": ""Button"",
+                    ""id"": ""04748b9e-1b5a-4987-9681-ecdad844cf1a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""South Button"",
+                    ""type"": ""Button"",
+                    ""id"": ""6861ee0b-ad32-47fb-94c7-7909cc523062"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SelectPushed"",
+                    ""type"": ""Button"",
+                    ""id"": ""524d8a71-3cab-43f4-b090-8bb9972209ad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""897c15cc-dc3a-4189-a1b6-ddab6841ef7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea9d91ea-40c6-4562-bcf9-e4c592fe0117"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""8582c7af-b2c5-4cc5-b4ef-baa79247ebba"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""647367cc-52b9-4697-bcba-a9b0fbd84242"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""df1970f9-7f88-49f2-9d60-fec4195a338d"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Left Bumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9a3987f-9a4d-4818-a619-c60793f206cc"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Right Bumper"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13a11cdc-417e-4308-a848-7a7e5ec74a9c"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LeftSelectCog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e69e55e-c8b2-4a73-ae78-bb54f91dc342"",
+                    ""path"": ""<Gamepad>/rightStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""LeftSelectCog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""905876c8-133d-4ff2-b21a-30eaed5dde01"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RightSelectCog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81fd1348-ca24-4903-bc7b-f4116fb7a60b"",
+                    ""path"": ""<Gamepad>/rightStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RightSelectCog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""42ff141b-b233-40ca-aa16-3ea30a0e9f1c"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""East Button"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98fcad01-a135-400a-a5ae-78f73d0d61e4"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""South Button"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14a2bafd-1a5a-4ea8-83d2-d3a0cadfa04d"",
+                    ""path"": ""<Gamepad>/select"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SelectPushed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cb84442a-e9fd-4b4a-942d-7c12764f3ea1"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6ce5a48d-53d9-4aee-b14f-d1ba3462e121"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de0389e8-cc18-468e-b08e-a330c0a8ec52"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""abbcc1af-9dbe-48eb-a610-7ae4c80d90c5"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -281,7 +520,19 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         m_PlayerControls_Jump = m_PlayerControls.FindAction("Jump", throwIfNotFound: true);
         m_PlayerControls_ActivateHook = m_PlayerControls.FindAction("ActivateHook", throwIfNotFound: true);
         m_PlayerControls_ElecArm = m_PlayerControls.FindAction("ElecArm", throwIfNotFound: true);
-        m_PlayerControls_ActivateMagArm = m_PlayerControls.FindAction("ActivateMagArm", throwIfNotFound: true);
+        // InventoryControls
+        m_InventoryControls = asset.FindActionMap("InventoryControls", throwIfNotFound: true);
+        m_InventoryControls_LeftBumper = m_InventoryControls.FindAction("Left Bumper", throwIfNotFound: true);
+        m_InventoryControls_RightBumper = m_InventoryControls.FindAction("Right Bumper", throwIfNotFound: true);
+        m_InventoryControls_LeftSelectCog = m_InventoryControls.FindAction("LeftSelectCog", throwIfNotFound: true);
+        m_InventoryControls_RightSelectCog = m_InventoryControls.FindAction("RightSelectCog", throwIfNotFound: true);
+        m_InventoryControls_EastButton = m_InventoryControls.FindAction("East Button", throwIfNotFound: true);
+        m_InventoryControls_SouthButton = m_InventoryControls.FindAction("South Button", throwIfNotFound: true);
+        m_InventoryControls_SelectPushed = m_InventoryControls.FindAction("SelectPushed", throwIfNotFound: true);
+        m_InventoryControls_Up = m_InventoryControls.FindAction("Up", throwIfNotFound: true);
+        m_InventoryControls_Down = m_InventoryControls.FindAction("Down", throwIfNotFound: true);
+        m_InventoryControls_Left = m_InventoryControls.FindAction("Left", throwIfNotFound: true);
+        m_InventoryControls_Right = m_InventoryControls.FindAction("Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -392,6 +643,119 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         }
     }
     public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+    // InventoryControls
+    private readonly InputActionMap m_InventoryControls;
+    private IInventoryControlsActions m_InventoryControlsActionsCallbackInterface;
+    private readonly InputAction m_InventoryControls_LeftBumper;
+    private readonly InputAction m_InventoryControls_RightBumper;
+    private readonly InputAction m_InventoryControls_LeftSelectCog;
+    private readonly InputAction m_InventoryControls_RightSelectCog;
+    private readonly InputAction m_InventoryControls_EastButton;
+    private readonly InputAction m_InventoryControls_SouthButton;
+    private readonly InputAction m_InventoryControls_SelectPushed;
+    private readonly InputAction m_InventoryControls_Up;
+    private readonly InputAction m_InventoryControls_Down;
+    private readonly InputAction m_InventoryControls_Left;
+    private readonly InputAction m_InventoryControls_Right;
+    public struct InventoryControlsActions
+    {
+        private @PlayerInputAction m_Wrapper;
+        public InventoryControlsActions(@PlayerInputAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @LeftBumper => m_Wrapper.m_InventoryControls_LeftBumper;
+        public InputAction @RightBumper => m_Wrapper.m_InventoryControls_RightBumper;
+        public InputAction @LeftSelectCog => m_Wrapper.m_InventoryControls_LeftSelectCog;
+        public InputAction @RightSelectCog => m_Wrapper.m_InventoryControls_RightSelectCog;
+        public InputAction @EastButton => m_Wrapper.m_InventoryControls_EastButton;
+        public InputAction @SouthButton => m_Wrapper.m_InventoryControls_SouthButton;
+        public InputAction @SelectPushed => m_Wrapper.m_InventoryControls_SelectPushed;
+        public InputAction @Up => m_Wrapper.m_InventoryControls_Up;
+        public InputAction @Down => m_Wrapper.m_InventoryControls_Down;
+        public InputAction @Left => m_Wrapper.m_InventoryControls_Left;
+        public InputAction @Right => m_Wrapper.m_InventoryControls_Right;
+        public InputActionMap Get() { return m_Wrapper.m_InventoryControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InventoryControlsActions set) { return set.Get(); }
+        public void SetCallbacks(IInventoryControlsActions instance)
+        {
+            if (m_Wrapper.m_InventoryControlsActionsCallbackInterface != null)
+            {
+                @LeftBumper.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftBumper;
+                @LeftBumper.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftBumper;
+                @LeftBumper.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftBumper;
+                @RightBumper.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightBumper;
+                @RightBumper.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightBumper;
+                @RightBumper.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightBumper;
+                @LeftSelectCog.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftSelectCog;
+                @LeftSelectCog.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftSelectCog;
+                @LeftSelectCog.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeftSelectCog;
+                @RightSelectCog.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightSelectCog;
+                @RightSelectCog.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightSelectCog;
+                @RightSelectCog.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRightSelectCog;
+                @EastButton.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnEastButton;
+                @EastButton.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnEastButton;
+                @EastButton.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnEastButton;
+                @SouthButton.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSouthButton;
+                @SouthButton.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSouthButton;
+                @SouthButton.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSouthButton;
+                @SelectPushed.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
+                @SelectPushed.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
+                @SelectPushed.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnSelectPushed;
+                @Up.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Up.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Up.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnUp;
+                @Down.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnDown;
+                @Left.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Left.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Left.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnLeft;
+                @Right.started -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
+                @Right.performed -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
+                @Right.canceled -= m_Wrapper.m_InventoryControlsActionsCallbackInterface.OnRight;
+            }
+            m_Wrapper.m_InventoryControlsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @LeftBumper.started += instance.OnLeftBumper;
+                @LeftBumper.performed += instance.OnLeftBumper;
+                @LeftBumper.canceled += instance.OnLeftBumper;
+                @RightBumper.started += instance.OnRightBumper;
+                @RightBumper.performed += instance.OnRightBumper;
+                @RightBumper.canceled += instance.OnRightBumper;
+                @LeftSelectCog.started += instance.OnLeftSelectCog;
+                @LeftSelectCog.performed += instance.OnLeftSelectCog;
+                @LeftSelectCog.canceled += instance.OnLeftSelectCog;
+                @RightSelectCog.started += instance.OnRightSelectCog;
+                @RightSelectCog.performed += instance.OnRightSelectCog;
+                @RightSelectCog.canceled += instance.OnRightSelectCog;
+                @EastButton.started += instance.OnEastButton;
+                @EastButton.performed += instance.OnEastButton;
+                @EastButton.canceled += instance.OnEastButton;
+                @SouthButton.started += instance.OnSouthButton;
+                @SouthButton.performed += instance.OnSouthButton;
+                @SouthButton.canceled += instance.OnSouthButton;
+                @SelectPushed.started += instance.OnSelectPushed;
+                @SelectPushed.performed += instance.OnSelectPushed;
+                @SelectPushed.canceled += instance.OnSelectPushed;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
+            }
+        }
+    }
+    public InventoryControlsActions @InventoryControls => new InventoryControlsActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -417,5 +781,19 @@ public class @PlayerInputAction : IInputActionCollection, IDisposable
         void OnActivateHook(InputAction.CallbackContext context);
         void OnElecArm(InputAction.CallbackContext context);
         void OnActivateMagArm(InputAction.CallbackContext context);
+    }
+    public interface IInventoryControlsActions
+    {
+        void OnLeftBumper(InputAction.CallbackContext context);
+        void OnRightBumper(InputAction.CallbackContext context);
+        void OnLeftSelectCog(InputAction.CallbackContext context);
+        void OnRightSelectCog(InputAction.CallbackContext context);
+        void OnEastButton(InputAction.CallbackContext context);
+        void OnSouthButton(InputAction.CallbackContext context);
+        void OnSelectPushed(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
     }
 }
