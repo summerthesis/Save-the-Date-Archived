@@ -38,9 +38,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Shoot",
+                    "name": "ActivateMagArm",
                     "type": "Button",
-                    "id": "abfbae93-206c-4838-b8ad-4583ec3c9d96",
+                    "id": "27dca19b-aede-49a3-a087-caa37659cb1f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -225,23 +225,12 @@
                 },
                 {
                     "name": "",
-                    "id": "77ffaf22-5c64-4859-a899-d3917ab545b8",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "b00e7355-636d-488c-85a9-1da79951eaf5",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3925b37f-a253-410d-a44d-07a9b759c7b4",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Shoot",
+                    "action": "ActivateMagArm",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
