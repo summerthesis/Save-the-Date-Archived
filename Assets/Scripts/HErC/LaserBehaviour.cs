@@ -31,8 +31,8 @@ public class LaserBehaviour : MonoBehaviour
 
         m_laserAction = new PlayerInputAction();
 
-        m_laserAction.PlayerControls.Shoot.performed += ctx => m_bShoot = true;
-        m_laserAction.PlayerControls.Shoot.canceled += ctx => m_bShoot = false;
+        m_laserAction.PlayerControls.ElecArm.performed += ctx => m_bShoot = true;
+        m_laserAction.PlayerControls.ElecArm.canceled += ctx => m_bShoot = false;
     }
 
     // Start is called before the first frame update
